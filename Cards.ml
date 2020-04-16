@@ -32,5 +32,9 @@ let deal_one = function
   | [] -> None 
   | h::t -> Some (h,t)
 
+let rec shuffle deck = 
+  deck |> List.map (fun x -> (x,Random.int 0)) |> List.sort Stdlib.compare |>
+  List.map (fun (x,y) -> x)
+
 let combine_decks dl =
   List.fold_left (fun x a -> x@a) dl []
