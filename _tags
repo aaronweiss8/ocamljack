@@ -1,0 +1,2 @@
+<{Chip,Game,Cards,Blackjack,Player}.ml>: coverage
+<test.{byte,native}>: coverage

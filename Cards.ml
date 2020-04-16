@@ -29,8 +29,8 @@ let get_standard_deck =
   make_standard_dec values []
 
 let deal_one = function
-  | [] -> failwith "There are no more cards!"
-  | h::t -> h,t
+  | [] -> None 
+  | h::t -> Some (h,t)
 
 let combine_decks dl =
   List.fold_left (fun x a -> x@a) dl []

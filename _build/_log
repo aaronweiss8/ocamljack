@@ -1,0 +1,28 @@
+### Starting build.
+# Target: test.ml.depends, tags: { debug, extension:ml, file:test.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -modules test.ml > test.ml.depends # cached
+# Target: Blackjack.mli.depends, tags: { debug, extension:mli, file:Blackjack.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -modules Blackjack.mli > Blackjack.mli.depends
+# Target: Chip.mli.depends, tags: { debug, extension:mli, file:Chip.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -modules Chip.mli > Chip.mli.depends # cached
+# Target: Chip.cmi, tags: { byte, compile, debug, extension:mli, file:Chip.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -o Chip.cmi Chip.mli # cached
+# Target: Cards.mli.depends, tags: { debug, extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -modules Cards.mli > Cards.mli.depends
+# Target: Game.mli.depends, tags: { debug, extension:mli, file:Game.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -modules Game.mli > Game.mli.depends # cached
+# Target: Game.cmi, tags: { byte, compile, debug, extension:mli, file:Game.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -o Game.cmi Game.mli # cached
+# Target: Player.mli.depends, tags: { debug, extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -modules Player.mli > Player.mli.depends # cached
+# Target: Player.cmi, tags: { byte, compile, debug, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -o Player.cmi Player.mli # cached
+# Target: Blackjack.cmi, tags: { byte, compile, debug, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -o Blackjack.cmi Blackjack.mli
++ ocamlfind ocamlc -c -g -o Blackjack.cmi Blackjack.mli
+File "Blackjack.mli", line 24, characters 14-15:
+24 | val players : t -> int*int
+                   ^
+Error: Unbound type constructor t
+Command exited with code 2.
+# Compilation unsuccessful.
