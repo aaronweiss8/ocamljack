@@ -1,4 +1,4 @@
-MODULES=cards chip game blackjack
+MODULES=cards chip game blackjack player
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

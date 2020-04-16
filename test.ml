@@ -3,7 +3,7 @@ open Chip
 open Blackjack
 open Cards
 open Game
-
+open Player
 
 let blackjack_tests = [
 
