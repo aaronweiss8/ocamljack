@@ -5,21 +5,21 @@ open Cards
 open Game
 open Player
 
-let blackjack_tests = [
+let blackjack_tests = "Blackjack tests" >::: [
 
-]
+  ]
 
-let chip_tests = [
+let chip_tests = "Chip tests" >:::[
 
-]
+  ]
 
-let deck_tests = [
+let deck_tests = "Deck tests" >::: [
 
-]
+  ]
 
-let game_tests = [
+let game_tests = "Game tests" >::: [
 
-]
+  ]
 
 let test_suite = [
   blackjack_tests;

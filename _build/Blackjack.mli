@@ -1,5 +1,5 @@
 (** The type representing the state of the casino game. *)
-
+type t
 (** The type representing a casino chip. *)
 type chip = Chip.t
 

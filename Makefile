@@ -13,17 +13,10 @@ build:
 	$(OCAMLBUILD) $(OBJECTS)
 
 test:
-	BISECT_COVERAGE=YES $(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
+	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
 check:
 	bash checkenv.sh && bash checktypes.sh
-
-finalcheck: check
-	bash checkzip.sh
-	bash finalcheck.sh
-
-bisect: clean test
-	bisect-ppx-report -I _build -html report bisect0001.out
 
 zip:
 	zip search_src.zip *.ml* _tags Makefile  

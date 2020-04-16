@@ -34,7 +34,7 @@ module Classic : Mode = struct
     failwith "Unimplemented"
   let current_player t = t.current_player 
                          |> List.nth (t.hands |> List.split |> fst)
-  let new_game name = {name=name;round=0;hands=[];current_player=0;deck=Cards.get_standard_deck}
+  let new_game name = {name=name;round=0;hands=[];current_player=0}
   let stand t player = failwith "Unimplemented"
   let mode = ""
 end
