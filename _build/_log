@@ -1,44 +1,15 @@
 ### Starting build.
-# Target: test.ml.depends, tags: { package(oUnit), debug, extension:ml, file:test.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules test.ml > test.ml.depends
-# Target: Blackjack.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Blackjack.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Blackjack.mli > Blackjack.mli.depends # cached
-# Target: Chip.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Chip.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Chip.mli > Chip.mli.depends # cached
-# Target: Chip.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Chip.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package oUnit -o Chip.cmi Chip.mli # cached
-# Target: Blackjack.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package oUnit -o Blackjack.cmi Blackjack.mli # cached
-# Target: Cards.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Cards.mli > Cards.mli.depends # cached
-# Target: Cards.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Cards.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package oUnit -o Cards.cmi Cards.mli # cached
-# Target: Game.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Game.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Game.mli > Game.mli.depends # cached
-# Target: Game.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Game.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package oUnit -o Game.cmi Game.mli # cached
-# Target: Player.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends # cached
-# Target: Player.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package oUnit -o Player.cmi Player.mli # cached
-# Target: test.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:test.cmo, file:test.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package oUnit -o test.cmo test.ml
-# Target: Blackjack.ml.depends, tags: { package(oUnit), coverage, debug, extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
-# Target: Cards.ml.depends, tags: { package(oUnit), coverage, debug, extension:ml, file:Cards.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Cards.ml > Cards.ml.depends
-# Target: Chip.ml.depends, tags: { package(oUnit), coverage, debug, extension:ml, file:Chip.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Chip.ml > Chip.ml.depends
-# Target: Game.ml.depends, tags: { package(oUnit), coverage, debug, extension:ml, file:Game.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Game.ml > Game.ml.depends
-# Target: Player.ml.depends, tags: { package(oUnit), coverage, debug, extension:ml, file:Player.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Player.ml > Player.ml.depends
-# Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, coverage, debug, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package oUnit -o Blackjack.cmo Blackjack.ml
-+ ocamlfind ocamlc -c -g -package oUnit -o Blackjack.cmo Blackjack.ml
-File "Blackjack.ml", line 37, characters 22-67:
-37 |   let new_game name = {name=name;round=0;hands=[];current_player=0}
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Error: Some record fields are undefined: deck
-Command exited with code 2.
+Backtrace:
+                      - Failed to build the target cards.cmo
+                          - Building cards.cmo:
+                              - Failed to build all of these:
+                                  - Building cards.ml:
+                                      - Failed to build all of these:
+                                          - Building cards.mly
+                                          - Building cards.mll
+                                  - Building cards.mli:
+                                      - Building cards.mly
+                                  - Building cards.mlpack
+                                  - Building cards.mli:
+                                      - Building cards.mly
 # Compilation unsuccessful.
