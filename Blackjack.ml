@@ -58,13 +58,6 @@ module Classic : Mode = struct
                        current_player=0;
                        deck=Cards.get_standard_deck}
 
-  (**[is_blackjack t] returns true if the current player
-     has reached blackjack, and false if the current player
-     has not *)
-  let is_blackjack = failwith ""
-  (*let is_blackjack t = 
-    let hand_value = current_player |> List.assoc t.hands |> Cards.get_value in
-    hand_value = 21 *)
 
   (** Helper update functions *)
   let next_player t =
@@ -84,7 +77,15 @@ module Classic : Mode = struct
                    Option.get |> 
                    List.map Cards.get_rank |> 
                    List.map card_value in
-    List.fold_right (fun x y -> x + y) handlist
+    List.fold_right (fun x y -> x + y) handlist 0
+
+  (**[is_blackjack t] returns true if the current player
+      has reached blackjack, and false if the current player
+      has not *)
+  let is_blackjack t player = 
+    match hand_value t player with
+    | 21 -> true
+    | _ -> false
 
   let next_round t= 
     match t.current_player with
