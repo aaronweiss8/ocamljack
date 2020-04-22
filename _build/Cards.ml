@@ -90,3 +90,8 @@ let combine_decks (dl: deck list) =
 
 let order_hand (d: deck) = 
   List.sort compare d
+
+let get_rank c = 
+  match c.rep with
+  | (_,_,Num x) -> Num x
+  | (_,_,y) -> y

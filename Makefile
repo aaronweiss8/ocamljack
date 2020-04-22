@@ -3,6 +3,7 @@ OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
+MAIN=main.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 PKGS=oUnit,str,ANSITerminal
 
@@ -22,6 +23,9 @@ zip:
 	zip search_src.zip *.ml* _tags Makefile  
 
 docs: docs-public docs-private
+
+play:
+	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
 docs-public: build
 	mkdir -p doc.public

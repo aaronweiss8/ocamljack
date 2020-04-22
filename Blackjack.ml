@@ -42,24 +42,60 @@ module Classic : Mode = struct
   let get_deck t = t.deck
   let hit t = failwith "Unimplemented"
   (*
-    current_player t|> 
+    current_player t|> y
      t.hands |> List.map (fun (x,y) -> 
         if (x=player) then (x, player::hand)) *)
-  (*let is_blackjack t = 
-    let hand_value = current_player |> List.assoc t.hands |> Cards.get_value in
-    hand_value = 21 *)
+
   let get_info t = "[" ^ t.name ^ ", " ^
                    (string_of_int t.round) ^ ", " ^ 
                    (string_of_int t.current_player) ^ "]"
+
+  (** Change new_game to include initialization of new games
+      with decks with varying amounts of cards *)
   let new_game name = {name=name;
                        round=0;
                        hands=[];
                        current_player=0;
                        deck=Cards.get_standard_deck}
-  (** Getter functions *)
 
+  (**[is_blackjack t] returns true if the current player
+     has reached blackjack, and false if the current player
+     has not *)
+  let is_blackjack = failwith ""
+  (*let is_blackjack t = 
+    let hand_value = current_player |> List.assoc t.hands |> Cards.get_value in
+    hand_value = 21 *)
 
-  let stand t player = failwith "Unimplemented"
+  (** Helper update functions *)
+  let next_player t =
+    match t.current_player with
+    | p when p = List.length t.hands -> 0
+    | p -> p + 1
+
+  (** Value functions *)
+  let card_value = function
+    | Num x -> x
+    | Ace -> 1
+    | _ -> 10
+
+  let hand_value t player = 
+    let handlist = t.hands |> 
+                   List.assoc player |> 
+                   Option.get |> 
+                   List.map Cards.get_rank |> 
+                   List.map card_value in
+    List.fold_right (fun x y -> x + y) handlist
+
+  let next_round t= 
+    match t.current_player with
+    | p when p = List.length t.hands -> t.round + 1
+    | r -> t.round
+
+  let stand t player = {name=t.name;
+                        round=next_round t;
+                        hands=[];
+                        current_player=next_player t;
+                        deck=Cards.get_standard_deck}
   let mode = "Classic"
   let rules t = failwith "Unimplemented"
   let rep_ok t = failwith "Unimplemmented"
@@ -77,11 +113,11 @@ module Classic : Mode = struct
                                   (Player.update_chips x new_chips,y) 
                                 else (x,y)) in
     {name=t.name;
-     round=0;
+     round=t.round;
      hands=newplayers;
      current_player=t.current_player;
      deck=t.deck}
-  (** Implement get_score in  Chip *)
+
   let score player = Chip.get_value (Player.chips player)
 end
 

@@ -40,7 +40,7 @@ module type Game = sig
       game *)
   val score : player -> int
 
-  (** [new_game] creates a new instance of the game. *)
+  (** [new_game r] creates a new instance of the game, with a room name r *)
   val new_game: string -> t
 
   (** [get_info t] returns a formatted string output detailing the state of the
