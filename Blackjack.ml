@@ -58,7 +58,6 @@ module Classic : Mode = struct
                        current_player=0;
                        deck=Cards.get_standard_deck}
 
-
   (** Helper update functions *)
   let next_player t =
     match t.current_player with
@@ -110,7 +109,6 @@ module Classic : Mode = struct
     let new_chips = Chip.bet chip (Player.chips player) in
     let newplayers = t.hands |> 
                      List.map (fun (x,y) -> if x = player then
-
                                   (Player.update_chips x new_chips,y) 
                                 else (x,y)) in
     {name=t.name;
