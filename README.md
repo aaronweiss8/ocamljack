@@ -20,3 +20,10 @@ Todo:
   - double down
   - insurance
   - rep ok
+  
+  
+  ## Build
+  
+  - *make play* runs the game in a new terminal. 
+  - *make test* runs the test suite
+ 
