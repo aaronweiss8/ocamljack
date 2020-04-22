@@ -1,27 +1,14 @@
 open Chip
 
-type mode
-
-module type Mode = sig
-  type t
-  val mode : t -> string
-end
-
-module type Category = sig
-  type t 
-end
-
 module type Game = sig
 
   (** The type representing the state of the casino game. *)
   type t
   (** The type representing a casino chip. *)
-  type chip = Chip.t
-  (** The type representing the different game modes *)
-  type modes
+  type chip 
 
-  (** The type representing the category/type of the game *)
-  type category
+  (** The type representing a player. *)
+  type player
 
   (**  [rep_ok t] checks whether the representation of the game state is 
        satisfied *)
@@ -34,7 +21,8 @@ module type Game = sig
       current game*)
   val save_name : t -> string
 
-  (** [players t] is the list of the names of the players in the current game.
+  (** [players t] is the list of the names of the players in the current game,
+      in string format.
   *)
   val players : t -> string
 
@@ -44,13 +32,18 @@ module type Game = sig
   (** [name t] is the name of the room t]*)
   val name : t -> string 
 
-  (** [bet t b d] places a bet with a list [b] chips and returns the updated
+  (** [bet t b d] places a bet with a chip list [b] and returns the updated
       game state*)
-  val bet : t -> chip list -> t
+  val bet : t -> player -> chip -> t
 
-  (** [score] returns the numerical value of chips the player has in the current
+  (** [score player] returns the numerical value of chips the player has in the current
       game *)
-  val score : t -> int
+  val score : player -> int
 
-  (**  *)
+  (** [new_game] creates a new instance of the game. *)
+  val new_game: string -> t
+
+  (** [get_info t] returns a formatted string output detailing the state of the
+      game. *)
+  val get_info : t -> string
 end

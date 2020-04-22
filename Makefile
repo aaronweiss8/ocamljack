@@ -1,9 +1,9 @@
-MODULES=cards chip game blackjack player
+MODULES=Cards Chip Game Blackjack Player
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
-OCAMLBUILD=ocamlbuild -use-ocamlfind -plugin-tag 'package(bisect_ppx-ocamlbuild)'
+OCAMLBUILD=ocamlbuild -use-ocamlfind
 PKGS=oUnit,str,ANSITerminal
 
 default: build

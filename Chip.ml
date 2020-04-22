@@ -17,15 +17,14 @@ let repo_ok = function
   |((White w),(Red r),(Blue blu),(Green g),(Black bla)) as t -> t
   | _ -> raise RI_Broken;;
 
-
 let get_value = function
   |((White w),(Red r),(Blue blu),(Green g),(Black bla)) -> 
     w + r*5 + blu*10 + g*25 + bla*100
   |_ -> raise RI_Broken;;
 
 (**[single_step t] takes the lowest denominations available and converts them
-into the next denomination if possible.
-Returns: type (t, bool), where the bool indicates if t changed*)
+   into the next denomination if possible.
+   Returns: type (t, bool), where the bool indicates if t changed*)
 let single_step_simplify = function
   |((White w),(Red r),(Blue blu),(Green g),(Black bla)) as t -> 
     if w >= 5 
@@ -40,20 +39,20 @@ let single_step_simplify = function
   |_ -> raise RI_Broken
 
 (**[single_step_break t] takes the highest demoninaitons availabble and breaks it
-into smaller ones if possible.
-Returns: type (t, bool), where the bool indicates if t changed*)
-  let single_step_break = function
-    |((White w),(Red r),(Blue blu),(Green g),(Black bla)) as t -> 
-      if bla >=1 
-      then (((White w),(Red r),(Blue blu),(Green (g+4)),(Black (bla-1))),true)
-      else if g >= 1
-      then (((White w),(Red (r+1)),(Blue (blu+2)),(Green (g-1)),(Black bla)),true)
-      else if blu >= 1
-      then (((White w),(Red (r+2)),(Blue (blu-1)),(Green g),(Black bla)),true)
-      else if r >= 1
-      then (((White (w+5)),(Red (r-1)),(Blue blu),(Green g),(Black bla)),true)
-      else (t,false)
-    | _ -> raise RI_Broken
+   into smaller ones if possible.
+   Returns: type (t, bool), where the bool indicates if t changed*)
+let single_step_break = function
+  |((White w),(Red r),(Blue blu),(Green g),(Black bla)) as t -> 
+    if bla >=1 
+    then (((White w),(Red r),(Blue blu),(Green (g+4)),(Black (bla-1))),true)
+    else if g >= 1
+    then (((White w),(Red (r+1)),(Blue (blu+2)),(Green (g-1)),(Black bla)),true)
+    else if blu >= 1
+    then (((White w),(Red (r+2)),(Blue (blu-1)),(Green g),(Black bla)),true)
+    else if r >= 1
+    then (((White (w+5)),(Red (r-1)),(Blue blu),(Green g),(Black bla)),true)
+    else (t,false)
+  | _ -> raise RI_Broken
 
 let simplify t steps =
   let rec simplify_aux chips s_tg = 
@@ -75,7 +74,7 @@ let add t1 t2 =
   match (t1,t2) with
   |(((White w1),(Red r1),(Blue blu1),(Green g1),(Black bla1)),
     ((White w2),(Red r2),(Blue blu2),(Green g2),(Black bla2))) ->
-  ((White (w1+w2)),(Red (r1+r2)),(Blue (blu1+blu2)),(Green (g1+g2)),(Black (bla1+bla2)))
+    ((White (w1+w2)),(Red (r1+r2)),(Blue (blu1+blu2)),(Green (g1+g2)),(Black (bla1+bla2)))
   | _ -> raise RI_Broken
 
 let bet t1 t2 = 

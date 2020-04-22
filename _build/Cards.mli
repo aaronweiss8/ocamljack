@@ -1,8 +1,11 @@
+
 (** Represents the color of a card*)
 type color = | Red | Black
 
 (** Represents the suit of the card*)
 type suit = | Heart  | Spade | Diamond | Club
+
+exception Card_not_in_Deck
 
 (** Represents the card rank*)
 type rank = 
@@ -35,5 +38,5 @@ val transfer_card: (deck*deck) -> card -> (deck*deck)
 (** Combines decks into one for the game if game is played with several decks*)
 val combine_decks: deck list -> deck
 
-(** Adds all the user hands back to the deck*)
-val replace_cards: card list list -> deck -> deck
+(**[order_hand d] is a sorted deck*)
+val order_hand: deck -> deck

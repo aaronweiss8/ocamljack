@@ -16,14 +16,14 @@ type card = {rep: (suit * color * rank)}
 
 type deck = card list
 
- (**[compare_card_shuffle t1 t2] retuns 1 if t1 is greater, 0 if they are equal, and -1
-  if t2 is greater  *)
+(**[compare_card_shuffle t1 t2] retuns 1 if t1 is greater, 0 if they are equal, and -1
+   if t2 is greater  *)
 let compare_card_shuffle t1 t2 = 
-    match (t1,t2) with
-    |((c1,r1),(c2,r2)) -> if r1 > r2 then 1 else if r1 = r2 then 0 else -1
+  match (t1,t2) with
+  |((c1,r1),(c2,r2)) -> if r1 > r2 then 1 else if r1 = r2 then 0 else -1
 
 (** [compare c1 c2] returns 1 if the numeric value of c1 is greater than c2,
-0 if they are equal, and -1 if c2 is greater *)
+    0 if they are equal, and -1 if c2 is greater *)
 let compare c1 c2 =
   match (c1,c2) with
   |({rep = (c1s,c1c,c1r)},{rep = (c2s,c2c,c2r)}) -> 
@@ -54,9 +54,6 @@ let compare c1 c2 =
     |(Ace, Queen) -> 1
     |(Ace, King) -> 1
 
-
-
-
 let get_standard_deck = 
   let values = 
     [(Num 2);(Num 3);(Num 4);(Num 5);(Num 6);(Num 7);(Num 8);(Num 9);
@@ -68,7 +65,7 @@ let get_standard_deck =
                     (Diamond,Red,h);(Club,Black,h)] in 
       make_standard_dec t (to_add@accum)
     | _ -> accum in
-  make_standard_dec values []
+  [] |> make_standard_dec values |> List.map (fun x -> {rep=x})
 
 let rec shuffle deck = 
   deck |> List.map (fun x -> (x,Random.int 52)) |> List.sort compare_card_shuffle |>
@@ -76,7 +73,7 @@ let rec shuffle deck =
 
 let deal_one = function
   | [] -> None 
-  | h::t -> Some (h,t)
+  | h::t -> Some (t,h)
 
 let transfer_card ((d1,d2): deck * deck) (card: card) =
   if List.mem card d1 then
@@ -86,7 +83,10 @@ let transfer_card ((d1,d2): deck * deck) (card: card) =
   else raise Card_not_in_Deck
 
 let combine_decks (dl: deck list) =
-  List.fold_left (fun x a -> x@a) dl []
+  let deck = List.fold_left (fun x a -> x@a) dl [] in
+  match deck with
+  | h::[] -> h
+  | _ -> failwith "Error"
 
 let order_hand (d: deck) = 
   List.sort compare d
