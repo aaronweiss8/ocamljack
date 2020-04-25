@@ -33,4 +33,4 @@ name, amount of chips, and empty hand, an empty bet, and data for whether  *)
 val new_player : string -> Chip.t -> Cards.deck -> Chip.t -> bool -> t
 
 (* [update_hand t new_hand] retuns a player with an updated hand *)
-val update_hand :  t -> Cards.deck -> t
+val update_hand :  t -> Cards.deck list -> t
