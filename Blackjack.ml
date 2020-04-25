@@ -32,13 +32,15 @@ module Classic : Mode = struct
   type player = Player.t
   type chip = Chip.t
   type deck = Cards.card list
-  type t = {name:string;round:int;
-            hands:(player * hand) list;
-            current_player:int;
-            deck:deck}
 
-  let current_player t = t.current_player 
-                         |> List.nth (t.hands |> List.split |> fst)
+  (** RI: Specifically for hands, the head of the list is the current player *)
+  type t = {name:string;
+            round:int;
+            hands:(player * hand) list;
+            leftMostPlayer: string;
+            deck:deck;}
+
+  let current_player t = t.hands |> List.hd |> fst
   let get_deck t = t.deck
   let hit t = failwith "Unimplemented"
   (*
@@ -56,7 +58,7 @@ module Classic : Mode = struct
                        round=0;
                        hands=[];
                        current_player=0;
-                       deck=Cards.get_standard_deck}
+                       deck=Cards.get_standard_deck} 
 
   (** Helper update functions *)
   let next_player t =

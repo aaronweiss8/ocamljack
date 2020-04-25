@@ -11,8 +11,8 @@ module StandardBlackjack = Blackjack.CreateGame(Classic)
 let newgame = StandardBlackjack.new_game "New Game"
 
 let blackjack_tests = "Blackjack tests" >::: [
-    "newgame" >:: (fun _-> assert_equal 
-                      "[New Game, 0, 0]" (StandardBlackjack.get_info newgame))
+    (** "newgame" >:: (fun _-> assert_equal 
+                      "[New Game, 0, 0]" (StandardBlackjack.get_info newgame))*)
 
 
   ]
