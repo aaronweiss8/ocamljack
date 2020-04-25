@@ -1,12 +1,12 @@
 ### Starting build.
 # Target: Cards.mli.depends, tags: { package(oUnit), extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Cards.mli > Cards.mli.depends
+ocamlfind ocamldep -package oUnit -modules Cards.mli > Cards.mli.depends # cached
 # Target: Cards.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Cards.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Cards.cmi Cards.mli
+ocamlfind ocamlc -c -package oUnit -o Cards.cmi Cards.mli # cached
 # Target: Cards.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Cards.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Cards.ml > Cards.ml.depends # cached
 # Target: Cards.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Cards.cmo, file:Cards.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Cards.cmo Cards.ml
+ocamlfind ocamlc -c -package oUnit -o Cards.cmo Cards.ml # cached
 # Target: Chip.mli.depends, tags: { package(oUnit), extension:mli, file:Chip.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Chip.mli > Chip.mli.depends # cached
 # Target: Chip.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Chip.mli, interf, ocaml, quiet, traverse }
@@ -28,15 +28,15 @@ ocamlfind ocamldep -package oUnit -modules Blackjack.mli > Blackjack.mli.depends
 # Target: Blackjack.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -o Blackjack.cmi Blackjack.mli # cached
 # Target: Blackjack.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
-+ ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
-File "Blackjack.ml", line 92, characters 2-5:
-92 |   let card_value = function
-       ^^^
-Error: Syntax error: 'end' expected
-File "Blackjack.ml", line 29, characters 17-23:
-29 | module Classic = struct
-                      ^^^^^^
-  This 'struct' might be unmatched
-Command exited with code 2.
-# Compilation unsuccessful.
+ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends # cached
+# Target: Player.mli.depends, tags: { package(oUnit), extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends # cached
+# Target: Player.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli # cached
+# Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml # cached
+# Target: Player.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Player.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Player.ml > Player.ml.depends
+# Target: Player.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Player.cmo, file:Player.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Player.cmo Player.ml
+# Compilation successful.
