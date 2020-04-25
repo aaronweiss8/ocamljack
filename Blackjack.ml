@@ -1,5 +1,6 @@
 open Game
 open Cards
+open Player
 
 module type Mode = sig
   type player
@@ -9,10 +10,8 @@ module type Mode = sig
   (** val deal :  t -> t *)
   (** val hit : t -> player -> deck -> t
       val is_blackjack : t -> bool
-      (** 
       val split : t -> t
       val insurance : t -> player -> t
-   *)
       val stand : t -> player -> t
       val mode : string *)
   val rep_ok : t -> bool
@@ -27,44 +26,68 @@ module type Mode = sig
   val get_info : t -> string
 end
 
-module Classic : Mode = struct
-  type hand = Cards.card list option
+module Classic = struct
   type player = Player.t
   type chip = Chip.t
-  type deck = Cards.card list
+  type deck = Cards.deck
 
   (** RI: Specifically for hands, the head of the list is the current player *)
-  type t = {name:string;
-            round:int;
-            hands:(player * hand) list;
-            leftMostPlayer: string;
-            deck:deck;}
+  type t = {round:int;
+            players: player list;
+            leftMostPlayer: player;
+            deck:deck;
+            dealer:player}
 
-  let current_player t = t.hands |> List.hd |> fst
+  let current_player t = t.players |> List.hd
+
   let get_deck t = t.deck
-  let hit t = failwith "Unimplemented"
-  (*
-    current_player t|> y
-     t.hands |> List.map (fun (x,y) -> 
-        if (x=player) then (x, player::hand)) *)
 
-  let get_info t = "[" ^ t.name ^ ", " ^
-                   (string_of_int t.round) ^ ", " ^ 
-                   (string_of_int t.current_player) ^ "]"
+  let go_next_player game =
+    match game.players with
+    |p::t -> let new_players = t@[p] in 
+      if p = game.leftMostPlayer then
+      {round = (game.round + 1);
+      players = new_players;
+      leftMostPlayer = game.leftMostPlayer;
+      deck = game.deck;
+      dealer=game.dealer
+      }
+      else
+      {round = (game.round);
+      players = new_players;
+      leftMostPlayer = game.leftMostPlayer;
+      deck = game.deck;
+      dealer=game.dealer
+      }
+    |[] -> failwith "no players" 
 
+  let hit game hand_idx = 
+    let deck = get_deck game in
+    match deck with
+    | h::r -> (let to_deal = h in
+      match game.players with
+          |p::b -> let (new_d,new_h) = Cards.transfer_card (deck, List.nth hand_idx (Player.get_hand p)) to_deal in
+            {round = game.round; 
+            players = p::b;
+            leftMostPlayer = game.leftMostPlayer;
+            deck = new_d;
+            dealer=game.dealer}
+          | [] -> failwith "No players")
+    | [] -> failwith "Dealer needs to reset cards"
+
+  let get_info t = "[" ^ "Name : " ^ t.name ^ ", " ^
+                   "Round: " ^ (string_of_int t.round) ^ ", " ^ 
+                   "Current player: " ^ (current_player t |> Player.name) ^
+                   "Last player: " ^ t.leftMostPlayer ^ "]" ^
+                   
   (** Change new_game to include initialization of new games
       with decks with varying amounts of cards *)
-  let new_game name = {name=name;
+  let new_game name playername = {name=name;
                        round=0;
-                       hands=[];
-                       current_player=0;
+                       players=[];
+                       leftMostPlayer = (Player.new_player playername Chip.empty 
+                       Cards.empty Chip.empty false);
                        deck=Cards.get_standard_deck} 
-
-  (** Helper update functions *)
-  let next_player t =
-    match t.current_player with
-    | p when p = List.length t.hands -> 0
-    | p -> p + 1
 
   (** Value functions *)
   let card_value = function
@@ -88,6 +111,14 @@ module Classic : Mode = struct
     | 21 -> true
     | _ -> false
 
+  let get_winners t (ps:player list) =
+    let rec check_player p dealer_hand =
+      if 
+
+  (* let split t player = 
+    let newhands = Player.get_hand player |> 
+    *)
+
   let next_round t= 
     match t.current_player with
     | p when p = List.length t.hands -> t.round + 1
@@ -95,8 +126,7 @@ module Classic : Mode = struct
 
   let stand t player = {name=t.name;
                         round=next_round t;
-                        hands=[];
-                        current_player=next_player t;
+                        leftMostPlayer = t.leftMostPlayer;
                         deck=Cards.get_standard_deck}
   let mode = "Classic"
   let rules t = failwith "Unimplemented"
@@ -116,7 +146,7 @@ module Classic : Mode = struct
     {name=t.name;
      round=t.round;
      hands=newplayers;
-     current_player=t.current_player;
+     leftMostPlayer=t.leftMostPlayer;
      deck=t.deck}
 
   let score player = Chip.get_value (Player.chips player)

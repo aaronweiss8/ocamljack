@@ -41,5 +41,8 @@ val combine_decks: deck list -> deck
 (**[order_hand d] is a sorted deck*)
 val order_hand: deck -> deck
 
-(**[get_rank c] returns the rank of card c *)
+(** [get_rank c] returns the rank of card c *)
 val get_rank: card -> rank
+
+(** [empty] returns an empty deck*)
+val empty : deck

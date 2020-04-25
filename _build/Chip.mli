@@ -20,6 +20,9 @@ exception Not_Within
    if RI is okay and a failure mesage otherwise.*)
 val repo_ok: t -> t
 
+(** empty chip representation *)
+val empty : t
+
 (**[get_value t] is the integer representation of the value of the chips *)
 val get_value: t -> int
 

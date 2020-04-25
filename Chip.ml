@@ -17,6 +17,8 @@ let repo_ok = function
   |((White w),(Red r),(Blue blu),(Green g),(Black bla)) as t -> t
   | _ -> raise RI_Broken;;
 
+let empty = ((White 0),(Red 0),(Blue 0),(Green 0),(Black 0))
+
 let get_value = function
   |((White w),(Red r),(Blue blu),(Green g),(Black bla)) -> 
     w + r*5 + blu*10 + g*25 + bla*100

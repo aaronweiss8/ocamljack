@@ -95,3 +95,5 @@ let get_rank c =
   match c.rep with
   | (_,_,Num x) -> Num x
   | (_,_,y) -> y
+
+let empty : deck = []
