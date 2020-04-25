@@ -95,11 +95,7 @@ let transfer_card d1 d2 (card: card) =
     (new_d1,new_d2)
   else raise Card_not_in_Deck
 
-let combine_decks (dl: deck list) =
-  let deck = List.fold_left (fun x a -> x@a) dl [] in
-  match deck with
-  | h::[] -> h
-  | _ -> failwith "Error"
+let combine_decks (dl: deck list) = List.flatten dl
 
 let order_hand (d: deck) = 
   List.sort compare d

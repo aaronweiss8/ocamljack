@@ -33,10 +33,10 @@ module Classic = struct
 
   (** RI: Specifically for hands, the head of the list is the current player *)
   type t = {round:int;
+            min_bet:int;
             players: player list;
             leftMostPlayer: player;
-            deck:deck;
-            dealer:player}
+            deck:deck;}
 
   let current_player t = t.players |> List.hd
 
@@ -47,41 +47,28 @@ module Classic = struct
     |p::t -> let new_players = t@[p] in 
       if p = game.leftMostPlayer then
       {round = (game.round + 1);
+      min_bet = game.min_bet;
       players = new_players;
       leftMostPlayer = game.leftMostPlayer;
-      deck = game.deck;
-      dealer=game.dealer
-      }
+      deck = game.deck;}
       else
       {round = (game.round);
+      min_bet = game.min_bet;
       players = new_players;
       leftMostPlayer = game.leftMostPlayer;
-      deck = game.deck;
-      dealer=game.dealer
-      }
+      deck = game.deck;}
     |[] -> failwith "no players" 
 
   let hit game ind = 
     let (newdeck, c) = Cards.deal_one game.deck in
     match game.players with
     | current::t -> 
-            {round = game.round; 
+            {round = game.round;
+            min_bet = game.min_bet;
             players = (Player.add_to_hand current c ind)::t;
             leftMostPlayer = game.leftMostPlayer;
-            deck = newdeck;
-            dealer=game.dealer}
+            deck = newdeck;}
     | [] -> failwith "No players"
-    (* match deck with
-    | h::r -> (let to_deal = h in
-      match game.players with
-          |p::b -> let (new_d,new_h) = Cards.transfer_card (deck, List.nth hand_idx (Player.get_hand p)) to_deal in
-            {round = game.round; 
-            players = p::b;
-            leftMostPlayer = game.leftMostPlayer;
-            deck = new_d;
-            dealer=game.dealer}
-          | [] -> failwith "No players")
-    | [] -> failwith "Dealer needs to reset cards" *)
 
   let get_info t = "[" ^ "Name : Blackjack, " ^
                    "Round: " ^ (string_of_int t.round) ^ ", " ^ 
@@ -90,14 +77,17 @@ module Classic = struct
                    
   (** Change new_game to include initialization of new games
       with decks with varying amounts of cards *)
-  let new_game playername = {
-                       round=0;
-                       players=[];
-                       leftMostPlayer = (Player.new_player playername Chip.empty 
-                       Cards.empty Chip.empty false);
-                       deck=Cards.get_standard_deck;
-                       dealer = (Player.new_player "Dealer" Chip.empty 
-                       Cards.empty Chip.empty true)} 
+  let new_game playername starting_chips mb num_decks = 
+
+    let rec starting_deck num accum= 
+      if num = 0 then accum |> Cards.combine_decks |> Cards.shuffle 
+      else starting_deck (num -1) (Cards.get_standard_deck::accum) in
+    {round=0;
+    min_bet = mb;
+    players=[];
+    leftMostPlayer = (Player.new_player playername starting_chips 
+    Cards.empty [Chip.empty] false);
+    deck= starting_deck num_decks []} 
 
   (** Value functions *)
   let card_value hand = function
