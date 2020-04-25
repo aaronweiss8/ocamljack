@@ -30,13 +30,16 @@ ocamlfind ocamlc -c -package oUnit -o Blackjack.cmi Blackjack.mli # cached
 # Target: Blackjack.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends # cached
 # Target: Player.mli.depends, tags: { package(oUnit), extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends # cached
+ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends
 # Target: Player.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli # cached
+ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli
 # Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml # cached
-# Target: Player.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Player.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Player.ml > Player.ml.depends
-# Target: Player.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Player.cmo, file:Player.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Player.cmo Player.ml
-# Compilation successful.
+ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
++ ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
+File "Blackjack.ml", line 96, characters 35-45:
+96 |                        Cards.empty Chip.empty false);
+                                        ^^^^^^^^^^
+Error: This expression has type Chip.t but an expression was expected of type
+         Chip.t list
+Command exited with code 2.
+# Compilation unsuccessful.

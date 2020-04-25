@@ -74,6 +74,15 @@ let rec shuffle deck =
 let add_to_deck c deck =
   c::deck
 
+let remove_single_instance c d =
+  let rec rsi_aux card deck found accum = 
+    match deck with
+    |h::t -> if found then rsi_aux card t true (h::accum)
+      else if (compare h card) = 0 then rsi_aux card t true accum
+      else rsi_aux card t false (h::accum)
+    |[] -> List.rev accum in
+  rsi_aux c d false []
+
 let deal_one deck =
   match deck with
   | [] -> failwith "Need to reset deck"
@@ -81,7 +90,7 @@ let deal_one deck =
 
 let transfer_card d1 d2 (card: card) =
   if List.mem card d1 then
-    let (new_d1: deck) = List.filter (fun a -> a <> card) d1 in
+    let (new_d1: deck) = remove_single_instance card d1 in
     let (new_d2: deck) = card::d2 in 
     (new_d1,new_d2)
   else raise Card_not_in_Deck

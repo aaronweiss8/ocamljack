@@ -56,13 +56,15 @@ let update_hand t new_hand =
   }
 
 let add_to_hand t c ind =
-  let rec choose_hand d c ind =
+
+  let rec choose_hand d c ind accum =
     match d with
     | [] -> failwith "hand does not exist"
-    | h::t -> if ind = 0 then (c::h)::t else (choose_hand t c (ind - 1)) in
+    | h::r -> if ind = 0 then (List.rev accum)@[(Cards.add_to_deck c h)]@r 
+      else (choose_hand r c (ind-1) (h::accum)) in
   {name = t.name;
   chips = t.chips;
-  hand = choose_hand t.hand c ind;
+  hand = choose_hand t.hand c ind [];
   bet = t.bet;
   bot = t.bot;
   }

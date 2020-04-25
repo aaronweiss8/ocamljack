@@ -6,7 +6,7 @@ module type Mode = sig
   type player
   type t 
   type deck
-  type chip
+  type chip 
   (** val deal :  t -> t *)
   (** val hit : t -> player -> deck -> t
       val is_blackjack : t -> bool

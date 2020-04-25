@@ -6,7 +6,7 @@ module type Mode = sig
   type player
   type t 
   type deck
-  type chip
+  type chip 
   (** val deal :  t -> t *)
   (** val hit : t -> player -> deck -> t
       val is_blackjack : t -> bool
@@ -64,7 +64,8 @@ module Classic = struct
   let hit game ind = 
     let (newdeck, c) = Cards.deal_one game.deck in
     match game.players with
-    | current::t -> {round = game.round; 
+    | current::t -> 
+            {round = game.round; 
             players = (Player.add_to_hand current c ind)::t;
             leftMostPlayer = game.leftMostPlayer;
             deck = newdeck;
