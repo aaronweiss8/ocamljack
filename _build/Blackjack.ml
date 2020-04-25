@@ -57,68 +57,105 @@ module Classic = struct
       players = new_players;
       leftMostPlayer = game.leftMostPlayer;
       deck = game.deck;
-      dealer=gam
+      dealer=game.dealer
       }
     |[] -> failwith "no players" 
 
-  let hit game = 
-    let deck = get_deck game in
-    match deck with
+  let hit game ind = 
+    let (newdeck, c) = Cards.deal_one game.deck in
+    match game.players with
+    | current::t -> {round = game.round; 
+            players = (Player.add_to_hand current c ind)::t;
+            leftMostPlayer = game.leftMostPlayer;
+            deck = newdeck;
+            dealer=game.dealer}
+    | [] -> failwith "No players"
+    (* match deck with
     | h::r -> (let to_deal = h in
       match game.players with
-          |p::b -> let (new_d,new_h) = Cards.transfer_card (deck, Player.get_hand p) to_deal in
-            {round = t.round; 
+          |p::b -> let (new_d,new_h) = Cards.transfer_card (deck, List.nth hand_idx (Player.get_hand p)) to_deal in
+            {round = game.round; 
             players = p::b;
-            leftMostPlayer = t.leftMostPlayer;
-            deck = new_d}
+            leftMostPlayer = game.leftMostPlayer;
+            deck = new_d;
+            dealer=game.dealer}
           | [] -> failwith "No players")
-    | [] -> failwith "Dealer needs to reset cards"
+    | [] -> failwith "Dealer needs to reset cards" *)
 
-  let get_info t = "[" ^ "Name : " ^ t.name ^ ", " ^
+  let get_info t = "[" ^ "Name : Blackjack, " ^
                    "Round: " ^ (string_of_int t.round) ^ ", " ^ 
                    "Current player: " ^ (current_player t |> Player.name) ^
-                   "Last player: " ^ t.leftMostPlayer ^ "]" ^
+                   "First player: " ^ Player.name t.leftMostPlayer
                    
   (** Change new_game to include initialization of new games
       with decks with varying amounts of cards *)
-  let new_game name playername = {name=name;
+  let new_game playername = {
                        round=0;
                        players=[];
                        leftMostPlayer = (Player.new_player playername Chip.empty 
                        Cards.empty Chip.empty false);
-                       deck=Cards.get_standard_deck} 
+                       deck=Cards.get_standard_deck;
+                       dealer = (Player.new_player "Dealer" Chip.empty 
+                       Cards.empty Chip.empty true)} 
 
   (** Value functions *)
-  let card_value = function
+  let card_value hand = function
     | Num x -> x
     | Ace -> 1
     | _ -> 10
 
-  let hand_value t player = 
-    let handlist = t.hands |> 
-                   List.assoc player |> 
-                   Option.get |> 
-                   List.map Cards.get_rank |> 
-                   List.map card_value in
-    List.fold_right (fun x y -> x + y) handlist 0
+  let hand_value phand = 
+    let handlist = List.map Cards.get_rank phand in
+    let rec sumaces acc num =
+      if num = 0 then acc else
+      if num = 1 && acc + 11 <= 21 then acc + 11 else
+      if 11 + (num-1) + acc <= 21 then acc + 11 + num - 1 else
+      acc + num in
+    let rec sumhand (hand:Cards.rank list) acc num_aces =
+      match hand with
+      | [] -> if num_aces = 0 then acc else (sumaces acc num_aces)
+      | h::t -> match h with
+        | Num x -> (sumhand t (acc + x) num_aces)
+        | Ace -> (sumhand t acc (num_aces + 1))
+        | _ -> (sumhand t (acc + 10) num_aces) in
+    sumhand handlist 0 0
 
-  (**[is_blackjack t] returns true if the current player
-      has reached blackjack, and false if the current player
-      has not *)
-  let is_blackjack t player = 
-    match hand_value t player with
-    | 21 -> true
-    | _ -> false
+  (**[is_blackjack player] returns true if the current player
+      has a blackjack, and false if the current player
+      has not 
+      currently checks if either of a split hand are blackjack*)
+  let is_blackjack player = 
+    List.length (Player.get_hand player) = 1 &&
+    List.length (List.hd (Player.get_hand player)) = 2 &&
+    hand_value (List.hd (Player.get_hand player)) = 21
 
-  let get_winners t (ps:player list) =
-    let rec check_player
+  (* [get_winners t] returns a list containing a list of players who 
+      blackjacked, won against the dealer, and a list of players who
+      pushed vs the dealer, then a list of players who lost*)
+  let get_results t =
+  (* someone should change acc from a list of lists to a tuple of lists *)
+    let rec make_win_and_push ps d acc =
+      match ps with
+      | [] -> acc
+      | h::t -> if is_blackjack h then [h::(List.nth acc 0);
+      (List.nth acc 1);(List.nth acc 2);(List.nth acc 3)] else
+      if (List.exists (fun x -> x) (List.map (fun h -> (d > 21 && hand_value h <= 21) || hand_value h > d && hand_value h <= 21) (Player.get_hand h))) then
+      [(List.nth acc 0);h::(List.nth acc 1);(List.nth acc 2);(List.nth acc 3)] else
+      if (List.exists (fun x -> x) (List.map (fun h -> hand_value h = d && d <= 21) (Player.get_hand h))) then
+      [(List.nth acc 0);(List.nth acc 1);h::(List.nth acc 2);(List.nth acc 3)] else
+      [(List.nth acc 0);(List.nth acc 1);(List.nth acc 2);h::(List.nth acc 3)] in
+    if is_blackjack t.dealer then
+      let pushed = List.fold_left (fun acc x -> if is_blackjack x then x::acc else acc)
+      [] t.players in
+      [[];[];pushed; List.filter (fun x -> not(List.mem x pushed)) t.players] else
+    let d = hand_value (List.hd (Player.get_hand t.dealer)) in
+    make_win_and_push t.players d [[];[];[];[]]
+    
 
-  let split t player = 
-    let new_player = {name=t.name;
-                        round=next_round t;
-                        leftMostPlayer = t.leftMostPlayer;
-                        deck=Cards.get_standard_deck}
-
+  (* let split t player = 
+    let newhands = Player.get_hand player |> 
+    *)
+(* 
   let next_round t= 
     match t.current_player with
     | p when p = List.length t.hands -> t.round + 1
@@ -147,12 +184,27 @@ module Classic = struct
      round=t.round;
      hands=newplayers;
      leftMostPlayer=t.leftMostPlayer;
-     deck=t.deck}
+     deck=t.deck} *)
 
   let score player = Chip.get_value (Player.chips player)
+
+  let name = failwith "unimplemented"
+
+  let player_total t = List.length t.players
+
+  let players t = List.fold_left (fun acc x -> Player.name x ^ " " ^ acc)
+                  "" t.players
+
+  let save_name = failwith "unimplemented"
+
+  let rules = failwith "unimplemented"
+
+  let rep_ok = failwith "unimplemented"
+
+  let bet = failwith "unimplemented"
 end
 
-module Switch : Mode = struct
+(* module Switch : Mode = struct
   include Classic
   let mode = "Switch"
 end
@@ -160,7 +212,7 @@ end
 module European : Mode = struct
   include Classic
   let mode = "European"
-end
+end *)
 
 module CreateGame = 
   functor(M:Mode)->

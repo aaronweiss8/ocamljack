@@ -71,11 +71,15 @@ let rec shuffle deck =
   deck |> List.map (fun x -> (x,Random.int 52)) |> List.sort compare_card_shuffle |>
   List.map (fun (x,y) -> x)
 
-let deal_one = function
-  | [] -> None 
-  | h::t -> Some (t,h)
+let add_to_deck c deck =
+  c::deck
 
-let transfer_card ((d1,d2): deck * deck) (card: card) =
+let deal_one deck =
+  match deck with
+  | [] -> failwith "Need to reset deck"
+  | h::t -> (t,h)
+
+let transfer_card d1 d2 (card: card) =
   if List.mem card d1 then
     let (new_d1: deck) = List.filter (fun a -> a <> card) d1 in
     let (new_d2: deck) = card::d2 in 

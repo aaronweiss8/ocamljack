@@ -42,7 +42,7 @@ let collect_bet t =
 let new_player name chips hand bet bot = 
 {name=name;
 chips=chips;
-hand=hand;
+hand=[hand];
 bet=bet;
 bot=bot;
 }
@@ -51,6 +51,18 @@ let update_hand t new_hand =
   {name = t.name;
   chips = t.chips;
   hand = new_hand;
+  bet = t.bet;
+  bot = t.bot;
+  }
+
+let add_to_hand t c ind =
+  let rec choose_hand d c ind =
+    match d with
+    | [] -> failwith "hand does not exist"
+    | h::t -> if ind = 0 then (c::h)::t else (choose_hand t c (ind - 1)) in
+  {name = t.name;
+  chips = t.chips;
+  hand = choose_hand t.hand c ind;
   bet = t.bet;
   bot = t.bot;
   }

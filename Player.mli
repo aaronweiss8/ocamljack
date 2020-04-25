@@ -5,7 +5,7 @@ type t
 val name : t -> string
 
 (* [get_hand t] is the hand of player [t] *)
-val get_hand : t -> Cards.deck
+val get_hand : t -> Cards.deck list
 
 (* [chips t] is a list of the chips that player [t] currently has. *)
 val chips : t -> Chip.t 
@@ -34,3 +34,5 @@ val new_player : string -> Chip.t -> Cards.deck -> Chip.t -> bool -> t
 
 (* [update_hand t new_hand] retuns a player with an updated hand *)
 val update_hand :  t -> Cards.deck list -> t
+
+val add_to_hand : t -> Cards.card -> int -> t
