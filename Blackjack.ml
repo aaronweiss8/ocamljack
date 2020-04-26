@@ -219,15 +219,15 @@ module Classic = struct
      deck = game.deck;
      dealer = game.dealer}
 
-  (*[check_hands game] returns a game list with players either winning or
-    loosing their bets
-    let check_hands game =
-    let rec ch_hands_aux h_lst accum = 
+  (* [check_hands game] returns a game list with players either winning or
+     loosing their bets *?
+     let check_hands game =
+     let rec ch_hands_aux h_lst accum = 
       match h_lst with
       |h::t -> ch_hands_aux t ((did_bust h)::accum)
       |[] -> List.rev accum in
 
-    let rec ch_aux players accum =
+     let rec ch_aux players accum =
       match players with
       |h::t -> let bust_lst = ch_hands_aux (Player.get_hand h) [] in
 
@@ -235,7 +235,7 @@ module Classic = struct
 
   let go game (cmd:command) = 
     match cmd with
-    | Command (Hit ind) -> print_endline "Terrible"; hit game ind
+    | Command (Hit ind) -> hit game ind
     | Command (Split ind) -> split game ind
     | Command (Stand) -> go_next_player game
     | Empty | Malformed-> print_endline "Invalid command!"; game

@@ -9,6 +9,8 @@ open Player
 module StandardBlackjack = Blackjack.CreateGame(Classic)
 
 let newgame = StandardBlackjack.new_game "player" Chip.empty 0 1
+
+(** Example chips *)
 let test_chip = Chip.create_chips 1 2 5 6 2
 let test_chip_2 = Chip.create_chips 5 6 10 2 4
 let added_chips = Chip.create_chips 6 8 15 8 6
@@ -16,6 +18,13 @@ let empty_chip = Chip.empty
 
 let standard_deck = get_standard_deck
 
+(** Example cards and decks *)
+let empty_deck = Cards.empty
+let black_ace_hearts = Cards.make_card Heart Black Ace
+let red_11_hearts = Cards.make_card Heart Red (Num 11) 
+let add_two = empty_deck 
+              |> Cards.add_to_deck black_ace_hearts 
+              |> Cards.add_to_deck red_11_hearts
 
 let blackjack_tests = "Blackjack tests" >::: [
     "newgame" >:: (fun _-> assert_equal 
@@ -24,8 +33,8 @@ let blackjack_tests = "Blackjack tests" >::: [
   ]
 
 let chip_tests = "Chip tests" >:::[
-    "add" >:: (fun _-> assert_equal test_chip 
-                  (add test_chip empty_chip));
+    "add, empty test" >:: (fun _-> assert_equal test_chip 
+                              (add test_chip empty_chip));
     "add test 2" >:: (fun _-> assert_equal added_chips 
                          (add test_chip test_chip_2));
     "bet" >:: (fun _->  assert_equal test_chip 
@@ -42,6 +51,8 @@ let deck_tests = "Deck tests" >::: [
         assert_equal standard_deck (standard_deck 
                                     |> shuffle 
                                     |> List.sort Cards.compare));
+
+
   ]
 
 let game_tests = "Game tests" >::: [

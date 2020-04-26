@@ -35,7 +35,7 @@ val shuffle: deck -> deck
 val add_to_deck : card -> deck -> deck
 
 (* [remove_single_instance c d] returns 
-  [d] with one instance of [c] removed *)
+   [d] with one instance of [c] removed *)
 val remove_single_instance : card -> deck -> deck
 
 (** Removes the top card from the deck and returns it*)
@@ -57,3 +57,6 @@ val get_rank: card -> rank
 
 (** [empty] returns an empty deck*)
 val empty : deck
+
+(** [make_card suit color rank] returns a new card. FOR TESTING ONLY*)
+val make_card : suit -> color -> rank -> card

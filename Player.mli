@@ -23,14 +23,17 @@ val bet_value : t -> int -> int
 val add_chips : t -> Chip.t -> t
 
 (* [bet_chips bet idx t] moves chips from a users chip stash 
-to their bet at idx *)
+   to their bet at idx *)
 val bet_chips : Chip.t -> int -> t -> t
 
 (* [collect_bets t] represents a player [t] that collects their bet chips *)
 val collect_bets : t -> t
 
+(*[lose_bet t idx] represents a player [t] that looses their bet at idx*)
+val lose_bet : t -> int -> t
+
 (* [new_player name chips hand bet bot] creates a new player with a designated
-name, amount of chips, and empty hand, an empty bet, and data for whether  *)
+   name, amount of chips, and empty hand, an empty bet, and data for whether  *)
 val new_player : string -> Chip.t -> Cards.deck -> Chip.t list -> bool -> t
 
 (* [update_hand new_hand t] retuns a player with an updated hand *)

@@ -103,4 +103,7 @@ let get_rank c =
   | (_,_,Num x) -> Num x
   | (_,_,y) -> y
 
+let make_card suit color rank = 
+  {rep = (suit,color,rank)}
+
 let empty : deck = []
