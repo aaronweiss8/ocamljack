@@ -192,11 +192,24 @@ let blackjack_tests = "Blackjack tests" >::: [
 
     "test go to next player" >:: (fun _ -> 
       assert_equal player2 (Blackjack.current_player (Blackjack.go_next_player game1)));
+
+    "test hit" >:: (fun _-> 
+    assert_equal (hit game1 0 |> current_player |> Player.get_hand) 
+    ((Blackjack.get_deck game1 |> List.hd)::(game1 |> current_player |> Player.get_hand));
+
+"test card_value" >:: (fun _-> assert_equal 5 (make_card Heart Red (Num 5)|> card_value));
+
+"test card_value 2" >:: (fun _-> assert_equal 10 (make_card Spade Black Jack) |> card_value));
+
+  "test double_down" >:: (fun _-> ());
+
+  "test hit" >:: (fun _-> ());
+
+  "test is_blackjack" >::(fun _-> 
+  assert_equal false (game1 |> Blackjack.current_player |> Player.hand |> is_blackjack))
+
+  "test is_blackjackc true" >:: ()
   ]
-
-(* let game_tests = "Game tests" >::: [
-
-  ] *)
 
 let test_suite = [
   (* blackjack_tests; *)

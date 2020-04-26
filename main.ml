@@ -42,9 +42,6 @@ let start_game =
   print_endline (StandardBlackjack.get_info new_game);
   step (read_line ()) new_game 
 
-
-
-
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
   print_endline "Welcome to the casino!";
