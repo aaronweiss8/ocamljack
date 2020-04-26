@@ -1,3 +1,6 @@
+open Chip
+open Cards
+
 type t = {name:string;
           chips:Chip.t;
           hand:Cards.deck list;
@@ -10,7 +13,7 @@ let get_hand t = t.hand
 
 let chips t = t.chips
 
-let chips_value t = t.chips |> Chip.get_value
+let chips_value t = Chip.get_value t.chips
 
 let bet t = t.bet
 
@@ -19,7 +22,7 @@ let bet_value t idx = List.nth_opt t.bet idx |> function
   |None -> failwith "Bet doesn't exist"
 
 
-let add_chips t chip = 
+let add_chips chip t = 
   {name=t.name;
    chips=(Chip.add t.chips chip);
    hand=t.hand;
@@ -44,13 +47,13 @@ let bet_chips bet idx t =
 
 let collect_bets t = 
   {name = t.name;
-   chips = (List.fold_left (Chip.add) Chip.empty t.bet);
+   chips = (List.fold_left (Chip.add) t.chips t.bet);
    hand = t.hand;
    bet = [Chip.empty];
    bot = t.bot
   }
 
-let lose_bet t idx = 
+let lose_bet idx t = 
   let rec lb_aux bet_lst idx accum =
     match bet_lst with
     |h::r -> if idx = 0 then
@@ -66,7 +69,7 @@ let lose_bet t idx =
 let new_player name chips hand bet bot = 
   {name=name;
    chips=chips;
-   hand=[hand];
+   hand=hand;
    bet=bet;
    bot=bot;
   }
@@ -105,5 +108,21 @@ let add_bet t =
    chips = t.chips;
    hand = t.hand;
    bet = (t.bet@[Chip.empty]);
+   bot = t.bot;
+  }
+
+let simplify_chips steps t = 
+  {name = t.name;
+   chips = (Chip.simplify t.chips steps);
+   hand = t.hand;
+   bet = t.bet;
+   bot = t.bot;
+  }
+
+let break_chips steps t = 
+  {name = t.name;
+   chips = (Chip.break t.chips steps);
+   hand = t.hand;
+   bet = t.bet;
    bot = t.bot;
   }

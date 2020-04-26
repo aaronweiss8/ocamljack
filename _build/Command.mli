@@ -4,5 +4,9 @@ type action = Hit of int
             | DD of int 
             | Insurance of int 
             | Stand
-type command = Command of action | Malformed | Empty
+type command = Command of action
 val parse : string -> command
+
+exception Empty
+
+exception Malformed

@@ -1,46 +1,56 @@
 ### Starting build.
-# Target: Cards.mli.depends, tags: { package(oUnit), extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Cards.mli > Cards.mli.depends
-# Target: Cards.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Cards.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Cards.cmi Cards.mli
-# Target: Cards.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Cards.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Cards.ml > Cards.ml.depends
-# Target: Cards.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Cards.cmo, file:Cards.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Cards.cmo Cards.ml
-# Target: Chip.mli.depends, tags: { package(oUnit), extension:mli, file:Chip.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Chip.mli > Chip.mli.depends # cached
-# Target: Chip.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Chip.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Chip.cmi Chip.mli
-# Target: Chip.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Chip.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Chip.ml > Chip.ml.depends # cached
-# Target: Chip.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Chip.cmo, file:Chip.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Chip.cmo Chip.ml
-# Target: Game.mli.depends, tags: { package(oUnit), extension:mli, file:Game.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Game.mli > Game.mli.depends # cached
-# Target: Command.mli.depends, tags: { package(oUnit), extension:mli, file:Command.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Command.mli > Command.mli.depends # cached
-# Target: Command.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Command.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Command.cmi Command.mli
-# Target: Game.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Game.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Game.cmi Game.mli
-# Target: Game.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Game.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Game.ml > Game.ml.depends # cached
-# Target: Game.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Game.cmo, file:Game.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Game.cmo Game.ml
-# Target: Blackjack.mli.depends, tags: { package(oUnit), extension:mli, file:Blackjack.mli, ocaml, ocamldep, quiet, traverse }
+# Target: test.ml.depends, tags: { package(oUnit), debug, extension:ml, file:test.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules test.ml > test.ml.depends # cached
+# Target: Blackjack.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Blackjack.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Blackjack.mli > Blackjack.mli.depends # cached
-# Target: Blackjack.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Blackjack.cmi Blackjack.mli
-# Target: Blackjack.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
-# Target: Player.mli.depends, tags: { package(oUnit), extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
+# Target: Cards.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Cards.mli > Cards.mli.depends # cached
+# Target: Chip.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Chip.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Chip.mli > Chip.mli.depends # cached
+# Target: Command.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Command.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Command.mli > Command.mli.depends # cached
+# Target: Game.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Game.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Game.mli > Game.mli.depends # cached
+# Target: Chip.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Chip.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Chip.cmi Chip.mli
+# Target: Command.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Command.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Command.cmi Command.mli
+# Target: Player.mli.depends, tags: { package(oUnit), debug, extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends # cached
-# Target: Player.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli
-# Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
-# Target: Player.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Player.ml, ocaml, ocamldep, quiet, traverse }
+# Target: Cards.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Cards.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Cards.cmi Cards.mli
+# Target: Game.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Game.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Game.cmi Game.mli
+# Target: Player.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Player.cmi Player.mli
+# Target: Blackjack.cmi, tags: { package(oUnit), byte, compile, debug, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Blackjack.cmi Blackjack.mli
+# Target: test.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:test.cmo, file:test.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o test.cmo test.ml
+# Target: Blackjack.ml.depends, tags: { package(oUnit), debug, extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends # cached
+# Target: Cards.ml.depends, tags: { package(oUnit), debug, extension:ml, file:Cards.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Cards.ml > Cards.ml.depends # cached
+# Target: Chip.ml.depends, tags: { package(oUnit), debug, extension:ml, file:Chip.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Chip.ml > Chip.ml.depends # cached
+# Target: Game.ml.depends, tags: { package(oUnit), debug, extension:ml, file:Game.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Game.ml > Game.ml.depends # cached
+# Target: Player.ml.depends, tags: { package(oUnit), debug, extension:ml, file:Player.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Player.ml > Player.ml.depends # cached
-# Target: Player.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Player.cmo, file:Player.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Player.cmo Player.ml
+# Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Blackjack.cmo Blackjack.ml
+# Target: Cards.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:Cards.cmo, file:Cards.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Cards.cmo Cards.ml
+# Target: Chip.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:Chip.cmo, file:Chip.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Chip.cmo Chip.ml
+# Target: Game.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:Game.cmo, file:Game.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Game.cmo Game.ml
+# Target: Player.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:Player.cmo, file:Player.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Player.cmo Player.ml
+# Target: Command.ml.depends, tags: { package(oUnit), debug, extension:ml, file:Command.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Command.ml > Command.ml.depends # cached
+# Target: Command.cmo, tags: { package(oUnit), byte, compile, debug, extension:cmo, extension:ml, file:Command.cmo, file:Command.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package oUnit -o Command.cmo Command.ml # cached
+# Target: test.byte, tags: { package(oUnit), byte, debug, dont_link_with, extension:byte, file:test.byte, link, ocaml, program, quiet, traverse }
+ocamlfind ocamlc -linkpkg -g -package oUnit Cards.cmo Chip.cmo Command.cmo Game.cmo Player.cmo Blackjack.cmo test.cmo -o test.byte
 # Compilation successful.

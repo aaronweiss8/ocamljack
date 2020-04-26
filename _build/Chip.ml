@@ -21,7 +21,7 @@ let empty = ((White 0),(Red 0),(Blue 0),(Green 0),(Black 0))
 
 let get_value = function
   |((White w),(Red r),(Blue blu),(Green g),(Black bla)) -> 
-    w + r*5 + blu*10 + g*25 + bla*100
+    (w + r*5 + blu*10 + g*25 + bla*100)
   |_ -> raise RI_Broken;;
 
 (**[single_step t] takes the lowest denominations available and converts them
@@ -36,7 +36,7 @@ let single_step_simplify = function
     else if r = 1 && blu >= 2
     then (((White (w)),(Red (r-1)),(Blue (blu-2)),(Green (g+1)),(Black bla)),true)
     else if g >= 4
-    then (((White (w)),(Red r),(Blue blu),(Green (g-2)),(Black (bla+1))),true)
+    then (((White (w)),(Red r),(Blue blu),(Green (g-4)),(Black (bla+1))),true)
     else (t,false)
   |_ -> raise RI_Broken
 
