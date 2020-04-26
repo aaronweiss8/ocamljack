@@ -21,6 +21,10 @@ type card
 (** The deck contains a specified amount of cards to start*)
 type deck = card list
 
+(** [compare c1 c2] returns 1 if the numeric value of c1 is greater than c2,
+    0 if they are equal, and -1 if c2 is greater *)
+val compare : card -> card -> int
+
 (** Returns one standard 52 card deck*)
 val get_standard_deck: deck
 

@@ -27,7 +27,7 @@ let add_chips t chip =
   bot=t.bot
   }
 
-let bet_chips t bet idx = 
+let bet_chips bet idx t = 
   let rec new_bet_lst lst idx accum =
     match lst with
     |h::r -> if idx = 0 then 
@@ -58,7 +58,7 @@ bet=bet;
 bot=bot;
 }
 
-let update_hand t new_hand = 
+let update_hand new_hand t = 
   {name = t.name;
   chips = t.chips;
   hand = new_hand;
@@ -66,7 +66,7 @@ let update_hand t new_hand =
   bot = t.bot;
   }
 
-let add_to_hand t c ind =
+let add_to_hand c ind t =
   let rec choose_hand d c ind accum =
     match d with
     | [] -> failwith "hand does not exist"
@@ -82,7 +82,15 @@ let add_to_hand t c ind =
 let add_hand t = 
   {name = t.name;
   chips = t.chips;
-  hand = t.hand@[Cards.empty];
+  hand = (t.hand@[Cards.empty]);
   bet = t.bet;
+  bot = t.bot;
+  }
+
+let add_bet t = 
+  {name = t.name;
+  chips = t.chips;
+  hand = t.hand;
+  bet = (t.bet@[Chip.empty]);
   bot = t.bot;
   }

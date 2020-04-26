@@ -22,8 +22,6 @@ let compare_card_shuffle t1 t2 =
   match (t1,t2) with
   |((c1,r1),(c2,r2)) -> if r1 > r2 then 1 else if r1 = r2 then 0 else -1
 
-(** [compare c1 c2] returns 1 if the numeric value of c1 is greater than c2,
-    0 if they are equal, and -1 if c2 is greater *)
 let compare c1 c2 =
   match (c1,c2) with
   |({rep = (c1s,c1c,c1r)},{rep = (c2s,c2c,c2r)}) -> 
@@ -67,7 +65,7 @@ let get_standard_deck =
     | _ -> accum in
   [] |> make_standard_dec values |> List.map (fun x -> {rep=x})
 
-let rec shuffle deck = 
+let rec shuffle (deck: deck) : deck = 
   deck |> List.map (fun x -> (x,Random.int 52)) |> List.sort compare_card_shuffle |>
   List.map (fun (x,y) -> x)
 

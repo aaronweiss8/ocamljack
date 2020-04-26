@@ -30,15 +30,17 @@ module Classic = struct
   type player = Player.t
   type chip = Chip.t
   type deck = Cards.deck
+  exception Cannot_Split
 
   (** RI: Specifically for hands, the head of the list is the current player *)
   type t = {round:int;
+            min_bet:int;
             players: player list;
             leftMostPlayer: player;
             deck:deck;
             dealer:player}
 
-  let current_player t = t.players |> List.hd
+  let current_player t : player = t.players |> List.hd
 
   let get_deck t = t.deck
 
@@ -46,41 +48,32 @@ module Classic = struct
     match game.players with
     |p::t -> let new_players = t@[p] in 
       if p = game.leftMostPlayer then
-      {round = (game.round + 1);
-      players = new_players;
-      leftMostPlayer = game.leftMostPlayer;
-      deck = game.deck;
-      dealer=game.dealer
-      }
+        {round = (game.round + 1);
+        min_bet = game.min_bet;
+        players = new_players;
+        leftMostPlayer = game.leftMostPlayer;
+        deck = game.deck;
+        dealer = game.dealer}
       else
-      {round = (game.round);
-      players = new_players;
-      leftMostPlayer = game.leftMostPlayer;
-      deck = game.deck;
-      dealer=game.dealer
-      }
+        {round = (game.round);
+        min_bet = game.min_bet;
+        players = new_players;
+        leftMostPlayer = game.leftMostPlayer;
+        deck = game.deck;
+        dealer = game.dealer}
     |[] -> failwith "no players" 
 
   let hit game ind = 
     let (newdeck, c) = Cards.deal_one game.deck in
     match game.players with
-    | current::t -> {round = game.round; 
-            players = (Player.add_to_hand current c ind)::t;
+    | current::t -> 
+            {round = game.round;
+            min_bet = game.min_bet;
+            players = (Player.add_to_hand c ind current)::t;
             leftMostPlayer = game.leftMostPlayer;
             deck = newdeck;
-            dealer=game.dealer}
+            dealer = game.dealer}
     | [] -> failwith "No players"
-    (* match deck with
-    | h::r -> (let to_deal = h in
-      match game.players with
-          |p::b -> let (new_d,new_h) = Cards.transfer_card (deck, List.nth hand_idx (Player.get_hand p)) to_deal in
-            {round = game.round; 
-            players = p::b;
-            leftMostPlayer = game.leftMostPlayer;
-            deck = new_d;
-            dealer=game.dealer}
-          | [] -> failwith "No players")
-    | [] -> failwith "Dealer needs to reset cards" *)
 
   let get_info t = "[" ^ "Name : Blackjack, " ^
                    "Round: " ^ (string_of_int t.round) ^ ", " ^ 
@@ -89,14 +82,19 @@ module Classic = struct
                    
   (** Change new_game to include initialization of new games
       with decks with varying amounts of cards *)
-  let new_game playername = {
-                       round=0;
-                       players=[];
-                       leftMostPlayer = (Player.new_player playername Chip.empty 
-                       Cards.empty Chip.empty false);
-                       deck=Cards.get_standard_deck;
-                       dealer = (Player.new_player "Dealer" Chip.empty 
-                       Cards.empty Chip.empty true)} 
+  let new_game playername starting_chips mb num_decks = 
+
+    let rec starting_deck num accum= 
+      if num = 0 then accum |> Cards.combine_decks |> Cards.shuffle 
+      else starting_deck (num -1) (Cards.get_standard_deck::accum) in
+    {round=0;
+    min_bet = mb;
+    players=[];
+    leftMostPlayer = (Player.new_player playername starting_chips 
+    Cards.empty [Chip.empty] false);
+    deck= starting_deck num_decks [];
+    dealer = (Player.new_player playername starting_chips 
+    Cards.empty [Chip.empty] false);} 
 
   (** Value functions *)
   let card_value hand = function
@@ -152,56 +150,73 @@ module Classic = struct
     make_win_and_push t.players d [[];[];[];[]]
     
 
-  (* let split t player = 
-    let newhands = Player.get_hand player |> 
-    *)
-(* 
-  let next_round t= 
-    match t.current_player with
-    | p when p = List.length t.hands -> t.round + 1
-    | r -> t.round
+  (* [did_bust player hand_idx] is true if the specific hand did bust *)  
+  let did_bust player hand_idx=
+    let hand_lst = player |> get_hand in
+      let hand = (List.nth_opt hand_lst hand_idx) in
+        match hand with
+        | Some h -> if hand_value h < 22 then false else true
+        | None -> failwith "Hand does not exist"
 
-  let stand t player = {name=t.name;
-                        round=next_round t;
-                        leftMostPlayer = t.leftMostPlayer;
-                        deck=Cards.get_standard_deck}
-  let mode = "Classic"
-  let rules t = failwith "Unimplemented"
-  let rep_ok t = failwith "Unimplemmented"
-  let save_name t = failwith  "Unimplemented"
-  let player_list t = t.hands |> List.split |> fst
-  let players t = (player_list t 
-                   |> List.fold_right (fun x y-> Player.name x ^ ", " ^ y)) ""
-  let player_total t = List.length t.hands
-  let name t = t.name
-  let bet t player chip = 
-    let new_chips = Chip.bet chip (Player.chips player) in
-    let newplayers = t.hands |> 
-                     List.map (fun (x,y) -> if x = player then
-                                  (Player.update_chips x new_chips,y) 
-                                else (x,y)) in
-    {name=t.name;
-     round=t.round;
-     hands=newplayers;
-     leftMostPlayer=t.leftMostPlayer;
-     deck=t.deck} *)
+  (* [split t idx] performs a blackjack "split" of a hand, assuming it can be made.
+  Raises: Cannot_Split if the split cannot be performed *)
+  let split t idx = 
+    let cp = current_player t in
+    let current_bet = List.nth (Player.bet cp) idx in
+    let hand_lst = (cp |> Player.get_hand) in
+      let hand = (List.nth_opt hand_lst idx) in
+        match hand with
+        | Some h -> (if (List.length h = 2 && 
+          let c1 = List.nth h 0 in 
+            let c2 = List.nth h 1 in
+          Cards.compare c1 c2 = 0) then
+           let new_p = (cp |> Player.add_hand |> Player.add_to_hand (List.nth h 0) (idx + 1) |>
+            Player.add_bet |> Player.bet_chips current_bet (idx + 1)) in
+            let new_player_list np = 
+              match t.players with
+              |h::t -> (np::t) 
+              |[] -> failwith "Cannot Split no player" in 
+           {round = t.round;
+            min_bet = t.min_bet;
+            players = new_player_list new_p;
+            leftMostPlayer = t.leftMostPlayer;
+            deck = t.deck;
+            dealer = t.dealer}
+          else raise Cannot_Split)
+        | None -> failwith "Hand Does not exist"
 
-  let score player = Chip.get_value (Player.chips player)
-
-  let name = failwith "unimplemented"
-
-  let player_total t = List.length t.players
-
-  let players t = List.fold_left (fun acc x -> Player.name x ^ " " ^ acc)
-                  "" t.players
-
-  let save_name = failwith "unimplemented"
-
-  let rules = failwith "unimplemented"
-
-  let rep_ok = failwith "unimplemented"
-
-  let bet = failwith "unimplemented"
+  (* [double_down t idx] performs a "double down" on a hand at idx of the current player,
+  this also performs the required hit*)
+  let double_down t idx = 
+    let cp = current_player t in
+    let current_bet = List.nth (Player.bet cp) idx in
+    let new_p = Player.bet_chips current_bet idx cp in
+    let new_player_list np = 
+          match t.players with
+          |h::t -> (np::t) 
+          |[] -> failwith "Cannot Double Down on no player" in 
+    let ng = 
+      {round = t.round;
+      min_bet = t.min_bet;
+      players = new_player_list new_p;
+      leftMostPlayer = t.leftMostPlayer;
+      deck = t.deck;
+      dealer = t.dealer} in
+    hit ng idx
+        
+   
+  let next_round t = 
+    let rec collect_and_update player_lst accum = 
+      match player_lst with
+      |h::t -> let new_p = (h |> Player.collect_bets |> Player.update_hand [])
+        in collect_and_update t (new_p::accum)
+      |[] -> List.rev accum in
+    {round = (t.round + 1);
+      min_bet = t.min_bet;
+      players = collect_and_update t.players [];
+      leftMostPlayer = t.leftMostPlayer;
+      deck = t.deck;
+      dealer = t.dealer}
 end
 
 (* module Switch : Mode = struct
