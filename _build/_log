@@ -1,68 +1,56 @@
 ### Starting build.
-# Target: Cards.mli.depends, tags: { package(oUnit), extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Cards.mli > Cards.mli.depends # cached
-# Target: Cards.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Cards.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Cards.cmi Cards.mli # cached
-# Target: Cards.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Cards.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Cards.ml > Cards.ml.depends # cached
-# Target: Cards.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Cards.cmo, file:Cards.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Cards.cmo Cards.ml # cached
+# Target: main.ml.depends, tags: { package(oUnit), extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules main.ml > main.ml.depends # cached
+# Target: Blackjack.mli.depends, tags: { package(oUnit), extension:mli, file:Blackjack.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Blackjack.mli > Blackjack.mli.depends # cached
 # Target: Chip.mli.depends, tags: { package(oUnit), extension:mli, file:Chip.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Chip.mli > Chip.mli.depends # cached
 # Target: Chip.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Chip.mli, interf, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -o Chip.cmi Chip.mli # cached
-# Target: Chip.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Chip.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Chip.ml > Chip.ml.depends # cached
-# Target: Chip.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Chip.cmo, file:Chip.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Chip.cmo Chip.ml # cached
+# Target: Command.mli.depends, tags: { package(oUnit), extension:mli, file:Command.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Command.mli > Command.mli.depends # cached
+# Target: Command.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Command.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Command.cmi Command.mli # cached
 # Target: Game.mli.depends, tags: { package(oUnit), extension:mli, file:Game.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Game.mli > Game.mli.depends # cached
 # Target: Game.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Game.mli, interf, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -o Game.cmi Game.mli # cached
+# Target: Blackjack.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Blackjack.cmi Blackjack.mli # cached
+# Target: main.cmo, tags: { package(oUnit), byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o main.cmo main.ml # cached
+# Target: Blackjack.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
+# Target: Cards.mli.depends, tags: { package(oUnit), extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Cards.mli > Cards.mli.depends # cached
+# Target: Cards.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Cards.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Cards.cmi Cards.mli # cached
+# Target: Player.mli.depends, tags: { package(oUnit), extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends # cached
+# Target: Player.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli # cached
+# Target: Chip.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Chip.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Chip.ml > Chip.ml.depends # cached
+# Target: Chip.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Chip.cmo, file:Chip.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Chip.cmo Chip.ml # cached
+# Target: Command.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Command.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Command.ml > Command.ml.depends # cached
+# Target: Command.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Command.cmo, file:Command.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Command.cmo Command.ml # cached
+# Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
+# Target: Cards.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Cards.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Cards.ml > Cards.ml.depends # cached
+# Target: Cards.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Cards.cmo, file:Cards.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Cards.cmo Cards.ml # cached
 # Target: Game.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Game.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Game.ml > Game.ml.depends # cached
 # Target: Game.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Game.cmo, file:Game.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -o Game.cmo Game.ml # cached
-# Target: Blackjack.mli.depends, tags: { package(oUnit), extension:mli, file:Blackjack.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Blackjack.mli > Blackjack.mli.depends # cached
-# Target: Blackjack.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Blackjack.cmi Blackjack.mli # cached
-# Target: Blackjack.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
-# Target: Player.mli.depends, tags: { package(oUnit), extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends
-# Target: Player.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli
-# Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
-+ ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
-File "Blackjack.ml", line 1:
-Error: The implementation Blackjack.ml
-       does not match the interface Blackjack.cmi:
-       ...
-       In module Classic:
-       The value `score' is required but not provided
-       File "Blackjack.ml", line 24, characters 2-27: Expected declaration
-       In module Classic:
-       The value `bet' is required but not provided
-       File "Blackjack.ml", line 23, characters 2-36: Expected declaration
-       In module Classic:
-       The value `name' is required but not provided
-       File "Blackjack.ml", line 22, characters 2-24: Expected declaration
-       In module Classic:
-       The value `player_total' is required but not provided
-       File "Blackjack.ml", line 21, characters 2-29: Expected declaration
-       In module Classic:
-       The value `players' is required but not provided
-       File "Blackjack.ml", line 20, characters 2-27: Expected declaration
-       In module Classic:
-       The value `save_name' is required but not provided
-       File "Blackjack.ml", line 19, characters 2-29: Expected declaration
-       In module Classic:
-       The value `rules' is required but not provided
-       File "Blackjack.ml", line 18, characters 2-26: Expected declaration
-       In module Classic:
-       The value `rep_ok' is required but not provided
-       File "Blackjack.ml", line 17, characters 2-24: Expected declaration
-Command exited with code 2.
-# Compilation unsuccessful.
+# Target: Player.ml.depends, tags: { package(oUnit), coverage, extension:ml, file:Player.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -modules Player.ml > Player.ml.depends # cached
+# Target: Player.cmo, tags: { package(oUnit), byte, compile, coverage, extension:cmo, extension:ml, file:Player.cmo, file:Player.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Player.cmo Player.ml # cached
+# Target: main.byte, tags: { package(oUnit), byte, dont_link_with, extension:byte, file:main.byte, link, ocaml, program, quiet, traverse }
+ocamlfind ocamlc -linkpkg -package oUnit Cards.cmo Chip.cmo Command.cmo Game.cmo Player.cmo Blackjack.cmo main.cmo -o main.byte
+# Compilation successful.

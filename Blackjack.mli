@@ -5,16 +5,9 @@ module type Mode = sig
   type player
   type deck
   type chip
-  val rep_ok : t -> bool
-  val rules : t -> 'a list
-  val save_name : t -> string
-  val players : t -> string
-  val player_total : t -> int
-  val name : t -> string 
-  val bet : t -> player -> chip -> t
-  val score : player -> int
-  val new_game : string -> t
+  val new_game : string -> Chip.t -> int -> int -> t
   val get_info : t -> string
+  val go : t -> Command.command -> t
 end
 
 module Classic : Mode

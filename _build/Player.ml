@@ -1,7 +1,7 @@
 type t = {name:string;
           chips:Chip.t;
           hand:Cards.deck list;
-          bet:Chip.t;
+          bet:Chip.t list;
           bot:bool}
 
 let name t = t.name
@@ -14,7 +14,10 @@ let chips_value t = t.chips |> Chip.get_value
 
 let bet t = t.bet
 
-let bet_value t = t.bet |> Chip.get_value
+let bet_value t idx = List.nth_opt t.bet idx |> function
+|Some b -> Chip.get_value b
+|None -> failwith "Bet doesn't exist"
+
 
 let add_chips t chip = 
   {name=t.name;
@@ -24,18 +27,26 @@ let add_chips t chip =
   bot=t.bot
   }
 
-let bet_chips t bet = 
+let bet_chips bet idx t = 
+  let rec new_bet_lst lst idx accum =
+    match lst with
+    |h::r -> if idx = 0 then 
+      let new_b = Chip.add h bet in
+      (List.rev accum)@[new_b]@r
+      else new_bet_lst r (idx - 1) (h::accum)
+    |[] -> failwith "Bet does not exist" in
+
   {name = t.name;
   chips = (Chip.bet t.chips bet);
   hand = t.hand;
-  bet = (Chip.add t.bet bet);
+  bet = (new_bet_lst t.bet idx []);
   bot = t.bot}
 
-let collect_bet t = 
+let collect_bets t = 
   {name = t.name;
-  chips = (Chip.add t.chips t.bet);
+  chips = (List.fold_left (Chip.add) Chip.empty t.bet);
   hand = t.hand;
-  bet = Chip.empty;
+  bet = [Chip.empty];
   bot = t.bot
   }
 
@@ -47,7 +58,7 @@ bet=bet;
 bot=bot;
 }
 
-let update_hand t new_hand = 
+let update_hand new_hand t = 
   {name = t.name;
   chips = t.chips;
   hand = new_hand;
@@ -55,8 +66,7 @@ let update_hand t new_hand =
   bot = t.bot;
   }
 
-let add_to_hand t c ind =
-
+let add_to_hand c ind t =
   let rec choose_hand d c ind accum =
     match d with
     | [] -> failwith "hand does not exist"
@@ -66,5 +76,21 @@ let add_to_hand t c ind =
   chips = t.chips;
   hand = choose_hand t.hand c ind [];
   bet = t.bet;
+  bot = t.bot;
+  }
+
+let add_hand t = 
+  {name = t.name;
+  chips = t.chips;
+  hand = (t.hand@[Cards.empty]);
+  bet = t.bet;
+  bot = t.bot;
+  }
+
+let add_bet t = 
+  {name = t.name;
+  chips = t.chips;
+  hand = t.hand;
+  bet = (t.bet@[Chip.empty]);
   bot = t.bot;
   }
