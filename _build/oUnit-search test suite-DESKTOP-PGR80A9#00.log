@@ -1,30 +1,66 @@
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Runner: sequential
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Chooser: simple
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration suite_name = "search test suite"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration cache_filename = "/mnt/c/Users/Bryan/Documents/3110/3110proj/_build/oUnit-$(suite_name).cache"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration run_gc_full_major = "true"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration display = "true"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration results_style_1_X = "false"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration testdata_dir = "none"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration health_check_interval = "1."
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration verbose = "false"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration chooser = "simple"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration output_html_dir = "none"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration processes_kill_period = "5."
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration runner = "sequential"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration shards = "6"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration processes_grace_period = "5."
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration log_encoding = "utf-8"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration output_junit_file = "none"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration ci = "false"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Configuration output_file = "/mnt/c/Users/Bryan/Documents/3110/3110proj/_build/oUnit-$(suite_name)-$(shard_id).log"
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: ==============
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Summary:
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Ran: 0 tests in: 0.00 seconds.
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Cases: 0.
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Tried: 0.
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Errors: 0.
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Failures: 0.
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Skip: 0.
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Todo: 0.
-2020-04-26T14:54:31+00:00 DESKTOP-PGR80A9#00 I: Timeout: 0.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Runner: sequential
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Chooser: simple
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration suite_name = "search test suite"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration cache_filename = "/mnt/c/Users/Bryan/Documents/3110/3110proj/_build/oUnit-$(suite_name).cache"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration run_gc_full_major = "true"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration display = "true"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration results_style_1_X = "false"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration testdata_dir = "none"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration health_check_interval = "1."
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration verbose = "false"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration chooser = "simple"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration output_html_dir = "none"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration processes_kill_period = "5."
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration runner = "sequential"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration shards = "6"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration processes_grace_period = "5."
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration log_encoding = "utf-8"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration output_junit_file = "none"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration ci = "false"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Configuration output_file = "/mnt/c/Users/Bryan/Documents/3110/3110proj/_build/oUnit-$(suite_name)-$(shard_id).log"
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Start test search test suite:0:Blackjack tests:0:newgame.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:0:Blackjack tests:0:newgame is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: End test search test suite:0:Blackjack tests:0:newgame.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Start test search test suite:1:Chip tests:0:add.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:0:add is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: End test search test suite:1:Chip tests:0:add.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Start test search test suite:1:Chip tests:1:add test 2.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:1:add test 2 is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: End test search test suite:1:Chip tests:1:add test 2.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Start test search test suite:1:Chip tests:2:bet.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:2:bet is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: End test search test suite:1:Chip tests:2:bet.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Start test search test suite:1:Chip tests:3:bet.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:3:bet is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: End test search test suite:1:Chip tests:3:bet.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Start test search test suite:1:Chip tests:4:get_value.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:4:get_value is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: End test search test suite:1:Chip tests:4:get_value.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Start test search test suite:2:Deck tests:0:standard deck, compare, shuffle .
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: Test search test suite:2:Deck tests:0:standard deck, compare, shuffle  has failed.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: not equal in test search test suite:2:Deck tests:0:standard deck, compare, shuffle .
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: Raised at file "src/lib/ounit2/advanced/oUnitAssert.ml", line 45, characters 8-27
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: Called from file "src/lib/ounit2/advanced/oUnitRunner.ml", line 83, characters 13-26
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: 
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: End test search test suite:2:Deck tests:0:standard deck, compare, shuffle .
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: ==============
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Summary:
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: Test search test suite:2:Deck tests:0:standard deck, compare, shuffle  has failed.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: not equal in test search test suite:2:Deck tests:0:standard deck, compare, shuffle .
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: Raised at file "src/lib/ounit2/advanced/oUnitAssert.ml", line 45, characters 8-27
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: Called from file "src/lib/ounit2/advanced/oUnitRunner.ml", line 83, characters 13-26
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 E: 
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:4:get_value is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:3:bet is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:2:bet is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:1:add test 2 is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:1:Chip tests:0:add is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Test search test suite:0:Blackjack tests:0:newgame is successful.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Ran: 7 tests in: 0.03 seconds.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Cases: 7.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Tried: 7.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Errors: 0.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Failures: 1.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Skip: 0.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Todo: 0.
+2020-04-26T16:23:44+00:00 DESKTOP-PGR80A9#00 I: Timeout: 0.

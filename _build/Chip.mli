@@ -44,3 +44,7 @@ val add: t -> t -> t
     Raises: Not_Within if t2 is not contained within t1, or RI_Broken if the
     representation invariant is broken*)
 val bet: t -> t -> t
+
+(** [create_chips w r b g bl] returns the chip type with the specified number of chips
+    for each color. *)
+val create_chips : int -> int -> int -> int -> int -> t

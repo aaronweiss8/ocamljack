@@ -92,3 +92,5 @@ let bet t1 t2 =
     then ((White new_w),(Red new_r),(Blue new_blu),(Green new_g),(Black new_bla))
     else raise Not_Within  
   | _ -> raise RI_Broken
+
+let create_chips w r b g bl = (White w), (Red r), (Blue b), (Green g), (Black bl)
