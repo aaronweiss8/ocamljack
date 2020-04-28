@@ -50,7 +50,7 @@ val hand_value : Cards.deck -> int
     pushed against the dealer
     lost against the dealer
     should be changed to list of tuples of (hand, player), with results*)
-val get_results : t -> player list list
+val get_results : t -> Player.t list list
 
 (* [did_bust h] returns whether hand h busted *)
 val did_bust : Cards.deck -> bool
@@ -74,4 +74,10 @@ val place_initial_bets : t -> Chip.t list -> t
 (* [check_hands t] returns game state with collected bets on hands *)
 val check_hands : t -> t
 
+(* [get_players t] returns the players of blackjack game [t])*)
+val get_players : t -> Player.t list
+
+val add_dealer_to_game : t -> Player.t -> t
 (* val get_command : 'a -> Command.command *)
+
+val dealer : t -> Player.t

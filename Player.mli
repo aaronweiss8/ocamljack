@@ -58,3 +58,5 @@ val simplify_chips : int -> t -> t
 (* [break_chips steps t] returns a player 
    with their chips broken [steps] times *)
 val break_chips : int -> t -> t
+
+val make_player_with_hand : (Cards.color*Cards.suit*Cards.rank) list -> t

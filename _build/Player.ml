@@ -126,3 +126,6 @@ let break_chips steps t =
    bet = t.bet;
    bot = t.bot;
   }
+
+let make_player_with_hand tups =
+  {name="dealer";chips=Chip.empty;hand=[List.map (fun (c,s,r) -> Cards.make_card s c r) tups];bet=[Chip.empty];bot=true}
