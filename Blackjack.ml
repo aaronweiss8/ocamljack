@@ -84,10 +84,8 @@ let hand_value phand =
     has a blackjack, and false if the current player
     has not 
     currently checks if either of a split hand are blackjack*)
-let is_blackjack player = 
-  List.length (Player.get_hand player) = 1 &&
-  List.length (List.hd (Player.get_hand player)) = 2 &&
-  hand_value (List.hd (Player.get_hand player)) = 21
+let is_blackjack hand = 
+  List.length hand = 2 && hand_value hand = 21
 
 (* [get_winners t] returns a list containing a list of players who 
     blackjacked, won against the dealer, and a list of players who
