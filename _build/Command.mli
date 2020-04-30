@@ -4,8 +4,9 @@ type action = Hit of int
             | DD of int 
             | Insurance of int 
             | Stand
-type command = Command of action
-val parse : string -> command
+            | Quit
+
+val parse : string -> action
 
 exception Empty
 

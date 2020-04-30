@@ -1,4 +1,3 @@
-open Game
 open Cards
 open Player
 open Command
@@ -314,13 +313,14 @@ let get_players t = t.players
 
 let dealer t = t.dealer
 
-let go game (cmd:command) = 
+let go game (cmd:action) = 
   match cmd with
-  | Command (Hit ind) -> hit game ind
-  | Command (Split ind) -> split game ind
-  | Command (Stand) -> go_next_player game
-  | Command (DD ind) -> double_down game ind
-  | Command (Insurance ind) -> failwith "not implemented"
+  | (Hit ind) -> hit game ind
+  | (Split ind) -> split game ind
+  | (Stand) -> go_next_player game
+  | (DD ind) -> double_down game ind
+  | (Insurance ind) -> failwith "not implemented"
+  | _ -> failwith "should not have gotten here"
 
 (* 
 let bot_turn game =

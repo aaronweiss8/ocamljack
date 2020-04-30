@@ -1,4 +1,3 @@
-open Game
 open Cards
 open Player
 open Command
@@ -15,7 +14,7 @@ exception Cannot_Perform_Insurance
 val get_info : t -> string
 
 (* [go t c] implements the given command on the game *)
-val go : t -> Command.command -> t
+val go : t -> Command.action -> t
 
 (* [create_game p b d r] creates a game with players p, minimum bet b
     number of standard decks d starting at round r*)

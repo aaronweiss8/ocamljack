@@ -49,7 +49,7 @@ module type Game = sig
 
   (** [go t] is the main function responsible for conditionally updating the game state. *)
 
-  val go : t -> Command.command -> t
+  (* val go : t -> Command.command -> t *)
 
   (** [create_game pl mb num_decks round] creates a game state with the specified
   playerlist [pl], minimum bet [mb], number of decks [num_decks], and round [round] *)

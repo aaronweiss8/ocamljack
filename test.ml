@@ -2,7 +2,6 @@ open OUnit2
 open Chip
 open Blackjack
 open Cards
-open Game
 open Player
 
 (**An example of how to create a blackjack game. *)
