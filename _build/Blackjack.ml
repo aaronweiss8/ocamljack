@@ -9,6 +9,12 @@ exception Cannot_Split
 exception Bet_Too_Low
 exception Cannot_Perform_Insurance
 
+type result =
+  | Blackjack
+  | Win
+  | Push
+  | Loss
+
 (** RI: Specifically for players, the head of the list is the current player *)
 type t = {round:int;
           min_bet:int;
@@ -84,32 +90,10 @@ let hand_value phand =
     has a blackjack, and false if the current player
     has not 
     currently checks if either of a split hand are blackjack*)
-let is_blackjack player = 
-  List.length (Player.get_hand player) = 1 &&
-  List.length (List.hd (Player.get_hand player)) = 2 &&
-  hand_value (List.hd (Player.get_hand player)) = 21
+let is_blackjack hand = 
+  List.length hand = 2 && hand_value hand = 21
 
-(* [get_winners t] returns a list containing a list of players who 
-    blackjacked, won against the dealer, and a list of players who
-    pushed vs the dealer, then a list of players who lost*)
-let get_results t =
-  (* someone should change acc from a list of lists to a tuple of lists *)
-  let rec make_win_and_push ps d acc =
-    match ps with
-    | [] -> acc
-    | h::t -> if is_blackjack h then [h::(List.nth acc 0);
-                                      (List.nth acc 1);(List.nth acc 2);(List.nth acc 3)] else
-      if (List.exists (fun x -> x) (List.map (fun h -> (d > 21 && hand_value h <= 21) || hand_value h > d && hand_value h <= 21) (Player.get_hand h))) then
-        [(List.nth acc 0);h::(List.nth acc 1);(List.nth acc 2);(List.nth acc 3)] else
-      if (List.exists (fun x -> x) (List.map (fun h -> hand_value h = d && d <= 21) (Player.get_hand h))) then
-        [(List.nth acc 0);(List.nth acc 1);h::(List.nth acc 2);(List.nth acc 3)] else
-        [(List.nth acc 0);(List.nth acc 1);(List.nth acc 2);h::(List.nth acc 3)] in
-  if is_blackjack t.dealer then
-    let pushed = List.fold_left (fun acc x -> if is_blackjack x then x::acc else acc)
-        [] t.players in
-    [[];[];pushed; List.filter (fun x -> not(List.mem x pushed)) t.players] else
-    let d = hand_value (List.hd (Player.get_hand t.dealer)) in
-    make_win_and_push t.players d [[];[];[];[]]
+
 
 
 (* [did_bust hand] is true if the specific hand did bust *)  
@@ -308,6 +292,49 @@ let add_dealer_to_game g p =
     | Malformed -> (print_string "Malformed\n");
       get_command
     | Empty -> (print_string "Empty\n");get_command *)
+
+
+let get_results t =
+  (* someone should change acc from a list of lists to a tuple of lists *)
+  let rec make_win_and_push ps d acc =
+    match ps with
+    | [] -> acc
+    | h::t -> if is_blackjack h then [h::(List.nth acc 0);
+                                      (List.nth acc 1);(List.nth acc 2);(List.nth acc 3)] else
+      if (List.exists (fun x -> x) (List.map (fun h -> (d > 21 && hand_value h <= 21) || hand_value h > d && hand_value h <= 21) (Player.get_hand h))) then
+        [(List.nth acc 0);h::(List.nth acc 1);(List.nth acc 2);(List.nth acc 3)] else
+      if (List.exists (fun x -> x) (List.map (fun h -> hand_value h = d && d <= 21) (Player.get_hand h))) then
+        [(List.nth acc 0);(List.nth acc 1);h::(List.nth acc 2);(List.nth acc 3)] else
+        [(List.nth acc 0);(List.nth acc 1);(List.nth acc 2);h::(List.nth acc 3)] in
+  if is_blackjack t.dealer then
+    let pushed = List.fold_left (fun acc x -> if is_blackjack x then x::acc else acc)
+        [] t.players in
+    [[];[];pushed; List.filter (fun x -> not(List.mem x pushed)) t.players] else
+    let d = hand_value (List.hd (Player.get_hand t.dealer)) in
+    make_win_and_push t.players d [[];[];[];[]]
+
+let hand_result hand d dealer_bj =
+  let h = hand_value hand in
+  let bj = is_blackjack hand in
+  if bj && not(dealer_bj) then Blackjack else
+  if h > d && h <= 21 then Win else
+  if h = d && h <= 21 then Push else
+  Loss
+
+let change_bet_or_lose_one_hand r player ind =
+  match r with
+  | Blackjack -> failwith "do blackjack betting result"
+  | Win -> Player.win_bet ind player
+  | Push -> Player.return_bet ind player
+  | Loss -> Player.lose_bet ind player
+
+let do_all_hands player game =
+  let phands = Player.get_hand player in
+  let dealer_hand = List.nth (Player.get_hand game.dealer) 0 in
+  let results_list = List.map (fun x -> hand_result x (hand_value dealer_hand) (is_blackjack dealer_hand))
+  let rec do_each_hand ind player res =
+    match hands, res with
+    | (h::t, Loss) -> 
 
 let get_players t = t.players
 
