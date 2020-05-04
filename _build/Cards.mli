@@ -41,7 +41,7 @@ val remove_single_instance : card -> deck -> deck
 (** Removes the top card from the deck and returns it*)
 val deal_one: deck -> (deck * card)
 
-(** moves a card from the first deck in the tuple to the other
+(** [transfer_card d1 d2 card] moves [card] from [d1] to [d2]
     Requires the card to be in the first deck
     Raises exception Card_not_in_deck*)
 val transfer_card: deck -> deck -> card -> (deck*deck)

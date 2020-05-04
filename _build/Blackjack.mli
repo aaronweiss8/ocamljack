@@ -60,7 +60,7 @@ val hand_value : Cards.deck -> int
     pushed against the dealer
     lost against the dealer
     should be changed to list of tuples of (hand, player), with results*)
-val get_results : t -> Player.t list list
+(* val get_results : t -> Player.t list list *)
 
 (* [did_bust hand] is true if the specific hand did bust *)  
 val did_bust : Cards.deck -> bool
@@ -90,5 +90,7 @@ val get_players : t -> Player.t list
 (*[dealer t] is the dealer of the game *)
 val dealer : t -> Player.t
 
+(* [deal_initial_cards game] returns a game with the initial cards delt *)
+val deal_initial_cards : t -> t 
 (* val get_command : 'a -> Command.command *)
 
