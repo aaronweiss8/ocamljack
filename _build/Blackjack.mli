@@ -9,11 +9,13 @@ type chip
 exception Cannot_Split
 exception Bet_Too_Low
 exception Cannot_Perform_Insurance
+exception Player_Not_Found
 
-(* [get_info t] returns a string of the current game state *)
+
+(* [get_info t] returns a string of the current game state TODO*)
 val get_info : t -> string
 
-(* [go t c] implements the given command on the game *)
+(* [go t c] implements the given command on the game TODO *)
 val go : t -> Command.action -> t
 
 (* [create_game p b d r] creates a game with players p, minimum bet b
@@ -26,12 +28,21 @@ val current_player: t -> Player.t
 (* [get_deck t] returns the game deck for t *)
 val get_deck : t -> Cards.deck
 
-(* [is_blackjack p] returns whether player p has achieved blackjack on any
-    hand - should be turned into hand_has_blackjack*)
-val is_blackjack : Player.t -> bool
+(* [add_player p game] returns a [game] with [p] added to the game. 
+The player is added to the rightside of the table *)
+val add_player : Player.t -> t -> t
+
+(* [remove_player p game] returns a [game] with [p] removed from the game.
+Requires: [p] is in the game's players list
+Raises: Player_Not_Found if the player is not in the game *)
+val remove_player: Player.t -> t -> t
 
 (* [go_next_player t] returns a game state where the next player is first*)
 val go_next_player : t -> t
+
+(* [is_blackjack p] returns whether player p has achieved blackjack on any
+    hand - should be turned into hand_has_blackjack*)
+val is_blackjack : Player.t -> bool
 
 (* [hit t i] returns a game state where current player has hit on hand i*)
 val hit : t -> int -> t
@@ -51,7 +62,7 @@ val hand_value : Cards.deck -> int
     should be changed to list of tuples of (hand, player), with results*)
 val get_results : t -> Player.t list list
 
-(* [did_bust h] returns whether hand h busted *)
+(* [did_bust hand] is true if the specific hand did bust *)  
 val did_bust : Cards.deck -> bool
 
 (* [split t i] splits current players hand i, and returns game state *)
@@ -76,7 +87,8 @@ val check_hands : t -> t
 (* [get_players t] returns the players of blackjack game [t])*)
 val get_players : t -> Player.t list
 
-val add_dealer_to_game : t -> Player.t -> t
+(*[dealer t] is the dealer of the game *)
+val dealer : t -> Player.t
+
 (* val get_command : 'a -> Command.command *)
 
-val dealer : t -> Player.t

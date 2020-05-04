@@ -30,17 +30,20 @@ ocamlfind ocamldep -package oUnit -modules Command.mli > Command.mli.depends # c
 # Target: Command.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Command.mli, interf, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -o Command.cmi Command.mli # cached
 # Target: Player.mli.depends, tags: { package(oUnit), extension:mli, file:Player.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends
+ocamlfind ocamldep -package oUnit -modules Player.mli > Player.mli.depends # cached
 # Target: Player.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Player.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli
+ocamlfind ocamlc -c -package oUnit -o Player.cmi Player.mli # cached
 # Target: Blackjack.cmi, tags: { package(oUnit), byte, compile, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -o Blackjack.cmi Blackjack.mli
+ocamlfind ocamlc -c -package oUnit -o Blackjack.cmi Blackjack.mli # cached
 # Target: Blackjack.ml.depends, tags: { package(oUnit), extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
-+ ocamlfind ocamldep -package oUnit -modules Blackjack.ml > Blackjack.ml.depends
-File "Blackjack.ml", line 335, characters 2-5:
-335 |   let rec do_each_hand ind player res =
-        ^^^
-Error: Syntax error
+# Target: Blackjack.cmo, tags: { package(oUnit), byte, compile, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
++ ocamlfind ocamlc -c -package oUnit -o Blackjack.cmo Blackjack.ml
+File "Blackjack.ml", line 262, characters 22-23:
+262 |       if is_blackjack h then
+                            ^
+Error: This expression has type Player.t
+       but an expression was expected of type Cards.card list
 Command exited with code 2.
 # Compilation unsuccessful.
