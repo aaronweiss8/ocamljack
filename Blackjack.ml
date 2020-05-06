@@ -105,7 +105,7 @@ let get_info t =
   "Leftmost Player: " ^ (name t.leftMostPlayer) ^ "\n" ^
   "Current Player: " ^ (current_player t |> name) ^ 
    "\nPlayer: Hand: Chips: Bet: \n" ^ 
-  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^"\n " ^ y) 
+  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^ "\n " ^ y) 
      "" t.players)
 
 let card_value c =
