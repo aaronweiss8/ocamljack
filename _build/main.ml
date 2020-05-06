@@ -23,25 +23,29 @@ let rec step r hand_idx game =
     print_endline ("Current Hand: " ^ string_of_int hand_idx);
     print_string "> "; step (read_line ()) hand_idx game_after_cmd
 
+let rec get_num pname =
+    ANSITerminal.(print_string [default] ("Enter " ^ pname ^ ": "););
+    let m = try int_of_string (read_line ()) with
+      | Failure a -> ANSITerminal.(print_string [red] "Malformed\n"); (get_num pname)
+    in m
+
+let get_user_chip =
+    let w = get_num "whites" in
+    let r = get_num "reds" in
+    let b = get_num "blues" in
+    let g = get_num "greens" in
+    let bla = get_num "blacks" in
+    (Chip.create_chips w r b g bla)
+
 (* [create_players players] allows the user to add a new player to 
    list of players *)
 let rec create_players (players: Player.t list) (no:bool) : Player.t list =
   (* [create_player] creates a player from user input*)
   let rec create_player (no:bool): Player.t =
     (* [get_num pname] gets user input of number of chips of type pname*)
-    let rec get_num pname =
-      print_string ("Enter starting " ^ pname ^ ": ");
-      let m = try int_of_string (read_line ()) with
-        | Failure a -> print_string "Malformed\n"; (get_num pname)
-      in m in
-    print_string "Enter name: ";
+    ANSITerminal.(print_string [default] "Enter name: ");
     let n = read_line () in
-    let w = get_num "whites" in
-    let r = get_num "reds" in
-    let b = get_num "blues" in
-    let g = get_num "greens" in
-    let bla = get_num "blacks" in
-    (Player.new_player n (Chip.create_chips w r b g bla) [] [] false) in
+    (Player.new_player n (get_user_chip) [] [] false) in
   let create_player_prompt = 
     match no with
     | false -> "New player? (y/n): \n> "
@@ -52,32 +56,40 @@ let rec create_players (players: Player.t list) (no:bool) : Player.t list =
   | _,false -> ANSITerminal.(print_string [red] "You must add at least one player! \n");
     create_players [] false
   | "n",_ -> players
-  | _,true ->  print_string "Malformed \n"; create_players 
+  | _,true -> ANSITerminal.(print_string [red] "Malformed \n"); create_players 
       ((create_player true)::players) true
+
+(* [get_player_bets p []] returns a list of chip.t that corresponds to each
+  user's initial bet*)
+let rec get_player_bets players acc =
+  ANSITerminal.(print_string [blue] "Enter Round Bet:\n");
+  match players with
+  | h::t -> if Player.is_user h then get_player_bets t (get_user_chip::acc)
+    else get_player_bets t ((create_chips 0 3 0 0 0)::acc)
+  | [] -> List.rev acc
 
 (* [start_game s] is the main recursive loop for the game that takes a user input
     s and returns an output and prompt. *)
 let start_game = 
-  ANSITerminal.(print_string [magenta] "\nWelcome to the Blackjack!\n");
   let players = (create_players [] false) |> List.rev in
   (** have deal_initial_cards in as a placeholder;initial bets not implemented *)
-  let new_game = Blackjack.create_game players 15 6 0|> deal_initial_cards  in
-  
-  let initial_bet =
-    let rec get_num bet =
-      print_string ("Enter initial bet: " ^ " ");
-      let m = try int_of_string (read_line ()) with
-        | Failure a -> print_string "Malformed\n"; (get_num bet)
-      in m in 
-      let initial_bet_lst = place_initial_bets in
+  let new_game = Blackjack.create_game players 15 6 0 |> deal_initial_cards in
+  let bs = get_player_bets (Blackjack.get_players new_game) [] in
+  let new_game = Blackjack.place_initial_bets new_game bs in
     (* initial bet -> requires bot functionality to work *)
     print_endline (new_game |> get_info);
-    print_string "> "; in
+    print_string "> ";
   step (read_line ()) 0 new_game
 
 (* [main ()] prompts for the game to play, then starts it. *)
 let main () =
-  start_game
+  ANSITerminal.(print_string [magenta] "\nWelcome to the Blackjack!\n");
+  print_endline "Ready to play? (y/n) \n |>";
+  match read_line () with
+  | "y" -> start_game
+  | "n" -> ANSITerminal.(print_string [green] "Goodbye!"); exit 0
+  | _ -> ANSITerminal.(print_string [red] "Malformed input"); exit 0
+
 
 let rec dealer_turn game =
   let d_hand = game |> Blackjack.dealer |> Player.get_hand in
