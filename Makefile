@@ -38,6 +38,17 @@ docs-private: build
 		-html -stars -d doc.private \
 		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
 
+docs-public: build
+	mkdir -p doc.public
+	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+		-html -stars -d doc.public -hide-warnings $(MLIS)
+
+docs-private: build
+	mkdir -p doc.private
+	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+		-html -stars -d doc.private \
+		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
+
 clean:
 	ocamlbuild -clean
 	rm -rf doc.public doc.private report search_src.zip bisect*.out

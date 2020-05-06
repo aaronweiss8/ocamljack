@@ -10,7 +10,7 @@ let rec step r hand_idx game =
   | Stand idx -> let hand_number = (if (idx+1 = (current_player game |> get_hand |> 
                                                  List.length))
                                     then 0 else idx + 1) in begin
-      let game_after_cmd = (Blackjack.go game (parse r idx)) in
+      let game_after_cmd = (Blackjack.go game (parse r idx) false) in
       (print_endline (Blackjack.get_info game_after_cmd));
       print_endline ("Current Hand: " ^ string_of_int hand_number);
       print_string "> "; step (read_line ()) hand_number game_after_cmd end
@@ -18,7 +18,7 @@ let rec step r hand_idx game =
                              "Action not recognized. Please try again. \n> "; 
     step (read_line ()) hand_idx game
   | _ ->
-    let game_after_cmd = (Blackjack.go game (parse r hand_idx) |> check_hands) in
+    let game_after_cmd = (Blackjack.go game (parse r hand_idx) false |> check_hands) in
     (print_endline (Blackjack.get_info game_after_cmd));
     print_endline ("Current Hand: " ^ string_of_int hand_idx);
     print_string "> "; step (read_line ()) hand_idx game_after_cmd
@@ -46,10 +46,10 @@ let rec create_players (players: Player.t list) (no:bool) : Player.t list =
     match no with
     | false -> "New player? (y/n): \n> "
     | true  -> "Add another player? (y/n): \n> "
-  in print_string create_player_prompt;
+  in ANSITerminal.(print_string [cyan] create_player_prompt);
   match (read_line ()),no with
   | "y",_ -> create_players ((create_player true)::players) true
-  | _,false -> print_string "You must add at least one player! \n";
+  | _,false -> ANSITerminal.(print_string [red] "You must add at least one player! \n");
     create_players [] false
   | "n",_ -> players
   | _,true ->  print_string "Malformed \n"; create_players 
@@ -58,26 +58,32 @@ let rec create_players (players: Player.t list) (no:bool) : Player.t list =
 (* [start_game s] is the main recursive loop for the game that takes a user input
     s and returns an output and prompt. *)
 let start_game = 
+  ANSITerminal.(print_string [magenta] "\nWelcome to the Blackjack!\n");
   let players = (create_players [] false) |> List.rev in
   (** have deal_initial_cards in as a placeholder;initial bets not implemented *)
-  let new_game = Blackjack.create_game players 0 6 1|> deal_initial_cards  in
-  (* 
+  let new_game = Blackjack.create_game players 15 6 0|> deal_initial_cards  in
+  
   let initial_bet =
     let rec get_num bet =
       print_string ("Enter initial bet: " ^ " ");
       let m = try int_of_string (read_line ()) with
         | Failure a -> print_string "Malformed\n"; (get_num bet)
       in m in 
-      let initial_bet_lst = place_initial_bets
-    (** initial bet -> requires bot functionality to work *)
+      let initial_bet_lst = place_initial_bets in
+    (* initial bet -> requires bot functionality to work *)
     print_endline (new_game |> get_info);
-    print_string "> ";*)
-  step (read_line ()) 0 new_game 
+    print_string "> "; in
+  step (read_line ()) 0 new_game
 
 (* [main ()] prompts for the game to play, then starts it. *)
 let main () =
-  print_endline "Welcome to the casino!";
   start_game
+
+let rec dealer_turn game =
+  let d_hand = game |> Blackjack.dealer |> Player.get_hand in
+  if d_hand |> List.hd |> Blackjack.hand_value < 17 then
+  dealer_turn (Blackjack.go game (Hit 0) true) else
+  game
 
 (* Execute the game engine. *)
 let () = main ()

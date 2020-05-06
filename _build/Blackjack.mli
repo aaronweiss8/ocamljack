@@ -16,7 +16,7 @@ exception Player_Not_Found
 val get_info : t -> string
 
 (* [go t c] implements the given command on the game TODO *)
-val go : t -> Command.action -> t
+val go : t -> Command.action -> bool -> t
 
 (* [create_game p b d r] creates a game with players p, minimum bet b
     number of standard decks d starting at round r*)
@@ -44,8 +44,9 @@ val go_next_player : t -> t
     hand - should be turned into hand_has_blackjack*)
 val is_blackjack : Cards.card list-> bool
 
-(* [hit t i] returns a game state where current player has hit on hand i*)
-val hit : t -> int -> t
+(* [hit t i d] returns a game state where current player has hit on hand i
+    and does so for the dealer if d is true*)
+val hit : t -> int -> bool -> t
 
 (* [card_value c] returns an int corresponding to the rank c
     current has aces only 1*)

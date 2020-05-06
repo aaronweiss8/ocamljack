@@ -52,10 +52,17 @@ let remove_player p game =
      dealer = game.dealer;}
   else raise Player_Not_Found
 
-let hit game ind = 
+let hit game ind d =
   let (newdeck, c) = Cards.deal_one game.deck in
+  if d then
+  {round = game.round;
+     min_bet = game.min_bet;
+     players = game.players;
+     leftMostPlayer = game.leftMostPlayer;
+     deck = newdeck;
+     dealer = Player.add_to_hand c 0 game.dealer} else
   match game.players with
-  | current::t -> 
+  | current::t ->
     {round = game.round;
      min_bet = game.min_bet;
      players = (Player.add_to_hand c ind current)::t;
@@ -76,17 +83,29 @@ let get_hands p = p |> get_hand |> function
                             ^ ", " ^ y) "" x) ^ y) "" ) hand_list
                  ^ "]"
 
+let get_bet p = p |> bet |> function
+  | [] -> "[Empty]"
+  | hand_list -> "[" ^
+                 (List.fold_left (fun y x -> 
+                      (List.fold_left 
+                         (fun y x -> 
+                            (Cards.get_rank_string x) ^ " of " ^ 
+                            (Cards.get_suit_string x)
+                            ^ ", " ^ y) "" x) ^ y) "" ) hand_list
+                 ^ "]"
+
 
 (**Change to printf for alignment *)
-let get_info t = 
-  "Round: " ^ (string_of_int t.round) ^ ", " ^ 
+let get_info t =
+  "Rules: https://bicyclecards.com/how-to-play/blackjack/\n" ^
+  "Round: " ^ (string_of_int t.round) ^ ", " ^
+  "Values: White = 1; Red = 5; Blue = 10; Green = 25; Black = 100" ^  
   "Minimum Bet: " ^ string_of_int t.min_bet ^ ", " ^
   "Dealer Hand: " ^ (t.dealer |> get_hands) ^ "\n" ^
   "Leftmost Player: " ^ (name t.leftMostPlayer) ^ "\n" ^
   "Current Player: " ^ (current_player t |> name) ^ 
-  "]" ^ "\nPlayers and Hands: \n" ^ 
-  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^ 
-                              "\n " ^ y) 
+   "\nPlayer: Hand: Chips: Bet: \n" ^ 
+  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^"\n " ^ y) 
      "" t.players)
 
 let card_value c =
@@ -165,7 +184,7 @@ let double_down t idx =
      leftMostPlayer = t.leftMostPlayer;
      deck = t.deck;
      dealer = t.dealer} in
-  hit ng idx
+  hit ng idx false
 
 let deal_initial_cards game = 
 
@@ -412,9 +431,9 @@ let go_next_hand game ind =
 let end_round game =
   game |> collect_all_player_bets |> clear_hands
 
-let go game (cmd:action) = 
+let go game (cmd:action) d = 
   match cmd with
-  | (Hit ind) -> hit game ind
+  | (Hit ind) -> hit game ind d
   | (Split ind) -> split game ind
   | (Stand ind) -> go_next_hand game ind
   | (DD ind) -> double_down game ind
