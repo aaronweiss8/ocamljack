@@ -174,3 +174,6 @@ let return_bet ind t =
    bet = remove_bet 0 t.bet;
    bot = t.bot;
   }
+
+  let is_user t =
+    not(t.bot)
