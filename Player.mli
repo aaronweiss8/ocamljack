@@ -64,3 +64,5 @@ val make_player_with_hand : (Cards.color*Cards.suit*Cards.rank) list -> t
 val return_bet : int -> t -> t
 
 val win_bet : int -> t -> t
+
+val remove_from_hand : Cards.card -> int -> t -> t

@@ -35,41 +35,22 @@ let dealer t = t.dealer
 
 let add_player p game = 
   {round = game.round;
-  min_bet = game.min_bet;
-  players = game.players@[p];
-  leftMostPlayer = game.leftMostPlayer;
-  deck = game.deck;
-  dealer = game.dealer;
+   min_bet = game.min_bet;
+   players = game.players@[p];
+   leftMostPlayer = game.leftMostPlayer;
+   deck = game.deck;
+   dealer = game.dealer;
   }
 
 let remove_player p game =
   if (List.mem p game.players) then 
     {round = game.round;
-    min_bet = game.min_bet;
-    players = (List.filter (fun x -> x = p) game.players);
-    leftMostPlayer = game.leftMostPlayer;
-    deck = game.deck;
-    dealer = game.dealer;}
+     min_bet = game.min_bet;
+     players = (List.filter (fun x -> x = p) game.players);
+     leftMostPlayer = game.leftMostPlayer;
+     deck = game.deck;
+     dealer = game.dealer;}
   else raise Player_Not_Found
-
-let go_next_player game =
-  match game.players with
-  |p::t -> let new_players = t@[p] in 
-    if (p = game.leftMostPlayer) then
-      {round = (game.round + 1);
-       min_bet = game.min_bet;
-       players = new_players;
-       leftMostPlayer = game.leftMostPlayer;
-       deck = game.deck;
-       dealer = game.dealer}
-    else
-      {round = (game.round);
-       min_bet = game.min_bet;
-       players = new_players;
-       leftMostPlayer = game.leftMostPlayer;
-       deck = game.deck;
-       dealer = game.dealer}
-  |[] -> failwith "no players" 
 
 let hit game ind = 
   let (newdeck, c) = Cards.deal_one game.deck in
@@ -83,11 +64,30 @@ let hit game ind =
      dealer = game.dealer}
   | [] -> failwith "No players"
 
-let get_info t = failwith "unimplemnted"
-(* "[" ^ "Name: Blackjack, " ^
-                  "Round: " ^ (string_of_int t.round) ^ ", " ^ 
-                  "Current player: " ^ (current_player t |> Player.name) ^ ", " ^
-                  "First player: " ^ Player.name t.leftMostPlayer ^ "]" *)
+(**Change to pattern matching from fold *)
+let get_hands p = p |> get_hand |> function
+  | [] -> "[Empty]"
+  | hand_list -> "[" ^
+                 (List.fold_left (fun y x -> 
+                      (List.fold_left 
+                         (fun y x -> 
+                            (Cards.get_rank_string x) ^ " of " ^ 
+                            (Cards.get_suit_string x)
+                            ^ ", " ^ y) "" x) ^ y) "" ) hand_list
+                 ^ "]"
+
+
+(**Change to printf for alignment *)
+let get_info t = 
+  "Round: " ^ (string_of_int t.round) ^ ", " ^ 
+  "Minimum Bet: " ^ string_of_int t.min_bet ^ ", " ^
+  "Dealer Hand: " ^ (t.dealer |> get_hands) ^ "\n" ^
+  "Leftmost Player: " ^ (name t.leftMostPlayer) ^ "\n" ^
+  "Current Player: " ^ (current_player t |> name) ^ 
+  "]" ^ "\nPlayers and Hands: \n" ^ 
+  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^ 
+                              "\n " ^ y) 
+     "" t.players)
 
 let card_value c =
   match c with
@@ -116,9 +116,8 @@ let hand_value phand =
     has a blackjack, and false if the current player
     has not 
     currently checks if either of a split hand are blackjack*)
-let is_blackjack player =
-  let hand = List.hd (Player.get_hand player) in 
-  if (hand_value hand = 21) then true else false
+let is_blackjack hand =
+  hand_value hand = 21
 
 let did_bust hand = if hand_value hand < 22 then false else true
 
@@ -168,19 +167,62 @@ let double_down t idx =
      dealer = t.dealer} in
   hit ng idx
 
+let deal_initial_cards game = 
+
+  let rec dic_aux players game_deck accum =
+    match players with
+    | h::t -> let (new_deck, card) = deal_one game_deck in
+      let np = (h |> Player.add_hand |> Player.add_to_hand card 0) in
+      dic_aux t new_deck (np::accum)
+    | [] -> ((List.rev accum), game_deck) in
+
+  let deal_to_dealer dealer game_deck = 
+    let (new_deck, card) = deal_one game_deck in
+    let nd = (dealer |> Player.add_to_hand card 0) in
+    (nd, new_deck) in
+
+  let new_dealer = (game.dealer |> Player.add_hand) in 
+
+  let (fr_players, gd)= (dic_aux game.players game.deck []) in
+  let (fr_dealer, gd2) = (deal_to_dealer new_dealer gd) in
+  let (sr_players, gd3) = (dic_aux fr_players gd2 []) in
+  let (sr_dealer, gd4) = (deal_to_dealer fr_dealer gd3) in
+  {round = game.round;
+   min_bet = game.min_bet;
+   players = sr_players;
+   leftMostPlayer = game.leftMostPlayer;
+   deck = gd4;
+   dealer = sr_dealer;
+  }
+
 (* [next_round t] returns a game after going to the next round POTENTIALLY ISE*)
 let next_round t = 
   let rec collect_and_update player_lst accum = 
     match player_lst with
     |h::t -> let new_p = (h |> Player.collect_bets |> Player.update_hand [])
-      in collect_and_update t (new_p::accum)
+      in (collect_and_update t (new_p::accum))
     |[] -> List.rev accum in
   {round = (t.round + 1);
    min_bet = t.min_bet;
    players = collect_and_update t.players [];
    leftMostPlayer = t.leftMostPlayer;
    deck = t.deck;
-   dealer = t.dealer}
+   dealer = t.dealer} |> deal_initial_cards
+
+
+let go_next_player game =
+  match game.players with
+  |p::t-> let new_players = t@[p] in 
+    if (List.hd new_players = game.leftMostPlayer) then
+      next_round game
+    else
+      {round = (game.round);
+       min_bet = game.min_bet;
+       players = new_players;
+       leftMostPlayer = game.leftMostPlayer;
+       deck = game.deck;
+       dealer = game.dealer}
+  |[] -> failwith "no players" 
 
 (* [place_initial_bets game bets] has all the players place an initial bet above 
    the minimum bet *)
@@ -217,9 +259,9 @@ let check_hands game =
       else
         let hand_val = (hand_value (List.nth (Player.get_hand player) idx)) in
         let bet = (List.nth (Player.bet player) idx)in
-          if (hand_val > dealers_value || dealers_value >= 22) then
+        if (hand_val > dealers_value || dealers_value >= 22) then
           lose_bet_check t (idx + 1) (Player.add_chips bet player)
-          else lose_bet_check t (idx + 1) (player)
+        else lose_bet_check t (idx + 1) (player)
     | [] -> (Player.collect_bets player) in
 
   let rec ch_aux players accum =
@@ -241,58 +283,59 @@ let check_hands game =
    players on the table who want insurance and how much they want.
    Raises: Cannot_Perform_Insurance if a bet is higher than allowed for a 
    side bet or if the dealer is not showing an Ace. *)
-let insurance game bets = failwith "test"
-  (* let dealer_top_card = List.nth (List.nth (Player.get_hand game.dealer) 0) 0 in
+
+let insurance game bets = failwith ""
+(*
+  let dealer_top_card = List.nth (List.nth (Player.get_hand game.dealer) 0) 0 in
   let dealer_bottom_card = List.nth (List.nth (Player.get_hand game.dealer) 0) 1 in
   let ace_ex = Cards.make_card (Cards.Heart) (Cards.Red) (Cards.Ace) in
 
   let rec make_side_bets players bet_lst accum = 
-    match (players,bet_lst) with 
-    |((p::r),(h::t)) -> let bet_value = Player.bet_value p 0 in
-      let side_bet_val = Chip.get_value h in
-      if (side_bet_val * 2) <= bet_value then 
-        let np = (p |> Player.add_bet |> Player.bet_chips h 1) in
-        make_side_bets r t (np::accum)
-      else raise Cannot_Perform_Insurance
-    |([],[]) -> List.rev accum
-    |_ -> failwith "Not every player decided if they are going to bet" in
+  match (players,bet_lst) with 
+  |((p::r),(h::t)) -> let bet_value = Player.bet_value p 0 in
+  let side_bet_val = Chip.get_value h in
+  if (side_bet_val * 2) <= bet_value then 
+   let np = (p |> Player.add_bet |> Player.bet_chips h 1) in
+   make_side_bets r t (np::accum)
+  else raise Cannot_Perform_Insurance
+  |([],[]) -> List.rev accum
+  |_ -> failwith "Not every player decided if they are going to bet" in
 
   (* Only called if Dealer has BlackJack *)
   let rec check_player_for_BJ players accum =
-    match players with
-    |h::t -> let h_sidebet = List.nth (Player.bet h) 1 in
-      if is_blackjack h then
-        let np = (h |> Player.add_chips h_sidebet |> Player.add_chips h_sidebet |> 
-                  Player.collect_bets) in
-        check_player_for_BJ t (np::accum) else
-        let np = (h |> Player.add_chips h_sidebet |> Player.add_chips h_sidebet |> 
-                  Player.lose_bet 1) in 
-        check_player_for_BJ t (np::accum)
-    |[] -> List.rev accum in
+  match players with
+  |h::t -> let h_sidebet = List.nth (Player.bet h) 1 in
+  if is_blackjack h then
+   let np = (h |> Player.add_chips h_sidebet |> Player.add_chips h_sidebet |> 
+             Player.collect_bets) in
+   check_player_for_BJ t (np::accum) else
+   let np = (h |> Player.add_chips h_sidebet |> Player.add_chips h_sidebet |> 
+             Player.lose_bet 1) in 
+   check_player_for_BJ t (np::accum)
+  |[] -> List.rev accum in
 
   (* Only called if Dealer does not have BlackJack*)
   let rec remove_side_bets players accum =
-    match players with
-    |h::t ->
-      let np = (h |> Player.lose_bet 1) in 
-      check_player_for_BJ t (np::accum)
-    |[] -> List.rev accum in
+  match players with
+  |h::t ->
+  let np = (h |> Player.lose_bet 1) in 
+  check_player_for_BJ t (np::accum)
+  |[] -> List.rev accum in
 
   let bottom_card_value = (dealer_bottom_card |> Cards.get_rank |> card_value)
   in
 
   let make_new_players player_w_sb = 
-    if bottom_card_value = 10 then check_player_for_BJ player_w_sb []
-    else remove_side_bets player_w_sb [] in
-
+  if bottom_card_value = 10 then check_player_for_BJ player_w_sb []
+  else remove_side_bets player_w_sb [] in
   if (Cards.compare dealer_top_card ace_ex) = 0 then
-    let new_players1 = make_side_bets game.players bets [] in
-    {round = game.round;
-     min_bet = game.min_bet;
-     players = make_new_players new_players1;
-     leftMostPlayer = game.leftMostPlayer;
-     deck = game.deck;
-     dealer = game.dealer}
+  let new_players1 = make_side_bets game.players bets [] in
+  {round = game.round;
+  min_bet = game.min_bet;
+  players = make_new_players new_players1;
+  leftMostPlayer = game.leftMostPlayer;
+  deck = game.deck;
+  dealer = game.dealer}
 
   else raise Cannot_Perform_Insurance *)
 
@@ -304,7 +347,7 @@ let create_game playerlist mb num_decks round =
     else starting_deck (num -1) (Cards.get_standard_deck::accum) in
   let game_dealer = 
     Player.new_player "Dealer" (Chip.create_chips 999 999 999 999 999) 
-    [Cards.empty] [Chip.empty] true in
+      [Cards.empty] [Chip.empty] true in
   {round = round;
    min_bet = mb;
    players = playerlist;
@@ -313,55 +356,16 @@ let create_game playerlist mb num_decks round =
    dealer = game_dealer;}
 
 (* ALL PLAYERS HANDS AND DEALER SHOULD BE EMPTY LIST *)
-let deal_initial_cards game = 
-
-  let rec dic_aux players game_deck accum =
-    match players with
-    | h::t -> let (new_deck, card) = deal_one game_deck in
-      let np = (h |> Player.add_hand |> Player.add_to_hand card 0) in
-      dic_aux t new_deck (np::accum)
-    | [] -> ((List.rev accum), game_deck) in
-
-  let deal_to_dealer dealer game_deck = 
-    let (new_deck, card) = deal_one game_deck in
-    let nd = (dealer |> Player.add_to_hand card 0) in
-    (nd, new_deck) in
-
-  let new_dealer = (game.dealer |> Player.add_hand) in 
-
-  let (fr_players, gd)= (dic_aux game.players game.deck []) in
-  let (fr_dealer, gd2) = (deal_to_dealer new_dealer gd) in
-  let (sr_players, gd3) = (dic_aux fr_players gd2 []) in
-  let (sr_dealer, gd4) = (deal_to_dealer fr_dealer gd3) in
-    {round = game.round;
-    min_bet = game.min_bet;
-    players = sr_players;
-    leftMostPlayer = game.leftMostPlayer;
-    deck = gd4;
-    dealer = sr_dealer;
-    }
-
-  
-
-
-
-(* let rec get_command = 
-   let inp = read_line () in
-   try parse inp
-   with
-    | Malformed -> (print_string "Malformed\n");
-      get_command
-    | Empty -> (print_string "Empty\n");get_command *)
 
 (* ALREADY DONE AND NOT CORRECT WITH SPECS- IDK WHO DID THIS BUT SOMETHING NEEDS TO CHANGE*)
 let hand_result hand d dealer_bj dealer_bust = failwith "NEED TO FIX"
-  (* let h = hand_value hand in
-  let bj = is_blackjack hand in
-  if h = d then Tie else
-  if bj && not(dealer_bj) then Blackjack else
-  if (h > d || dealer_bust) && h <= 21 then Win else
-  if h = d && h <= 21 then Push else
-  Loss *)
+(* let h = hand_value hand in
+   let bj = is_blackjack hand in
+   if h = d then Tie else
+   if bj && not(dealer_bj) then Blackjack else
+   if (h > d || dealer_bust) && h <= 21 then Win else
+   if h = d && h <= 21 then Push else
+   Loss *)
 
 (* ALREADY DONE *)
 let change_bet_or_lose_one_hand r player ind =
@@ -370,32 +374,39 @@ let change_bet_or_lose_one_hand r player ind =
   | Win -> Player.win_bet ind player
   | Push -> Player.return_bet ind player
   | Loss -> Player.lose_bet ind player
+  |Tie -> failwith ""
 
 (* ALREADY DONE AND NOT CORRECT WITH SPECS- IDK WHO DID THIS BUT SOMETHING NEEDS TO CHANGE*)
 let rec do_each_hand hands player game ind = failwith "NEED TO FIX"
-  (* let dealer_hand = List.nth (Player.get_hand game.dealer) 0 in
-  match hands with
-  | h::t -> let r = hand_result h (hand_value dealer_hand) (is_blackjack dealer_hand) (hand_value dealer_hand > 21) in
-    do_each_hand t (change_bet_or_lose_one_hand r player ind) game (ind+1)
-  | [] -> player *)
+(* let dealer_hand = List.nth (Player.get_hand game.dealer) 0 in
+   match hands with
+   | h::t -> let r = hand_result h (hand_value dealer_hand) (is_blackjack dealer_hand) (hand_value dealer_hand > 21) in
+   do_each_hand t (change_bet_or_lose_one_hand r player ind) game (ind+1)
+   | [] -> player *)
 
 (* ALREADY DONE *)
 let collect_all_player_bets game =
   {round = game.round;
-    min_bet = game.min_bet;
-    players = List.map (fun x -> do_each_hand (Player.get_hand x) x game 0) game.players;
-    leftMostPlayer = game.leftMostPlayer;
-    deck = game.deck;
-    dealer = game.dealer}
+   min_bet = game.min_bet;
+   players = List.map (fun x -> do_each_hand (Player.get_hand x) x game 0) game.players;
+   leftMostPlayer = game.leftMostPlayer;
+   deck = game.deck;
+   dealer = game.dealer}
 
 (* ALREADY DONE *)
 let clear_hands game =
   {round = game.round;
-    min_bet = game.min_bet;
-    players = List.map (fun x -> Player.update_hand [] x) game.players;
-    leftMostPlayer = game.leftMostPlayer;
-    deck = game.deck;
-    dealer = Player.update_hand [] game.dealer}
+   min_bet = game.min_bet;
+   players = List.map (fun x -> Player.update_hand [] x) game.players;
+   leftMostPlayer = game.leftMostPlayer;
+   deck = game.deck;
+   dealer = Player.update_hand [] game.dealer}
+
+let go_next_hand game ind =
+  if (current_player game |> get_hand |> List.length)-1 = ind then 
+    go_next_player game
+  else
+    game
 
 (* ALREADY DONE AND INCORRECT, DOES NOT ACCOUND FOR ADDING ROUND*)
 let end_round game =
@@ -405,7 +416,7 @@ let go game (cmd:action) =
   match cmd with
   | (Hit ind) -> hit game ind
   | (Split ind) -> split game ind
-  | (Stand) -> go_next_player game
+  | (Stand ind) -> go_next_hand game ind
   | (DD ind) -> double_down game ind
   | (Insurance ind) -> failwith "not implemented"
   | _ -> failwith "should not have gotten here"

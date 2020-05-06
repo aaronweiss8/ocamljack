@@ -3,10 +3,10 @@ type action = Hit of int
             | Split of int 
             | DD of int 
             | Insurance of int 
-            | Stand
+            | Stand of int
             | Quit
 
-val parse : string -> action
+val parse : string -> int -> action
 
 exception Empty
 

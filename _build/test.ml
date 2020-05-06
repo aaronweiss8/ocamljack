@@ -110,8 +110,8 @@ let newgame3_lowbet = create_game [newplayer2;newplayer2] 0 6 1
 
 let dealer_bad = Player.new_player "dealer" Chip.empty [[Cards.make_card Heart Red (Num 2);Cards.make_card Heart Red (Num 2)]] [Chip.empty] true
 let dealer_bj = Player.new_player "dealer" Chip.empty [[Cards.make_card Heart Red Ace;Cards.make_card Heart Red King]] [Chip.empty] true
-(* let game_with_dealer_bad = Blackjack.add_dealer_to_game game1 dealer_bad
-let game_with_dealer_bj = Blackjack.add_dealer_to_game game2 dealer_bj *)
+let game_with_dealer_bad = Blackjack.add_dealer_to_game game1 dealer_bad
+let game_with_dealer_bj = Blackjack.add_dealer_to_game game2 dealer_bj
 let chip_tests = "Chip tests" >:::[
     "repo_ok and create_chip test" >:: 
     (fun _ -> assert_equal test_chip (Chip.repo_ok test_chip));

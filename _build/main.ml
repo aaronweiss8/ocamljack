@@ -59,19 +59,10 @@ let rec create_players (players: Player.t list) (no:bool) : Player.t list =
     s and returns an output and prompt. *)
 let start_game = 
   let players = (create_players [] false) |> List.rev in
-  (** have deal_initial_cards in as a placeholder;initial bets not implemented *)
   let new_game = Blackjack.create_game players 0 6 1|> deal_initial_cards  in
-  (* 
-  let initial_bet =
-    let rec get_num bet =
-      print_string ("Enter initial bet: " ^ " ");
-      let m = try int_of_string (read_line ()) with
-        | Failure a -> print_string "Malformed\n"; (get_num bet)
-      in m in 
-      let initial_bet_lst = place_initial_bets
-    (** initial bet -> requires bot functionality to work *)
-    print_endline (new_game |> get_info);
-    print_string "> ";*)
+  (** initial bet -> requires bot functionality to work *)
+  print_endline (new_game |> get_info);
+  print_string "> ";
   step (read_line ()) 0 new_game 
 
 (* [main ()] prompts for the game to play, then starts it. *)

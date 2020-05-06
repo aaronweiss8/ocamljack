@@ -41,11 +41,9 @@ val new_player : string -> Chip.t -> Cards.deck list -> Chip.t list -> bool -> t
 (* [update_hand new_hand t] retuns a player with an updated hand *)
 val update_hand : Cards.deck list -> t -> t
 
-(*[add_to_hand c ind t] returns a player with [c] added to the hand at ind *)
-val add_to_hand : Cards.card -> int -> t -> t
 
-(* [remove_from_hand c ind t] returns a player with [c] removed from the hand at ind*)
-val remove_from_hand: Cards.card -> int -> t -> t
+(*[add_to_hand c ind t] returns a player with [c] added to the deck at ind *)
+val add_to_hand : Cards.card -> int -> t -> t
 
 (* [add_hand t] returns player with an additional hand *)
 val add_hand : t -> t
@@ -66,3 +64,5 @@ val make_player_with_hand : (Cards.color*Cards.suit*Cards.rank) list -> t
 val return_bet : int -> t -> t
 
 val win_bet : int -> t -> t
+
+val remove_from_hand : Cards.card -> int -> t -> t
