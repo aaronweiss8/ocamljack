@@ -29,12 +29,12 @@ val current_player: t -> Player.t
 val get_deck : t -> Cards.deck
 
 (* [add_player p game] returns a [game] with [p] added to the game. 
-The player is added to the rightside of the table *)
+   The player is added to the rightside of the table *)
 val add_player : Player.t -> t -> t
 
 (* [remove_player p game] returns a [game] with [p] removed from the game.
-Requires: [p] is in the game's players list
-Raises: Player_Not_Found if the player is not in the game *)
+   Requires: [p] is in the game's players list
+   Raises: Player_Not_Found if the player is not in the game *)
 val remove_player: Player.t -> t -> t
 
 (* [go_next_player t] returns a game state where the next player is first*)
@@ -42,7 +42,7 @@ val go_next_player : t -> t
 
 (* [is_blackjack p] returns whether player p has achieved blackjack on any
     hand - should be turned into hand_has_blackjack*)
-val is_blackjack : Player.t -> bool
+val is_blackjack : Cards.card list-> bool
 
 (* [hit t i] returns a game state where current player has hit on hand i*)
 val hit : t -> int -> t

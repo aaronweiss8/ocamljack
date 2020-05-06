@@ -151,7 +151,7 @@ let win_bet ind t =
   let rec remove_bet current betlist =
     match betlist with
     | h::t -> if current = ind then Chip.empty::t else
-      h::(remove_bet (current+1) t)
+        h::(remove_bet (current+1) t)
     | [] -> failwith "bet at index does not exist" in
   {name = t.name;
    chips = Chip.add t.chips add_to_chips;
@@ -166,7 +166,7 @@ let return_bet ind t =
   let rec remove_bet current betlist =
     match betlist with
     | h::t -> if current = ind then Chip.empty::t else
-      h::(remove_bet (current+1) t)
+        h::(remove_bet (current+1) t)
     | [] -> failwith "bet at index does not exist" in
   {name = t.name;
    chips = Chip.add t.chips b;

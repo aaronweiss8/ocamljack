@@ -103,6 +103,27 @@ let get_rank c =
   | (_,_,Num x) -> Num x
   | (_,_,y) -> y
 
+
+let get_rank c = 
+  match c.rep with
+  | (_,_,Num x) -> Num x
+  | (_,_,y) -> y
+
+let get_suit_string c =
+  match c.rep with
+  | (Heart,_,_) -> "Hearts"
+  | (Spade,_,_) -> "Spades"
+  | (Diamond,_,_) -> "Diamonds"
+  | (Club,_,_)  -> "Clubs"
+
+let get_rank_string c = 
+  match c.rep with
+  | (_,_,Num x) -> string_of_int x
+  | (_,_,Jack) -> "Jack"
+  | (_,_,Queen) -> "Queen"
+  | (_,_,King) -> "King"
+  | (_,_,Ace) -> "Ace"
+
 let make_card suit color rank = 
   {rep = (suit,color,rank)}
 

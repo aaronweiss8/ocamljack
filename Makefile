@@ -1,4 +1,4 @@
-MODULES=Cards Chip Game Blackjack Player
+MODULES=Cards Chip Blackjack Player Command
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

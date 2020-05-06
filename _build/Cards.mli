@@ -60,3 +60,9 @@ val empty : deck
 
 (** [make_card suit color rank] returns a new card. FOR TESTING ONLY*)
 val make_card : suit -> color -> rank -> card
+
+(** [get_suit_string c] returns the suit of card [c] as a string. *)
+val get_suit_string : card -> string
+
+(** [get_rank_string c] returns the rank of card [c] as a string. *)
+val get_rank_string : card -> string
