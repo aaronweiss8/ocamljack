@@ -66,3 +66,6 @@ val return_bet : int -> t -> t
 val win_bet : int -> t -> t
 
 val remove_from_hand : Cards.card -> int -> t -> t
+
+(* [is_player p] returns returns true if p is a user and false if p is a bot *)
+val is_user : t -> bool

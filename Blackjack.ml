@@ -83,17 +83,12 @@ let get_hands p = p |> get_hand |> function
                             ^ ", " ^ y) "" x) ^ y) "" ) hand_list
                  ^ "]"
 
-let get_bet p = p |> bet |> function
-  | [] -> "[Empty]"
-  | hand_list -> "[" ^
-                 (List.fold_left (fun y x -> 
-                      (List.fold_left 
-                         (fun y x -> 
-                            (Cards.get_rank_string x) ^ " of " ^ 
-                            (Cards.get_suit_string x)
-                            ^ ", " ^ y) "" x) ^ y) "" ) hand_list
-                 ^ "]"
+let get_chips p = p |> Player.chips |> Chip.to_string
 
+let rec get_bets bets acc =
+  match bets with
+  | h::t -> get_bets t acc ^ Chip.to_string h
+  | [] -> acc ^ "]"
 
 (**Change to printf for alignment *)
 let get_info t =
@@ -104,8 +99,9 @@ let get_info t =
   "Dealer Hand: " ^ (t.dealer |> get_hands) ^ "\n" ^
   "Leftmost Player: " ^ (name t.leftMostPlayer) ^ "\n" ^
   "Current Player: " ^ (current_player t |> name) ^ 
-   "\nPlayer: Hand: Chips: Bet: \n" ^ 
-  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^ "\n " ^ y) 
+   "\nPlayer: Hand, Chips, Bet: \n" ^ 
+  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^"\n "
+    ^ get_chips x ^ ", " ^ get_bets (Player.bet x) "[" ^ ", " ^ y) 
      "" t.players)
 
 let card_value c =
