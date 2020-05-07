@@ -137,23 +137,28 @@ let rec dealer_turn game =
 (*[play_and_rotate game ind on_dealer] does the "Heavy Lifting" for the 
 functionality of the game *)
 let rec play_and_rotate game ind on_dealer =
+
+  ANSITerminal.(print_string [red;Bold] "\n=================================\n");
+  if on_dealer then 
+     let ng = dealer_turn game in
+     ANSITerminal.(print_string [green] "\nDealers Turn!\n");
+     Blackjack.get_info ng;
+     ng
+  else
+
   let cp = Blackjack.current_player game in
   ANSITerminal.(print_string [magenta;Bold] ("\n" ^ (Player.name cp) ^ 
   ",what is your move?\n" ^ "The command options are hit, double down, stand,"^ 
   " quit, split, or insurance. \n|> "));
-  if on_dealer then 
-     let ng = dealer_turn game in
-     Blackjack.get_info ng;
-     ng
-  else
+
   let input = (read_line ()) in
   match (parse input ind) with
   | Hit i -> 
       (let ng = Blackjack.hit game ind on_dealer in
-      Blackjack.get_info ng;
       let new_cp = Blackjack.current_player ng in
       let hand_val = Blackjack.hand_value (List.nth (Player.get_hand new_cp) ind) in
       ANSITerminal.(print_string [cyan] ("\nYour hand is worth " ^ (string_of_int hand_val) ^ " after hitting"));
+      Blackjack.get_info ng;
       let num_hands_of_cp = (new_cp |> Player.get_hand |> List.length) in
       if(hand_val > 21) && (ind = (num_hands_of_cp - 1)) then
         let rotated_game = (Blackjack.go_next_player ng) in
@@ -176,10 +181,10 @@ let rec play_and_rotate game ind on_dealer =
     else play_and_rotate game (ind + 1) on_dealer)
   | DD i ->
     (let ng = Blackjack.double_down game ind in
-    Blackjack.get_info ng;
     let new_cp = Blackjack.current_player ng in
     let hand_val = Blackjack.hand_value (List.nth (Player.get_hand new_cp) ind) in
     ANSITerminal.(print_string [cyan] ("\nYour hand is worth " ^ (string_of_int hand_val) ^ " after doubling down"));
+    Blackjack.get_info ng;
     let num_hands_of_cp = (new_cp |> Player.get_hand |> List.length) in 
     if(ind = (num_hands_of_cp - 1)) then
       let rotated_game = (Blackjack.go_next_player ng) in
@@ -209,27 +214,31 @@ let rec play game =
     let name = read_line () in
     ANSITerminal.(print_string [default] "\nEnter your starting chips: ");
     let starting_chips = get_chips ()
-      in (play (Blackjack.add_player (Player.new_player name starting_chips [[]] [Chip.empty] false) game)))
+      in (play (Blackjack.add_player (Player.new_player name starting_chips [Cards.empty] [Chip.empty] false) game)))
   | _ ->
     let simp_break_ed_game = Blackjack.update_playerlst game (simp_or_break (Blackjack.get_players game) []) in
     (*AT THIS POINT THE USER HAS THE OPTION TO BREAK OR SIMPLIFY THEIR CHIPS *)
     Blackjack.get_info simp_break_ed_game;
-    ANSITerminal.(print_string [blue] "Place initial Bets, remember the minimum bet!");
+    ANSITerminal.(print_string [magenta] "Place initial Bets, remember the minimum bet!");
     let bets = get_pre_round_bet (Blackjack.get_players simp_break_ed_game) [] in
     let betted_game = Blackjack.place_initial_bets game bets in
     (*AT THIS POINT THE USER HAS PLACED THEIR INITIAL BET *)
-    Blackjack.get_info betted_game; 
+    Blackjack.get_info betted_game;
+    ANSITerminal.(print_string [red;Bold] ("\n============================\n" ^
+    "Cards have been delt" ^ "\n============================\n")); 
     let game_after_delt = Blackjack.deal_initial_cards betted_game in
     (*AT THIS POINT THE USER HAS BEEN DELT THEIR INITIAL CARDS *)
-    Blackjack.get_info game_after_delt;
+    Blackjack.get_info game_after_delt;   
     let play_round = play_and_rotate game_after_delt 0 false in 
     (*AT THIS POINT THE ROUND HAS BEEN PLAYED *)
     Blackjack.get_info play_round;
     let round_with_check = Blackjack.check_hands play_round in
     (*AT THIS POINT THE BETS HAVE BEEN COLLECTED OR DISTRIBUTED *)
-    let next_round = Blackjack.next_round round_with_check in
-    Blackjack.get_info next_round;
-    play next_round)
+    
+    Blackjack.get_info round_with_check;
+    (* let next_round = Blackjack.next_round round_with_check in
+    Blackjack.get_info next_round; *)
+    play round_with_check)
     with
       | Failure m -> (ANSITerminal.(print_string [red] "Malformed\n")); (play game)
       | Bet_Too_Low -> (ANSITerminal.(print_string [red] "Bet too low")); (play game)
@@ -243,9 +252,10 @@ let main () =
 
   match (read_line ()) with
   | "y" -> (ANSITerminal.(print_string [default] "\nEnter your name!\n |> "); 
-    let name = (read_line ()) in 
+    let name = (read_line ()) in
+    ANSITerminal.(print_string [default] "\nEnter your starting chips: ");
     let init_chips = get_chips () in
-    play (Blackjack.create_game [(Player.new_player name init_chips [[]] [Chip.empty] false)] 15 6 0))
+    play (Blackjack.create_game [(Player.new_player name init_chips [Cards.empty] [Chip.empty] false)] 15 6 0))
   | "n" -> (ANSITerminal.(print_string [green] "Goodbye!")); exit 0
   | _ -> (ANSITerminal.(print_string [red] "Malformed input")); exit 0
 

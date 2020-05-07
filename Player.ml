@@ -84,9 +84,9 @@ let update_hand new_hand t =
 let add_to_hand c ind t =
   let rec choose_hand d c ind accum =
     match d with
-    | [] -> failwith "hand does not exist"
     | h::r -> if ind = 0 then (List.rev accum)@[(Cards.add_to_deck c h)]@r 
-      else (choose_hand r c (ind-1) (h::accum)) in
+      else (choose_hand r c (ind-1) (h::accum))
+    | [] -> failwith "hand does not exist" in
   {name = t.name;
    chips = t.chips;
    hand = choose_hand t.hand c ind [];
@@ -147,6 +147,21 @@ let make_player_with_hand tups =
 let win_bet ind t =
   let b = List.nth t.bet ind in
   let add_to_chips = (Chip.add b b) in
+  let rec new_bet_lst lst idx accum =
+    match lst with
+    |h::r -> if idx = 0 then 
+        let new_b = Chip.add h add_to_chips in
+        (List.rev accum)@[new_b]@r
+      else new_bet_lst r (idx - 1) (h::accum)
+    |[] -> failwith "Bet does not exist" in
+  {name = t.name;
+   chips = t.chips;
+   hand = t.hand;
+   bet = new_bet_lst t.bet ind [];
+   bot = t.bot;
+  }
+  (* let b = List.nth t.bet ind in
+  let add_to_chips = (Chip.add b b) in
   let rec remove_bet current betlist =
     match betlist with
     | h::t -> if current = ind then Chip.empty::t else
@@ -157,7 +172,7 @@ let win_bet ind t =
    hand = t.hand;
    bet = remove_bet 0 t.bet;
    bot = t.bot;
-  }
+  } *)
 
 (* ALREADY DONE *)
 let return_bet ind t =
