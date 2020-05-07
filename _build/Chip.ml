@@ -95,6 +95,10 @@ let bet t1 t2 =
 
 let create_chips w r b g bl = (White w), (Red r), (Blue b), (Green g), (Black bl)
 
-let to_string (White w,Red r,Blue b,Green g, Black bl) =
+let to_string c =
+  match c with
+  | (White w,Red r,Blue b,Green g, Black bl) ->
   "[Whites: " ^ string_of_int w ^ ", Reds: " ^ string_of_int r ^ ", Blues: " ^
-  string_of_int b ^ ", Greens: " ^ string_of_int bl ^ "]"
+  string_of_int b ^ ", Greens: " ^ string_of_int g ^ ", Blacks: " ^ 
+  string_of_int bl ^ "]"
+  | _ -> failwith "out of order"

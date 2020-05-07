@@ -13,7 +13,7 @@ exception Player_Not_Found
 
 
 (* [get_info t] returns a string of the current game state TODO*)
-val get_info : t -> string
+val get_info : t -> unit
 
 (* [go t c] implements the given command on the game TODO *)
 val go : t -> Command.action -> bool -> t
@@ -23,10 +23,16 @@ val go : t -> Command.action -> bool -> t
 val create_game : Player.t list -> int -> int -> int -> t
 
 (* [current_player t] returns the current player of game t *)
-val current_player: t -> Player.t
+val current_player : t -> Player.t
+
+(*[update_playerlst t plst] returns a game with an updated player list *)
+val update_playerlst : t -> Player.t list -> t
 
 (* [get_deck t] returns the game deck for t *)
 val get_deck : t -> Cards.deck
+
+(* [leftMostPlayer t] returns the leftmost player of the [t] *)
+val leftMostPlayer : t -> Player.t
 
 (* [add_player p game] returns a [game] with [p] added to the game. 
    The player is added to the rightside of the table *)

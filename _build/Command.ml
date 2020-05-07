@@ -15,7 +15,7 @@ let parse s idx =
   match string_list with
   | [] -> raise Empty
   | h::[] when h = "hit" -> (Hit idx)
-  | h::[] when h = "double" -> (DD idx)
+  | h::t::[] when (h ^ " " ^ t) = "double down" -> (DD idx)
   | h::[] when h = "stand" -> (Stand idx)
   | h::[] when h = "quit" -> (Quit)
   | h::[] when h = "split" -> (Split idx)

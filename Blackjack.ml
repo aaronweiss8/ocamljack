@@ -33,6 +33,17 @@ let get_players t = t.players
 
 let dealer t = t.dealer
 
+let leftMostPlayer t = t.leftMostPlayer
+
+let update_playerlst t plst = 
+  {round = t.round;
+   min_bet = t.min_bet;
+   players = plst;
+   leftMostPlayer = t.leftMostPlayer;
+   deck = t.deck;
+   dealer = t.dealer;
+  }
+
 let add_player p game = 
   {round = game.round;
    min_bet = game.min_bet;
@@ -43,11 +54,19 @@ let add_player p game =
   }
 
 let remove_player p game =
-  if (List.mem p game.players) then 
+  if (List.mem p game.players) && (p <> game.leftMostPlayer) then 
     {round = game.round;
      min_bet = game.min_bet;
      players = (List.filter (fun x -> x = p) game.players);
      leftMostPlayer = game.leftMostPlayer;
+     deck = game.deck;
+     dealer = game.dealer;}
+  else if (List.mem p game.players) && (List.length game.players > 1) then
+    let new_plst = (List.filter (fun x -> x = p) game.players) in
+    {round = game.round;
+     min_bet = game.min_bet;
+     players = (new_plst);
+     leftMostPlayer = (List.hd new_plst);
      deck = game.deck;
      dealer = game.dealer;}
   else raise Player_Not_Found
@@ -60,7 +79,8 @@ let hit game ind d =
      players = game.players;
      leftMostPlayer = game.leftMostPlayer;
      deck = newdeck;
-     dealer = Player.add_to_hand c 0 game.dealer} else
+     dealer = Player.add_to_hand c 0 game.dealer} 
+  else
   match game.players with
   | current::t ->
     {round = game.round;
@@ -88,21 +108,26 @@ let get_chips p = p |> Player.chips |> Chip.to_string
 let rec get_bets bets acc =
   match bets with
   | h::t -> get_bets t acc ^ Chip.to_string h
-  | [] -> acc ^ "]"
+  | [] -> acc
 
 (**Change to printf for alignment *)
 let get_info t =
-  "Rules: https://bicyclecards.com/how-to-play/blackjack/\n" ^
-  "Round: " ^ (string_of_int t.round) ^ ", " ^
-  "Values: White = 1; Red = 5; Blue = 10; Green = 25; Black = 100" ^  
-  "Minimum Bet: " ^ string_of_int t.min_bet ^ ", " ^
-  "Dealer Hand: " ^ (t.dealer |> get_hands) ^ "\n" ^
-  "Leftmost Player: " ^ (name t.leftMostPlayer) ^ "\n" ^
-  "Current Player: " ^ (current_player t |> name) ^ 
-   "\nPlayer: Hand, Chips, Bet: \n" ^ 
-  (List.fold_left (fun y x -> "   " ^ Player.name x ^ ": " ^ get_hands x ^"\n "
-    ^ get_chips x ^ ", " ^ get_bets (Player.bet x) "[" ^ ", " ^ y) 
-     "" t.players)
+  ANSITerminal.(print_string [blue] 
+    ("\nRules: https://bicyclecards.com/how-to-play/blackjack/\n" ^
+    "Round: " ^ (string_of_int t.round) ^ ", " ^
+    "Values: White = 1; Red = 5; Blue = 10; Green = 25; Black = 100 " ^  
+    "Minimum Bet: " ^ string_of_int t.min_bet ^ ", " ^
+    "\nSimplify your chips means converting your chips to higher denominations."^
+    "\nBreak your chips means converting your chips into lower denominations.\n"^
+    "Dealer Hand: " ^ (t.dealer |> get_hands) ^ "\n" ^
+    "Leftmost Player: " ^ (Player.name t.leftMostPlayer) ^ "\n" ^  
+    "Current Player: "));
+  ANSITerminal.(print_string [green] (current_player t |> Player.name)); 
+  ANSITerminal.(print_string [default] "\nPlayer: Hand, Chips, Bet: \n");
+  ANSITerminal.(print_string [default] (List.fold_left (fun y x -> "\n" ^ Player.name x ^ ": " ^ get_hands x ^" "
+    ^ get_chips x ^ ", " ^ get_bets (Player.bet x) "" ^ ", " ^ y) 
+     " " t.players)); 
+  print_string "\n"; ()
 
 let card_value c =
   match c with
@@ -227,10 +252,7 @@ let next_round t =
 
 let go_next_player game =
   match game.players with
-  |p::t-> let new_players = t@[p] in 
-    if (List.hd new_players = game.leftMostPlayer) then
-      next_round game
-    else
+  |p::t-> let new_players = t@[p] in
       {round = (game.round);
        min_bet = game.min_bet;
        players = new_players;
@@ -242,10 +264,13 @@ let go_next_player game =
 (* [place_initial_bets game bets] has all the players place an initial bet above 
    the minimum bet *)
 let place_initial_bets game bets =
+  (* let np = List.map (fun x -> Player.add_bet x) game.players in *)
   let rec pib_aux players bet_lst accum = 
     match (players,bet_lst) with
-    |(h::t,b::r) -> if Chip.get_value b >= game.min_bet then
-        pib_aux t r ((Player.bet_chips b 0 h)::accum)
+    |(h::t,b::r) -> 
+      print_string ((Player.name h) ^ (Chip.to_string b));
+      if (Chip.get_value b >= game.min_bet) then
+        (pib_aux t r ((Player.bet_chips b 0 h)::accum))
       else raise Bet_Too_Low
     |([],[]) -> List.rev accum
     |_ -> failwith "too many bets or too many players" in 

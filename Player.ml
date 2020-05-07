@@ -30,19 +30,18 @@ let add_chips chip t =
    bot=t.bot
   }
 
-let bet_chips bet idx t = 
+let bet_chips to_bet idx t = 
   let rec new_bet_lst lst idx accum =
     match lst with
     |h::r -> if idx = 0 then 
-        let new_b = Chip.add h bet in
+        let new_b = Chip.add h to_bet in
         (List.rev accum)@[new_b]@r
       else new_bet_lst r (idx - 1) (h::accum)
     |[] -> failwith "Bet does not exist" in
-
   {name = t.name;
-   chips = (Chip.bet t.chips bet);
+   chips = (Chip.bet t.chips to_bet);
    hand = t.hand;
-   bet = (new_bet_lst t.bet idx []);
+   bet = (new_bet_lst (bet t) idx []);
    bot = t.bot}
 
 let collect_bets t = 
