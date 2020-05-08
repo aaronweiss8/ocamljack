@@ -15,9 +15,6 @@ exception Player_Not_Found
 (** [get_info t] returns a string of the current game state TODO*)
 val get_info : t -> bool -> unit
 
-(** [go t c] implements the given command on the game TODO *)
-val go : t -> Command.action -> bool -> t
-
 val get_hands : bool -> Player.t -> string
 
 (** [min_bet t] returns t's minimum bet for the table *)

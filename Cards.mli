@@ -66,3 +66,8 @@ val get_suit_string : card -> string
 
 (** [get_rank_string c] returns the rank of card [c] as a string. *)
 val get_rank_string : card -> string
+
+(** [recommendation p d] returns a recommendation of the best move a player
+should take based on the current user hand and dealer hand.] *)
+(* val recommendation: hand -> hand -> string *)
+

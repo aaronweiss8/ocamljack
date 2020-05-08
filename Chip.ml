@@ -34,13 +34,14 @@ let single_step_simplify = function
     else if r > 2
     then (((White (w)),(Red (r-2)),(Blue (blu+1)),(Green g),(Black bla)),true)
     else if r = 1 && blu >= 2
-    then (((White (w)),(Red (r-1)),(Blue (blu-2)),(Green (g+1)),(Black bla)),true)
+    then (((White (w)),(Red (r-1)),(Blue (blu-2)),(Green (g+1)),
+          (Black bla)),true)
     else if g >= 4
     then (((White (w)),(Red r),(Blue blu),(Green (g-4)),(Black (bla+1))),true)
     else (t,false)
   |_ -> raise RI_Broken
 
-(**[single_step_break t] takes the highest demoninaitons availabble and breaks it
+(**[single_step_break t] takes the highest demoninaitons availabble and breaks
    into smaller ones if possible.
    Returns: type (t, bool), where the bool indicates if t changed*)
 let single_step_break = function
@@ -48,7 +49,8 @@ let single_step_break = function
     if bla >=1 
     then (((White w),(Red r),(Blue blu),(Green (g+4)),(Black (bla-1))),true)
     else if g >= 1
-    then (((White w),(Red (r+1)),(Blue (blu+2)),(Green (g-1)),(Black bla)),true)
+    then (((White w),(Red (r+1)),(Blue (blu+2)),(Green (g-1)),
+          (Black bla)),true)
     else if blu >= 1
     then (((White w),(Red (r+2)),(Blue (blu-1)),(Green g),(Black bla)),true)
     else if r >= 1
@@ -76,7 +78,8 @@ let add t1 t2 =
   match (t1,t2) with
   |(((White w1),(Red r1),(Blue blu1),(Green g1),(Black bla1)),
     ((White w2),(Red r2),(Blue blu2),(Green g2),(Black bla2))) ->
-    ((White (w1+w2)),(Red (r1+r2)),(Blue (blu1+blu2)),(Green (g1+g2)),(Black (bla1+bla2)))
+    ((White (w1+w2)),(Red (r1+r2)),(Blue (blu1+blu2)),(Green (g1+g2)),
+    (Black (bla1+bla2)))
   | _ -> raise RI_Broken
 
 let bet t1 t2 = 
@@ -89,17 +92,20 @@ let bet t1 t2 =
     let new_g = g1 - g2 in
     let new_bla = bla1 - bla2 in
     if new_w >= 0 && new_r >= 0 && new_blu >= 0 && new_g >= 0 && new_bla >= 0
-    then ((White new_w),(Red new_r),(Blue new_blu),(Green new_g),(Black new_bla))
+    then ((White new_w),(Red new_r),(Blue new_blu),(Green new_g),
+          (Black new_bla))
     else raise Not_Within  
   | _ -> raise RI_Broken
 
-let create_chips w r b g bl = (White w), (Red r), (Blue b), (Green g), (Black bl)
+let create_chips w r b g bl = (White w), (Red r), (Blue b), (Green g),
+  (Black bl)
 
 let is_within c1 c2 =
   match (c1,c2) with
     |(((White w1),(Red r1),(Blue blu1),(Green g1),(Black bla1)),
       ((White w2),(Red r2),(Blue blu2),(Green g2),(Black bla2))) ->
-        if (w1 >= w2) && (r1 >= r2) && (blu1 >= blu2) && (g1 >= g2) && (bla1 >= bla2) then
+        if (w1 >= w2) && (r1 >= r2) && (blu1 >= blu2) && (g1 >= g2) &&
+            (bla1 >= bla2) then
         true else false
     | _ -> failwith "RI Broken"
 
@@ -110,6 +116,8 @@ let to_string c =
   string_of_int b ^ ", Greens: " ^ string_of_int g ^ ", Blacks: " ^ 
   string_of_int bl ^ "]"
   | _ -> failwith "out of order"
+  
+  
   
   
   

@@ -310,7 +310,6 @@ and insurance game ind on_dealer =
   a game specified by user input *)
 let rec play game =
 
-  (** [do_beginning g] does all beginning checks and input up to dealing cards*)
   let do_beginning game =
     let check_mula = check_players_have_mula game in
     let simp_break_ed_game = Blackjack.update_playerlst check_mula

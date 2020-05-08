@@ -1,4 +1,3 @@
-
 type color = | Red | Black
 
 type suit = | Heart | Spade | Diamond | Club
@@ -16,8 +15,8 @@ type card = {rep: (suit * color * rank)}
 
 type deck = card list
 
-(**[compare_card_shuffle t1 t2] retuns 1 if t1 is greater, 0 if they are equal, and -1
-   if t2 is greater  *)
+(**[compare_card_shuffle t1 t2] retuns 1 if t1 is greater, 0 if they are equal,
+  and -1 if t2 is greater  *)
 let compare_card_shuffle t1 t2 = 
   match (t1,t2) with
   |((c1,r1),(c2,r2)) -> if r1 > r2 then 1 else if r1 = r2 then 0 else -1
@@ -67,7 +66,8 @@ let get_standard_deck =
 
 let rec shuffle (deck: deck) : deck =
   Random.self_init ();
-  deck |> List.map (fun x -> (x,Random.int 52)) |> List.sort compare_card_shuffle |>
+  deck |> List.map (fun x -> (x,Random.int 52)) |>
+  List.sort compare_card_shuffle |>
   List.map (fun (x,y) -> x)
 
 let add_to_deck c deck =
@@ -104,12 +104,6 @@ let get_rank c =
   | (_,_,Num x) -> Num x
   | (_,_,y) -> y
 
-
-let get_rank c = 
-  match c.rep with
-  | (_,_,Num x) -> Num x
-  | (_,_,y) -> y
-
 let get_suit_string c =
   match c.rep with
   | (Heart,_,_) -> "Hearts"
@@ -125,8 +119,87 @@ let get_rank_string c =
   | (_,_,King) -> "King"
   | (_,_,Ace) -> "Ace"
 
-
 let make_card suit color rank = 
   {rep = (suit,color,rank)}
 
 let empty : deck = []
+
+let deck_value phand = 
+  let handlist = List.map get_rank phand in
+  let rec sumaces acc num =
+    if num = 0 then acc else
+    if num = 1 && acc + 11 <= 21 then acc + 11 else
+    if 11 + (num-1) + acc <= 21 then acc + 11 + num - 1 else
+      acc + num in
+  let rec sumhand (hand: rank list) acc num_aces =
+    match hand with
+    | [] -> if num_aces = 0 then acc else (sumaces acc num_aces)
+    | h::t -> match h with
+      | Num x -> (sumhand t (acc + x) num_aces)
+      | Ace -> (sumhand t acc (num_aces + 1))
+      | _ -> (sumhand t (acc + 10) num_aces) in
+  sumhand handlist 0 0
+  
+let rec_aux player_value dealer_value = 
+  if player_value <= 8 then "hit"
+  else if (player_value = 9) then
+    if dealer_value >= 3 && dealer_value <= 6 then "double down"
+    else "hit"
+  else if (player_value = 10) then
+    if dealer_value <= 9 then "double down"
+    else "hit"
+  else if (player_value = 11) then 
+    if dealer_value <= 10 then "double down"
+        else "hit"
+    
+let recommendation player_hand dealer_hand = 
+
+  let dealer_value = (List.nth dealer_hand 1) in
+
+  match (player_hand, dealer_value) with
+  | ((a::b::[]), d) -> 
+    match (get_rank a, get_rank b) with
+    | (Ace, Ace) -> "stand"
+    | (Num n1, Num n2) ->
+      if n1 = n2 then
+        match n1 with
+        | 2
+        | 3 -> (if d <> Ace then
+                match d with
+                | Num dv -> if (dv >= 4  && dv <= 7) then "split" else "hit"
+                | _ -> failwith "should never happen"
+              else 
+              "hit")
+        | 4
+        | 5 -> "hit"
+        | 6 -> (if d <> Ace then
+                match d with
+                | Num dv -> if (dv >= 3  && dv <= 6) then "split" else "hit"
+                | _ -> failwith "should never happen"
+              else 
+              "hit")
+        | 7 -> (if d <> Ace then
+                match d with
+                | Num dv -> if (dv <= 7) then "split" else "hit"
+                | _ -> failwith "should never happen"
+              else 
+              "hit")
+        | 8 -> "split"
+        | 9 -> (if d <> Ace then
+                match d with
+                | Num dv -> if (dv <= 6) || (dv = 7) || (dv = 8) then "split"
+                   else "stand"
+                | _ -> failwith "should never happen"
+              else 
+              "hit")
+        | 10 -> "stand"
+        | _ -> failwith "Should never happen"
+      else 
+        let hand_val = deck_value player_hand in
+    | (Ace, Num n)
+    | (Num n, Ace)
+      else
+        let hand_val = deck_value player_hand in
+
+  | ((h::t), d) ->
+    

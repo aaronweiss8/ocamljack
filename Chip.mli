@@ -30,8 +30,8 @@ val get_value: t -> int
     [steps] times or until it can no longer be simplified.*)
 val simplify: t -> int -> t
 
-(** [break t steps] breaks larger denominations using he single_step_break function
-    [steps] times or until it can no longer be broken. *)
+(** [break t steps] breaks larger denominations using he single_step_break
+    function [steps] times or until it can no longer be broken. *)
 val break: t -> int -> t
 
 (**[add t1 t2] is the combined quantities in t2 to t1. 
@@ -48,8 +48,8 @@ val is_within : t -> t -> bool
     representation invariant is broken*)
 val bet: t -> t -> t
 
-(** [create_chips w r b g bl] returns the chip type with the specified number of chips
-    for each color. *)
+(** [create_chips w r b g bl] returns the chip type with the specified number
+    of chips for each color. *)
 val create_chips : int -> int -> int -> int -> int -> t
 
 (** [to_string t] returns a string of the inputted chips *)

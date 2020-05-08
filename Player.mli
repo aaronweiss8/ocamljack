@@ -37,10 +37,8 @@ val lose_bet : int -> t -> t
     or whether the player is a bot*)
 val new_player : string -> Chip.t -> Cards.deck list -> Chip.t list -> bool -> t
 
-
 (** [update_hand new_hand t] retuns a player with an updated hand *)
 val update_hand : Cards.deck list -> t -> t
-
 
 (**[add_to_hand c ind t] returns a player with [c] added to the deck at ind *)
 val add_to_hand : Cards.card -> int -> t -> t
@@ -59,10 +57,10 @@ val simplify_chips : int -> t -> t
    with their chips broken [steps] times *)
 val break_chips : int -> t -> t
 
-val return_bet : int -> t -> t
-
+(** [win_bet i t] wins the bet for player t on hand i*)
 val win_bet : int -> t -> t
 
+(** [remove_from_hand c i t] removes card c from hand i in player t*)
 val remove_from_hand : Cards.card -> int -> t -> t
 
 (** [is_player p] returns returns true if p is a user and false if p is a bot *)
