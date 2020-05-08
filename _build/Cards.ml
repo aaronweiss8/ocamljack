@@ -65,7 +65,8 @@ let get_standard_deck =
     | _ -> accum in
   [] |> make_standard_dec values |> List.map (fun x -> {rep=x})
 
-let rec shuffle (deck: deck) : deck = 
+let rec shuffle (deck: deck) : deck =
+  Random.self_init ();
   deck |> List.map (fun x -> (x,Random.int 52)) |> List.sort compare_card_shuffle |>
   List.map (fun (x,y) -> x)
 
@@ -123,6 +124,7 @@ let get_rank_string c =
   | (_,_,Queen) -> "Queen"
   | (_,_,King) -> "King"
   | (_,_,Ace) -> "Ace"
+
 
 let make_card suit color rank = 
   {rep = (suit,color,rank)}

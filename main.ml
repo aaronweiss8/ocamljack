@@ -77,8 +77,8 @@ let start_game =
     print_string "> ";
   step (read_line ()) 0 new_game *)
 
-(*[simp_or_break players accum] prompts each user to simplify or break their
-chips *)
+(**[simp_or_break players accum] prompts each user to simplify or break their
+  chips, and does so with player methods*)
 let rec simp_or_break players accum =
   let sob_aux player is_simp steps = 
     if is_simp then (Player.simplify_chips steps player) 
@@ -86,9 +86,10 @@ let rec simp_or_break players accum =
 
   match players with
   | h::t -> 
-    (ANSITerminal.(print_string [yellow] ("\n" ^ (Player.name h) ^ ", do you" ^ 
+    (ANSITerminal.(print_string [yellow] ("\n" ^ (Player.name h));
+    ANSITerminal.(print_string [default] (", do you" ^ 
     " want to simplify or break your" ^ " chips and how many times each?" ^
-    "\nType Break or Simplify or Pass.\n |> "));
+    "\nType Break or Simplify or Pass.\n |> ")));
     match (read_line ()) with
     | "Break" -> 
       ANSITerminal.(print_string [blue] "How many steps? \n|> "); 
@@ -103,30 +104,56 @@ let rec simp_or_break players accum =
           simp_or_break players accum)
   | [] -> List.rev accum
 
-(*[get_chips ()] prompts a user to make a set of chips for whatever the
+
+let rec remove players accum =
+  match players with
+  |h::t -> 
+    let name = Player.name h in
+    ANSITerminal.(print_string [red] name);
+    ANSITerminal.(print_string [default] (", do you want to leave the game? (y/_ \n |>"));
+    (match (read_line ()) with
+    | "y" -> ANSITerminal.(print_string [yellow] ("Goodbye " ^ name ^ "!"));
+     remove t (accum)
+    | _ ->
+      remove t (h::accum))
+  |[] -> List.rev accum
+
+(**[get_chips ()] prompts a user to make a set of chips for whatever the
 specific case is. *)
 let get_chips () = 
-  (ANSITerminal.(print_string [default] ("\nEnter the number of white chips: "));
+  (ANSITerminal.(print_string [default] ("\nEnter the number of "));
+  ANSITerminal.(print_string [white] "white chips: ");
   let w = (read_int ()) in
-  ANSITerminal.(print_string [default] ("Enter the number of red chips: "));
+  ANSITerminal.(print_string [default] ("Enter the number of "));
+  ANSITerminal.(print_string [red] "red chips: ");
   let r = (read_int ()) in
-  ANSITerminal.(print_string [default] ("Enter the number of blue chips: "));
+  ANSITerminal.(print_string [default] ("Enter the number of "));
+  ANSITerminal.(print_string [blue] "blue chips: ");
   let b = (read_int ()) in
-  ANSITerminal.(print_string [default] ("Enter the number of green chips: "));
+  ANSITerminal.(print_string [default] ("Enter the number of "));
+  ANSITerminal.(print_string [green] " green chips: ");
   let g = (read_int ()) in
-  ANSITerminal.(print_string [default] ("Enter the number of black chips: "));
+  ANSITerminal.(print_string [default] ("Enter the number of "));
+  ANSITerminal.(print_string [black;Bold] " black chips: ");
   let bla = (read_int ()) in
   Chip.create_chips w r b g bla)
 
-(*[get_prer_round_bet players accum] returns a chip list of all the players
+(*[get_pre_round_bet players accum] returns a chip list of all the players
 to-bet bets *)
-let rec get_pre_round_bet players accum =
+let rec get_pre_round_bet players min_bet accum =
   match players with
   | h::t -> ANSITerminal.(print_string [blue] ("\n" ^ (Player.name h) ^ "'s bet! \n"));
     if Player.is_user h then
     let to_bet = get_chips () in
-    get_pre_round_bet t (to_bet::accum)
-    else get_pre_round_bet t ((create_chips 0 3 0 0 0)::accum)
+    if Chip.get_value to_bet < min_bet then 
+    (ANSITerminal.(print_string [red] "This was less than the minimum bet! Try again\n");
+    get_pre_round_bet (h::t) min_bet accum) 
+    else if (Chip.is_within (Player.chips h) to_bet) then
+    get_pre_round_bet t min_bet (to_bet::accum) else
+    (ANSITerminal.(print_string [red] "You do not have the chips to make this bet. Try again.\n");
+    get_pre_round_bet (h::t) min_bet accum)
+    else
+    get_pre_round_bet t min_bet ((create_chips 0 3 0 0 0)::accum)
   | [] -> List.rev accum
 
 let rec dealer_turn game =
@@ -134,15 +161,32 @@ let rec dealer_turn game =
     if Blackjack.hand_value d_hand < 17 then (dealer_turn (Blackjack.hit game 0 true))
     else game
 
-(*[play_and_rotate game ind on_dealer] does the "Heavy Lifting" for the 
+let check_players_have_mula game =
+  let players = Blackjack.get_players game in
+  let min_bet = Blackjack.min_bet game in
+  let rec cphm_aux p_lst mb accum =
+    match p_lst with
+    | h::t -> 
+      (let cp_chips = Player.chips_value h in
+      if cp_chips >= min_bet then
+      cphm_aux t mb (h::accum)
+      else 
+      (ANSITerminal.(print_string [red]( (Player.name h) ^ ", sorry you need more money."));
+      cphm_aux t mb accum))
+    | [] -> List.rev accum in
+  let new_players = cphm_aux players min_bet [] in
+  Blackjack.update_playerlst game new_players
+
+  (*[play_and_rotate game ind on_dealer] does the "Heavy Lifting" for the 
 functionality of the game *)
 let rec play_and_rotate game ind on_dealer =
 
-  ANSITerminal.(print_string [red;Bold] "\n=================================\n");
+  ANSITerminal.(print_string [green;Bold] "\n=================================\n");
   if on_dealer then 
      let ng = dealer_turn game in
-     ANSITerminal.(print_string [green] "\nDealers Turn!\n");
-     Blackjack.get_info ng;
+     ANSITerminal.(print_string [green] "\nDealer's Turn!\n");
+     Blackjack.get_info ng false;
+    ANSITerminal.(print_string [yellow;Bold] "\n===============Dealing is over===============\n");
      ng
   else
 
@@ -153,12 +197,19 @@ let rec play_and_rotate game ind on_dealer =
 
   let input = (read_line ()) in
   match (parse input ind) with
-  | Hit i -> 
-      (let ng = Blackjack.hit game ind on_dealer in
+  | Hit i -> hit game ind on_dealer
+  | Stand i -> stand game ind on_dealer
+  | DD i -> double_down game ind on_dealer
+  | Split i -> split game ind on_dealer
+  | Insurance i -> insurance game ind on_dealer
+  | Quit -> ANSITerminal.(print_string [yellow] "Goodbye!"); exit 0
+  
+  and hit game ind on_dealer =
+    let ng = Blackjack.hit game ind on_dealer in
       let new_cp = Blackjack.current_player ng in
       let hand_val = Blackjack.hand_value (List.nth (Player.get_hand new_cp) ind) in
       ANSITerminal.(print_string [cyan] ("\nYour hand is worth " ^ (string_of_int hand_val) ^ " after hitting"));
-      Blackjack.get_info ng;
+      Blackjack.get_info ng true;
       let num_hands_of_cp = (new_cp |> Player.get_hand |> List.length) in
       if(hand_val > 21) && (ind = (num_hands_of_cp - 1)) then
         let rotated_game = (Blackjack.go_next_player ng) in
@@ -167,77 +218,96 @@ let rec play_and_rotate game ind on_dealer =
           else play_and_rotate rotated_game 0 false
       else if (hand_val > 21) then
         play_and_rotate ng (ind + 1) on_dealer
-      else play_and_rotate ng ind on_dealer)
-  | Stand i -> 
-    (let hand_val = Blackjack.hand_value (List.nth (Player.get_hand cp) ind) in
-    ANSITerminal.(print_string [cyan] ("\nYou chose to stand on " ^ (string_of_int hand_val)));
-    Blackjack.get_info game;
-    let num_hands_of_cp = (cp |> Player.get_hand |> List.length) in
-    if (num_hands_of_cp - 1) = ind then
-      let rotated_game = (Blackjack.go_next_player game) in
-      if (Blackjack.current_player rotated_game = Blackjack.leftMostPlayer rotated_game)
-                then play_and_rotate rotated_game 0 true
-                else play_and_rotate rotated_game 0 false
-    else play_and_rotate game (ind + 1) on_dealer)
-  | DD i ->
-    (let ng = Blackjack.double_down game ind in
+      else play_and_rotate ng ind on_dealer
+
+  and stand game ind on_dealer =
+    let hand_val = Blackjack.hand_value (List.nth (Player.get_hand cp) ind) in
+      ANSITerminal.(print_string [cyan] ("\nYou chose to stand on " ^ (string_of_int hand_val)));
+      Blackjack.get_info game true;
+      let num_hands_of_cp = (cp |> Player.get_hand |> List.length) in
+      if (num_hands_of_cp - 1) = ind then
+        let rotated_game = (Blackjack.go_next_player game) in
+        if (Blackjack.current_player rotated_game = Blackjack.leftMostPlayer rotated_game)
+                  then play_and_rotate rotated_game 0 true
+                  else play_and_rotate rotated_game 0 false
+      else play_and_rotate game (ind + 1) on_dealer
+    
+  and double_down game ind on_dealer =
+    let ng = Blackjack.double_down game ind in
     let new_cp = Blackjack.current_player ng in
     let hand_val = Blackjack.hand_value (List.nth (Player.get_hand new_cp) ind) in
     ANSITerminal.(print_string [cyan] ("\nYour hand is worth " ^ (string_of_int hand_val) ^ " after doubling down"));
-    Blackjack.get_info ng;
+    Blackjack.get_info ng true;
     let num_hands_of_cp = (new_cp |> Player.get_hand |> List.length) in 
     if(ind = (num_hands_of_cp - 1)) then
       let rotated_game = (Blackjack.go_next_player ng) in
       if (Blackjack.current_player rotated_game = Blackjack.leftMostPlayer rotated_game)
       then play_and_rotate rotated_game 0 true
       else play_and_rotate rotated_game 0 false
-    else play_and_rotate ng (ind + 1)on_dealer)
-  | Split i ->
-    (try (
+    else play_and_rotate ng (ind + 1) on_dealer
+
+  and split game ind on_dealer =
+    try (
       let ng = Blackjack.split game ind in
       ANSITerminal.(print_string [blue] "\nYou split your cards.\n");
       play_and_rotate ng ind on_dealer
     )
     with
     | Cannot_Split -> ANSITerminal.(print_string [red] "\nYou cannot split.\n");
-      play_and_rotate game ind on_dealer)
-  | Insurance i -> ANSITerminal.(print_string [red] "TODO");
-    play_and_rotate game ind on_dealer
-  | Quit -> ANSITerminal.(print_string [yellow] "Goodbye!"); exit 0
+      play_and_rotate game ind on_dealer
+
+  and insurance game ind on_dealer =
+    try (
+      let side_bets = get_pre_round_bet (Blackjack.get_players game) 0 [] in
+      let ng = Blackjack.insurance game side_bets in
+      ANSITerminal.(print_string [blue] "\nYou put insurance on your cards.\n");
+      play_and_rotate ng ind on_dealer
+    )
+    with
+    | Cannot_Perform_Insurance -> ANSITerminal.(print_string [red] "\nYou cannot insure your hand.\n");
+      play_and_rotate game ind on_dealer
   
 
-let rec play game =
+let rec play game = 
 
-  ANSITerminal.(print_string [green] "\nDo you want to add another player to the table? (y/n)\n>");
+  ANSITerminal.(print_string [green] "\nDo you want to add another player to the table, remove a player, or neither (if neither hit any key besides y and r)? (y/r/n)\n>");
   try (match (read_line ()) with
   | "y" -> (ANSITerminal.(print_string [default] "\nEnter your name: ");
     let name = read_line () in
     ANSITerminal.(print_string [default] "\nEnter your starting chips: ");
     let starting_chips = get_chips ()
-      in (play (Blackjack.add_player (Player.new_player name starting_chips [Cards.empty] [Chip.empty] false) game)))
+      in 
+      if (Chip.get_value starting_chips >= Blackjack.min_bet game) then
+      (play (Blackjack.add_player (Player.new_player name starting_chips [Cards.empty] [Chip.empty] false) game))
+      else 
+        ANSITerminal.(print_string [red] "You need to start with more money.");
+        play game)
+  | "r" -> let new_plst = remove (Blackjack.get_players game) [] in
+            let ng = Blackjack.update_playerlst game new_plst in
+            play ng
   | _ ->
-    let simp_break_ed_game = Blackjack.update_playerlst game (simp_or_break (Blackjack.get_players game) []) in
+    let check_mula = check_players_have_mula game in
+    let simp_break_ed_game = Blackjack.update_playerlst check_mula (simp_or_break (Blackjack.get_players check_mula) []) in
     (*AT THIS POINT THE USER HAS THE OPTION TO BREAK OR SIMPLIFY THEIR CHIPS *)
-    Blackjack.get_info simp_break_ed_game;
+    Blackjack.get_info simp_break_ed_game true;
     ANSITerminal.(print_string [magenta] "Place initial Bets, remember the minimum bet!");
-    let bets = get_pre_round_bet (Blackjack.get_players simp_break_ed_game) [] in
+    let bets = get_pre_round_bet (Blackjack.get_players simp_break_ed_game) (Blackjack.min_bet simp_break_ed_game) [] in
     let betted_game = Blackjack.place_initial_bets game bets in
     (*AT THIS POINT THE USER HAS PLACED THEIR INITIAL BET *)
-    Blackjack.get_info betted_game;
+    Blackjack.get_info betted_game true;
     ANSITerminal.(print_string [red;Bold] ("\n============================\n" ^
     "Cards have been delt" ^ "\n============================\n")); 
     let game_after_delt = Blackjack.deal_initial_cards betted_game in
     (*AT THIS POINT THE USER HAS BEEN DELT THEIR INITIAL CARDS *)
-    Blackjack.get_info game_after_delt;   
+    Blackjack.get_info game_after_delt true;   
     let play_round = play_and_rotate game_after_delt 0 false in 
     (*AT THIS POINT THE ROUND HAS BEEN PLAYED *)
-    Blackjack.get_info play_round;
     let round_with_check = Blackjack.check_hands play_round in
     (*AT THIS POINT THE BETS HAVE BEEN COLLECTED OR DISTRIBUTED *)
-    
-    Blackjack.get_info round_with_check;
     (* let next_round = Blackjack.next_round round_with_check in
     Blackjack.get_info next_round; *)
+    Blackjack.get_info round_with_check false;
+    ANSITerminal.(print_string [red;Bold] "\n========Round over==========\n");
     play round_with_check)
     with
       | Failure m -> (ANSITerminal.(print_string [red] "Malformed\n")); (play game)
@@ -248,16 +318,24 @@ let rec play game =
 let main () =
 
   ANSITerminal.(print_string [magenta] "\nWelcome to the Blackjack!\n");
-  print_string "Ready to play? (y/n) |>";
+  print_string "Ready to play? (y/n) |> ";
 
-  match (read_line ()) with
-  | "y" -> (ANSITerminal.(print_string [default] "\nEnter your name!\n |> "); 
-    let name = (read_line ()) in
-    ANSITerminal.(print_string [default] "\nEnter your starting chips: ");
-    let init_chips = get_chips () in
-    play (Blackjack.create_game [(Player.new_player name init_chips [Cards.empty] [Chip.empty] false)] 15 6 0))
-  | "n" -> (ANSITerminal.(print_string [green] "Goodbye!")); exit 0
-  | _ -> (ANSITerminal.(print_string [red] "Malformed input")); exit 0
+  let rec start () =
+    try (match (read_line ()) with
+    | "y" -> 
+      (ANSITerminal.(print_string [default] ("\nWhat minimum bet table do you "^
+      "want to sit at?\n |> "));
+      let min_bet = (read_int()) in
+      ANSITerminal.(print_string [default] "\nEnter your name!\n |> "); 
+      let name = (read_line ()) in
+      ANSITerminal.(print_string [default] "\nEnter your starting chips: ");
+      let init_chips = get_chips () in
+      play (Blackjack.create_game [(Player.new_player name init_chips [Cards.empty] [Chip.empty] false)] min_bet 6 0))
+    | "n" -> (ANSITerminal.(print_string [green] "Goodbye!")); exit 0
+    | _ -> (ANSITerminal.(print_string [red] "Malformed input")); exit 0 )
+    with
+    | Failure m -> start () in
+start ()
 
 (* Execute the game engine. *)
 let () = main ()

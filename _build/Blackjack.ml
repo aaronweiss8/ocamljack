@@ -35,11 +35,13 @@ let dealer t = t.dealer
 
 let leftMostPlayer t = t.leftMostPlayer
 
+let min_bet t = t.min_bet
+
 let update_playerlst t plst = 
   {round = t.round;
    min_bet = t.min_bet;
    players = plst;
-   leftMostPlayer = t.leftMostPlayer;
+   leftMostPlayer = (List.hd plst);
    deck = t.deck;
    dealer = t.dealer;
   }
@@ -100,7 +102,23 @@ let hit game ind d =
   | [] -> failwith "No players"
 
 (**Change to pattern matching from fold *)
-let get_hands p = p |> get_hand |> function
+let get_hands d p =
+  if d then
+    match (Player.get_hand p) with
+    | [] -> "[Empty]"
+    | h::t -> if h = Cards.empty then "[Empty]" else
+                match h with
+                | a::b -> 
+                  "<HIDDEN>" ^ "[" ^ 
+                          (List.fold_left 
+                            (fun z g -> 
+                                (Cards.get_rank_string g) ^ " of " ^ 
+                                (Cards.get_suit_string g)
+                                ^ ", " ^ z) "]" b)
+                | [] -> "[Empty]"
+                 
+  else 
+   p |> get_hand |> function
   | [] -> "[Empty]"
   | hand_list -> if (List.hd hand_list) = Cards.empty then "[Empty]" else
               "[" ^
@@ -120,23 +138,29 @@ let rec get_bets bets acc =
   | [] -> acc
 
 (**Change to printf for alignment *)
-let get_info t =
-  ANSITerminal.(print_string [blue] 
-    ("\nRules: https://bicyclecards.com/how-to-play/blackjack/\n" ^
-    "Round: " ^ (string_of_int t.round) ^ ", " ^
-    "Values: White = 1; Red = 5; Blue = 10; Green = 25; Black = 100 " ^  
-    "Minimum Bet: " ^ string_of_int t.min_bet ^ ", " ^
-    "\nSimplify your chips means converting your chips to higher denominations."^
-    "\nBreak your chips means converting your chips into lower denominations.\n"^
-    "Dealer Hand: " ^ (t.dealer |> get_hands) ^ "\n" ^
-    "Leftmost Player: " ^ (Player.name t.leftMostPlayer) ^ "\n" ^  
+let get_info t hide_dealer =
+  ANSITerminal.(print_string [blue] ("\nRules:"));
+  ANSITerminal.(print_string [default]  (" https://bicyclecards.com/how-to-play/blackjack/\n"));
+  ANSITerminal.(print_string [blue]  ("Round: "));
+  ANSITerminal.(print_string [default] (string_of_int t.round ^ ", "));
+  ANSITerminal.(print_string [default] "\nValues:");
+  ANSITerminal.(print_string [white] " White = 1;");
+  ANSITerminal.(print_string [red] " Red = 5;");
+  ANSITerminal.(print_string [blue] " Blue = 10;");
+  ANSITerminal.(print_string [green] " Green = 25;");
+  ANSITerminal.(print_string [black;Bold] " Black = 100 " );  
+  ANSITerminal.(print_string [blue]   ("Minimum Bet: " ^ string_of_int t.min_bet ^ ", "));
+  ANSITerminal.(print_string [default] ("\nSimplify your chips means converting your chips to higher denominations."^
+    "\nBreak your chips means converting your chips into lower denominations.\n"));
+ANSITerminal.(print_string [yellow] ("Dealer Hand: "));
+ANSITerminal.(print_string [default] ((t.dealer |> get_hands hide_dealer) ^ "\n"));
+ANSITerminal.(print_string [default]("Leftmost Player: " ^ (Player.name t.leftMostPlayer) ^ "\n" ^  
     "Current Player: "));
   ANSITerminal.(print_string [green] (current_player t |> Player.name)); 
   ANSITerminal.(print_string [default] "\nPlayer: Hand, Chips, Bet: \n");
-  ANSITerminal.(print_string [default] (List.fold_left (fun y x -> "\n" ^ Player.name x ^ ": " ^ get_hands x ^" "
+  ANSITerminal.(print_string [default] ((List.fold_left (fun y x -> "\n" ^ Player.name x ^ ": " ^ get_hands false x ^" "
     ^ get_chips x ^ ", " ^ get_bets (Player.bet x) "" ^ ", " ^ y) 
-     " " t.players)); 
-  print_string "\n"; ()
+     " " t.players) ^ "\n")); ()
 
 let card_value c =
   match c with
@@ -353,8 +377,7 @@ let check_hands game =
    Raises: Cannot_Perform_Insurance if a bet is higher than allowed for a 
    side bet or if the dealer is not showing an Ace. *)
 
-let insurance game bets = failwith ""
-(*
+let insurance game bets =
   let dealer_top_card = List.nth (List.nth (Player.get_hand game.dealer) 0) 0 in
   let dealer_bottom_card = List.nth (List.nth (Player.get_hand game.dealer) 0) 1 in
   let ace_ex = Cards.make_card (Cards.Heart) (Cards.Red) (Cards.Ace) in
@@ -374,7 +397,7 @@ let insurance game bets = failwith ""
   let rec check_player_for_BJ players accum =
   match players with
   |h::t -> let h_sidebet = List.nth (Player.bet h) 1 in
-  if is_blackjack h then
+  if is_blackjack (List.nth (Player.get_hand h) 0) then
    let np = (h |> Player.add_chips h_sidebet |> Player.add_chips h_sidebet |> 
              Player.collect_bets) in
    check_player_for_BJ t (np::accum) else
@@ -406,7 +429,9 @@ let insurance game bets = failwith ""
   deck = game.deck;
   dealer = game.dealer}
 
-  else raise Cannot_Perform_Insurance *)
+  else raise Cannot_Perform_Insurance
+
+
 
 (*[create_game pl num_decks r] creates a game state starting at round [r] with 
   players in [pl] FOR TESTING ONLY*)
@@ -417,11 +442,12 @@ let create_game playerlist mb num_decks round =
   let game_dealer = 
     Player.new_player "Dealer" (Chip.create_chips 999 999 999 999 999) 
       [Cards.empty] [Chip.empty] true in
+  let sd = (starting_deck num_decks []) in
   {round = round;
    min_bet = mb;
    players = playerlist;
    leftMostPlayer = List.hd playerlist;
-   deck = starting_deck num_decks [];
+   deck = sd ;
    dealer = game_dealer;}
 
 (* ALL PLAYERS HANDS AND DEALER SHOULD BE EMPTY LIST *)

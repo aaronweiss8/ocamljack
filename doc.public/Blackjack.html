@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Chip.html">
+<link rel="next" href="Player.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Cards" rel="Chapter" href="Cards.html">
+<link title="Chip" rel="Chapter" href="Chip.html">
+<link title="Blackjack" rel="Chapter" href="Blackjack.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html"><title>Blackjack</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Chip.html" title="Chip">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Player.html" title="Player">Next</a>
+</div>
+<h1>Module <a href="type_Blackjack.html">Blackjack</a></h1>
+
+<pre><span id="MODULEBlackjack"><span class="keyword">module</span> Blackjack</span>: <code class="code">sig</code> <a href="Blackjack.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
+
+
+<pre><span id="TYPEplayer"><span class="keyword">type</span> <code class="type"></code>player</span> </pre>
+
+
+<pre><span id="TYPEdeck"><span class="keyword">type</span> <code class="type"></code>deck</span> </pre>
+
+
+<pre><span id="TYPEchip"><span class="keyword">type</span> <code class="type"></code>chip</span> </pre>
+
+
+<pre><span id="EXCEPTIONCannot_Split"><span class="keyword">exception</span> Cannot_Split</span></pre>
+
+<pre><span id="EXCEPTIONBet_Too_Low"><span class="keyword">exception</span> Bet_Too_Low</span></pre>
+
+<pre><span id="EXCEPTIONCannot_Perform_Insurance"><span class="keyword">exception</span> Cannot_Perform_Insurance</span></pre>
+
+<pre><span id="EXCEPTIONPlayer_Not_Found"><span class="keyword">exception</span> Player_Not_Found</span></pre>
+
+<pre><span id="VALget_info"><span class="keyword">val</span> get_info</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> bool -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_info t</code> returns a string of the current game state TODO</p>
+</div>
+</div>
+
+<pre><span id="VALgo"><span class="keyword">val</span> go</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Command.html#TYPEaction">Command.action</a> -> bool -> <a href="Blackjack.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">go t c</code> implements the given command on the game TODO</p>
+</div>
+</div>
+
+<pre><span id="VALget_hands"><span class="keyword">val</span> get_hands</span> : <code class="type">bool -> <a href="Player.html#TYPEt">Player.t</a> -> string</code></pre>
+<pre><span id="VALmin_bet"><span class="keyword">val</span> min_bet</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">min_bet t</code> returns t's minimum bet for the table</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_game"><span class="keyword">val</span> create_game</span> : <code class="type"><a href="Player.html#TYPEt">Player.t</a> list -> int -> int -> int -> <a href="Blackjack.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_game p b d r</code> creates a game with players p, minimum bet b
+    number of standard decks d starting at round r</p>
+</div>
+</div>
+
+<pre><span id="VALcurrent_player"><span class="keyword">val</span> current_player</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Player.html#TYPEt">Player.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">current_player t</code> returns the current player of game t</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_playerlst"><span class="keyword">val</span> update_playerlst</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Player.html#TYPEt">Player.t</a> list -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALget_deck"><span class="keyword">val</span> get_deck</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Cards.html#TYPEdeck">Cards.deck</a></code></pre>
+<pre><span id="VALleftMostPlayer"><span class="keyword">val</span> leftMostPlayer</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Player.html#TYPEt">Player.t</a></code></pre>
+<pre><span id="VALadd_player"><span class="keyword">val</span> add_player</span> : <code class="type"><a href="Player.html#TYPEt">Player.t</a> -> <a href="Blackjack.html#TYPEt">t</a> -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALremove_player"><span class="keyword">val</span> remove_player</span> : <code class="type"><a href="Player.html#TYPEt">Player.t</a> -> <a href="Blackjack.html#TYPEt">t</a> -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALgo_next_player"><span class="keyword">val</span> go_next_player</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALis_blackjack"><span class="keyword">val</span> is_blackjack</span> : <code class="type"><a href="Cards.html#TYPEcard">Cards.card</a> list -> bool</code></pre>
+<pre><span id="VALhit"><span class="keyword">val</span> hit</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> int -> bool -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALcard_value"><span class="keyword">val</span> card_value</span> : <code class="type"><a href="Cards.html#TYPErank">Cards.rank</a> -> int</code></pre>
+<pre><span id="VALhand_value"><span class="keyword">val</span> hand_value</span> : <code class="type"><a href="Cards.html#TYPEdeck">Cards.deck</a> -> int</code></pre>
+<pre><span id="VALdid_bust"><span class="keyword">val</span> did_bust</span> : <code class="type"><a href="Cards.html#TYPEdeck">Cards.deck</a> -> bool</code></pre>
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> int -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALdouble_down"><span class="keyword">val</span> double_down</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> int -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALnext_round"><span class="keyword">val</span> next_round</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALinsurance"><span class="keyword">val</span> insurance</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Chip.html#TYPEt">Chip.t</a> list -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALplace_initial_bets"><span class="keyword">val</span> place_initial_bets</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Chip.html#TYPEt">Chip.t</a> list -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALcheck_hands"><span class="keyword">val</span> check_hands</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Blackjack.html#TYPEt">t</a></code></pre>
+<pre><span id="VALget_players"><span class="keyword">val</span> get_players</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Player.html#TYPEt">Player.t</a> list</code></pre>
+<pre><span id="VALdealer"><span class="keyword">val</span> dealer</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Player.html#TYPEt">Player.t</a></code></pre>
+<pre><span id="VALdeal_initial_cards"><span class="keyword">val</span> deal_initial_cards</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Blackjack.html#TYPEt">t</a></code></pre></body></html>

@@ -6,6 +6,7 @@ type action = Hit of int
             | Stand of int
             | Quit
 
+(** [parse s i] returns an action corresponding to hand i *)
 val parse : string -> int -> action
 
 exception Empty

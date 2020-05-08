@@ -95,6 +95,14 @@ let bet t1 t2 =
 
 let create_chips w r b g bl = (White w), (Red r), (Blue b), (Green g), (Black bl)
 
+let is_within c1 c2 =
+  match (c1,c2) with
+    |(((White w1),(Red r1),(Blue blu1),(Green g1),(Black bla1)),
+      ((White w2),(Red r2),(Blue blu2),(Green g2),(Black bla2))) ->
+        if (w1 >= w2) && (r1 >= r2) && (blu1 >= blu2) && (g1 >= g2) && (bla1 >= bla2) then
+        true else false
+    | _ -> failwith "RI Broken"
+
 let to_string c =
   match c with
   | (White w,Red r,Blue b,Green g, Black bl) ->
@@ -102,3 +110,4 @@ let to_string c =
   string_of_int b ^ ", Greens: " ^ string_of_int g ^ ", Blacks: " ^ 
   string_of_int bl ^ "]"
   | _ -> failwith "out of order"
+  

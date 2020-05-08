@@ -1,0 +1,43 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Cards" rel="Chapter" href="Cards.html">
+<link title="Chip" rel="Chapter" href="Chip.html">
+<link title="Blackjack" rel="Chapter" href="Blackjack.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html"><title>Player</title>
+</head>
+<body>
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_hand&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cards</span>.deck&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;chips&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Chip</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;chips_value&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bet&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Chip</span>.t&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bet_value&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_chips&nbsp;:&nbsp;<span class="constructor">Chip</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bet_chips&nbsp;:&nbsp;<span class="constructor">Chip</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;collect_bets&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lose_bet&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;new_player&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Chip</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cards</span>.deck&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Chip</span>.t&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;update_hand&nbsp;:&nbsp;<span class="constructor">Cards</span>.deck&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_to_hand&nbsp;:&nbsp;<span class="constructor">Cards</span>.card&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_hand&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_bet&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;simplify_chips&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;break_chips&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_player_with_hand&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Cards</span>.color&nbsp;*&nbsp;<span class="constructor">Cards</span>.suit&nbsp;*&nbsp;<span class="constructor">Cards</span>.rank)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;return_bet&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;win_bet&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;remove_from_hand&nbsp;:&nbsp;<span class="constructor">Cards</span>.card&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_user&nbsp;:&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+<span class="keyword">end</span></code></body></html>

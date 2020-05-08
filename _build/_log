@@ -1,6 +1,6 @@
 ### Starting build.
 # Target: main.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules main.ml > main.ml.depends # cached
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules main.ml > main.ml.depends
 # Target: Blackjack.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:Blackjack.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules Blackjack.mli > Blackjack.mli.depends # cached
 # Target: Cards.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:Cards.mli, ocaml, ocamldep, quiet, traverse }
@@ -22,17 +22,13 @@ ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Play
 # Target: Blackjack.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:Blackjack.mli, interf, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Blackjack.cmi Blackjack.mli # cached
 # Target: main.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o main.cmo main.ml # cached
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o main.cmo main.ml
 # Target: Blackjack.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:Blackjack.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules Blackjack.ml > Blackjack.ml.depends
 # Target: Cards.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:Cards.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules Cards.ml > Cards.ml.depends # cached
-# Target: Cards.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:Cards.cmo, file:Cards.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Cards.cmo Cards.ml # cached
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules Cards.ml > Cards.ml.depends
 # Target: Chip.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:Chip.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules Chip.ml > Chip.ml.depends # cached
-# Target: Chip.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:Chip.cmo, file:Chip.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Chip.cmo Chip.ml # cached
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules Chip.ml > Chip.ml.depends
 # Target: Command.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:Command.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules Command.ml > Command.ml.depends # cached
 # Target: Command.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:Command.cmo, file:Command.ml, implem, ocaml, quiet, traverse }
@@ -43,6 +39,10 @@ ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Player.cmo Player.ml # cached
 # Target: Blackjack.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:Blackjack.cmo, file:Blackjack.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Blackjack.cmo Blackjack.ml
+# Target: Cards.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:Cards.cmo, file:Cards.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Cards.cmo Cards.ml
+# Target: Chip.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:Chip.cmo, file:Chip.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o Chip.cmo Chip.ml
 # Target: main.byte, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, dont_link_with, extension:byte, file:main.byte, link, ocaml, program, quiet, traverse }
 ocamlfind ocamlc -linkpkg -package oUnit -package yojson -package ANSITerminal Cards.cmo Chip.cmo Command.cmo Player.cmo Blackjack.cmo main.cmo -o main.byte
 # Compilation successful.
