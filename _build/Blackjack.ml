@@ -516,6 +516,6 @@ let go game (cmd:action) d =
   | (Insurance ind) -> failwith "not implemented"
   | _ -> failwith "should not have gotten here"
 
-(* 
-let bot_turn game =
-   *)
+(* let reccomendation player_hand dealer_hand =
+  match (player_hand, dealer_hand) with
+  | ((a,b), d) ->  *)
