@@ -167,3 +167,6 @@ let win_bet ind t =
 
 let is_user t =
   not(t.bot)
+
+(* let split_hands t i =
+  let to_split =  *)

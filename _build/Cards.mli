@@ -76,3 +76,7 @@ val recommendation : deck -> deck -> string
 
 (** [check_if_soft cl] checks if a hand [cl] is a soft blackjack hand *)
 val check_if_soft : card list -> bool
+
+(** [to_string d s| returns a string of the card list added to accumulator 
+    s*)
+val to_string : deck -> string ->  string

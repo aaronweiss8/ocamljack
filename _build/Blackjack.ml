@@ -102,7 +102,13 @@ let hit game ind d =
     | [] -> failwith "No players"
 
 (**Change to pattern matching from fold *)
-let get_hands d p =
+
+let rec get_hand p acc =
+  (match p with
+  | h::t -> get_hand t acc ^ "[" ^ Cards.to_string h "" ^ "]"
+  | [] -> acc)
+  
+let rec get_hands d p =
   if d then
     match (Player.get_hand p) with
     | [] -> "[Empty]"
@@ -116,25 +122,15 @@ let get_hands d p =
                 (Cards.get_suit_string g)
                 ^ ", " ^ z) "]" b)
         | [] -> "[Empty]"
-
-  else 
-    p |> get_hand |> function
-    | [] -> "[Empty]"
-    | hand_list -> if (List.hd hand_list) = Cards.empty then "[Empty]" else
-        "[" ^
-        (List.fold_left (fun y x -> 
-             (List.fold_left 
-                (fun z g -> 
-                   (Cards.get_rank_string g) ^ " of " ^ 
-                   (Cards.get_suit_string g)
-                   ^ ", " ^ z) "" x) ^ y) "" ) hand_list
-        ^ "]"
-
+  else
+    get_hand (Player.get_hand p) ""
+  
 let get_chips p = p |> Player.chips |> Chip.to_string
 
 let rec get_bets bets acc =
   match bets with
-  | h::t -> get_bets t acc ^ Chip.to_string h
+  | h::[] -> get_bets [] acc ^ Chip.to_string h ^ "]"
+  | h::t -> get_bets t (acc ^ Chip.to_string h ^ ", ")
   | [] -> acc
 
 (**Change to printf for alignment *)
@@ -143,7 +139,7 @@ let get_info t hide_dealer =
   ANSITerminal.(print_string [default]
                   (" https://bicyclecards.com/how-to-play/blackjack/\n"));
   ANSITerminal.(print_string [blue]  ("Round: "));
-  ANSITerminal.(print_string [default] (string_of_int t.round ^ ", "));
+  ANSITerminal.(print_string [default] (string_of_int t.round));
   ANSITerminal.(print_string [default] "\nValues:");
   ANSITerminal.(print_string [white] " White = 1;");
   ANSITerminal.(print_string [red] " Red = 5;");
@@ -165,11 +161,11 @@ let get_info t hide_dealer =
                    "Current Player: "));
   ANSITerminal.(print_string [green] (current_player t |> Player.name)); 
   ANSITerminal.(print_string [default] "\nPlayer: Hand, Chips, Bet: \n");
-  ANSITerminal.(print_string [default] 
+  ANSITerminal.(print_string [default]
                   ((List.fold_left
                       (fun y x -> "\n" ^ Player.name x ^ ": " ^
-                                  get_hands false x ^" "^ get_chips x ^ ", " ^
-                                  get_bets (Player.bet x) "" ^ ", " ^ y) 
+                                  get_hands false x ^" "^ get_chips x ^ ", [" ^
+                                  get_bets (Player.bet x) "" ^ y) 
                       " " t.players) ^ "\n"))
 
 (*  ADD ABILITY FOR USER TO CHOOSE ACE VALUE *)
@@ -213,7 +209,7 @@ let split t idx =
                               Player.add_to_hand (List.nth h 1) (idx + 1) |>
                               Player.add_bet |>
                               Player.bet_chips current_bet (idx + 1) |>
-                              Player.remove_from_hand (List.nth h 0) idx ) in
+                              Player.remove_from_hand (List.nth h 1) idx ) in
                  let new_player_list np = 
                    match t.players with
                    |h::t -> (np::t) 
@@ -240,12 +236,13 @@ let double_down t idx =
     |h::t -> (np::t) 
     |[] -> failwith "Cannot Double Down on no player" in 
   if (cp = t.leftMostPlayer) then 
-    {round = t.round;
+    let ng = {round = t.round;
      min_bet = t.min_bet;
      players = new_player_list new_p;
      leftMostPlayer = new_p;
      deck = t.deck;
-     dealer = t.dealer} 
+     dealer = t.dealer;} in
+    hit ng idx false
   else
     let ng = 
       {round = t.round;
