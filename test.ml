@@ -107,11 +107,25 @@ let newgame3_lowbet = create_game [newplayer2;newplayer2] 0 6 1
   let game_with_dealer_bad = {round=1;min_bet=10;players=playerlist;
                             leftMostPlayer=List.hd playerlist;deck=standard_deck;dealer=
                                                                                    {name="dealer";chips=Chip.empty;hand=[(Heart, Red, Num 2), (Heart, Red, Num 2)];bet=[];bot=false}}*)
+(* Example blackjack hands *)
+let not_soft = Cards.empty
+               |> add_to_deck (Cards.make_card Diamond Red Ace)
+               |> add_to_deck (Cards.make_card Spade Black Jack)
+               |> add_to_deck (Cards.make_card Spade Black (Num 2))
+
+let soft = Cards.empty
+           |> add_to_deck (Cards.make_card Diamond Red Ace)
+           |> add_to_deck (Cards.make_card Spade Black (Num 6))
+
+
+let soft_2 = Cards.empty
+             |> add_to_deck (Cards.make_card Diamond Red Ace)
+             |> add_to_deck (Cards.make_card Spade Black (Num 6))
+             |> add_to_deck (Cards.make_card Diamond Red Ace)
+             |> add_to_deck (Cards.make_card Diamond Red (Num 2))
 
 let dealer_bad = Player.new_player "dealer" Chip.empty [[Cards.make_card Heart Red (Num 2);Cards.make_card Heart Red (Num 2)]] [Chip.empty] true
 let dealer_bj = Player.new_player "dealer" Chip.empty [[Cards.make_card Heart Red Ace;Cards.make_card Heart Red King]] [Chip.empty] true
-let game_with_dealer_bad = Blackjack.add_dealer_to_game game1 dealer_bad
-let game_with_dealer_bj = Blackjack.add_dealer_to_game game2 dealer_bj
 let chip_tests = "Chip tests" >:::[
     "repo_ok and create_chip test" >:: 
     (fun _ -> assert_equal test_chip (Chip.repo_ok test_chip));
@@ -215,18 +229,18 @@ let player_tests = "Player tests" >::: [
 let blackjack_tests = "Blackjack tests" >::: [
     "test current player in game" >:: (fun _ -> 
         assert_equal player1 (Blackjack.current_player game1));
+    (*
+        "test is blackjack method (player 2 should have it)" >:: (fun _ ->
+            assert_equal true (Blackjack.is_blackjack player2));
 
-    "test is blackjack method (player 2 should have it)" >:: (fun _ ->
-        assert_equal true (Blackjack.is_blackjack player2));
+        "test is_blackjack false" >::(fun _-> 
+            assert_equal false (Blackjack.is_blackjack player1)); 
 
-    "test is_blackjack false" >::(fun _-> 
-        assert_equal false (Blackjack.is_blackjack player1)); 
-
-    "test go to next player" >:: (fun _ -> 
-        assert_equal player2 (Blackjack.current_player (Blackjack.go_next_player game1)));
+        "test go to next player" >:: (fun _ -> 
+            assert_equal player2 (Blackjack.current_player (Blackjack.go_next_player game1)));*)
 
     "test hit" >:: (fun _-> 
-        assert_equal (hit game1 0 |> current_player |> Player.get_hand |> List.hd) 
+        assert_equal (hit game1 0 false |> current_player |> Player.get_hand |> List.hd) 
           ((Blackjack.get_deck game1 |> List.hd)::
            ((game1 |> current_player |> Player.get_hand |> List.hd))));
   (*
@@ -261,13 +275,7 @@ let blackjack_tests = "Blackjack tests" >::: [
     "test place_intitial_bets" >:: (fun _->
         assert_equal (playerlist_with_bets |> List.map (fun x -> Player.bet x))
           (place_initial_bets newgame3_lowbet b_lst3 |> get_players |>
-           List.map (fun x -> Player.bet x)) ); 
-
-    "test card_value" >:: (fun _-> 
-        assert_equal 5 (make_card Heart Red (Num 5)|> get_rank |> card_value));
-
-    "test card_value 2" >:: (fun _-> 
-        assert_equal 10 ((make_card Spade Black Jack) |> get_rank |> card_value));
+           List.map (fun x -> Player.bet x)) );
 
     "test insurance" >:: (fun _-> 
         assert_raises Cannot_Perform_Insurance 
@@ -281,13 +289,13 @@ let blackjack_tests = "Blackjack tests" >::: [
     "test double_down" >:: (fun _-> assert_equal 50
                                (double_down game1 0 |> current_player |> Player.bet |> List.hd |> Chip.get_value));
 
-
+(*
     "test dealer" >:: (fun _-> assert_equal dealer_bad
                           (game_with_dealer_bad |> Blackjack.dealer));
 
     "test dealer" >:: (fun _-> assert_equal dealer_bj
                           (game_with_dealer_bj |> Blackjack.dealer));
-
+*)
 (*
     "test get_results " >:: (fun _ -> assert_equal [[player2];[player3];[];[player1]]
                                 (Blackjack.get_results game_with_dealer_bad));
@@ -295,6 +303,12 @@ let blackjack_tests = "Blackjack tests" >::: [
     "test get_results2" >:: (fun _ -> assert_equal [[];[];[player2];[player3]]
                                 (Blackjack.get_results game_with_dealer_bj)); *)
     (* check_hands *)
+
+    "test check_if_soft, not soft" >:: (fun _-> assert_equal false (Cards.check_if_soft not_soft));
+
+    "test check_if_soft, soft" >:: (fun _-> assert_equal true (Cards.check_if_soft soft));
+
+    "test check_if_soft, soft_2" >:: (fun _-> assert_equal true (Cards.check_if_soft soft_2))
 
   ]
 

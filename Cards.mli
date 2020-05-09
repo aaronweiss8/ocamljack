@@ -31,11 +31,14 @@ val get_standard_deck: deck
 (** Randomizes the order of the cards in the game deck*)
 val shuffle: deck -> deck
 
-(* [add_to_deck c deck] returns [deck] including [c] *)
+(** [add_to_deck c deck] returns [deck] including [c] *)
 val add_to_deck : card -> deck -> deck
 
-(* [remove_single_instance c d] returns 
-   [d] with one instance of [c] removed *)
+(** [is_ten c] returns whether the value of card is 10*)
+val is_ten : card -> bool
+
+(** [remove_single_instance c d] returns 
+    [d] with one instance of [c] removed *)
 val remove_single_instance : card -> deck -> deck
 
 (** Removes the top card from the deck and returns it*)
@@ -68,6 +71,8 @@ val get_suit_string : card -> string
 val get_rank_string : card -> string
 
 (** [recommendation p d] returns a recommendation of the best move a player
-should take based on the current user hand and dealer hand.] *)
-(* val recommendation: hand -> hand -> string *)
+    should take based on the current user hand and dealer hand. *)
+val recommendation : deck -> int list -> string
 
+(** [check_if_soft cl] checks if a hand [cl] is a soft blackjack hand *)
+val check_if_soft : card list -> bool

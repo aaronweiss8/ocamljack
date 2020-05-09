@@ -99,7 +99,7 @@ let remove_from_hand c ind t =
     match d with
     | [] -> failwith "hand does not exist"
     | h::r -> if ind = 0 then
-      (List.rev accum)@[(Cards.remove_single_instance c h)]@r 
+        (List.rev accum)@[(Cards.remove_single_instance c h)]@r 
       else (choose_hand r c (ind-1) (h::accum)) in
   {name = t.name;
    chips = t.chips;
@@ -143,11 +143,11 @@ let break_chips steps t =
 (* ALREADY DONE *)
 let make_player_with_hand tups =
   {name="dealer";
-  chips=Chip.empty;
-  hand=[List.map
-  (fun (c,s,r) -> Cards.make_card s c r) tups];
-  bet=[Chip.empty];
-  bot=true}
+   chips=Chip.empty;
+   hand=[List.map
+           (fun (c,s,r) -> Cards.make_card s c r) tups];
+   bet=[Chip.empty];
+   bot=true}
 
 (* ALREADY DONE *)
 let win_bet ind t =
@@ -165,5 +165,5 @@ let win_bet ind t =
    bot = t.bot;
   }
 
-  let is_user t =
-    not(t.bot)
+let is_user t =
+  not(t.bot)

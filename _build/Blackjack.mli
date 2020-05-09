@@ -15,6 +15,8 @@ exception Player_Not_Found
 (** [get_info t] returns a string of the current game state TODO*)
 val get_info : t -> bool -> unit
 
+(** [get_hands b t] returns a string of the player's hands if b else
+    returns a string of the dealer's hand with first card hidden *)
 val get_hands : bool -> Player.t -> string
 
 (** [min_bet t] returns t's minimum bet for the table *)
@@ -37,12 +39,12 @@ val get_deck : t -> Cards.deck
 val leftMostPlayer : t -> Player.t
 
 (** [add_player p game] returns a [game] with [p] added to the game. 
-   The player is added to the rightside of the table *)
+    The player is added to the rightside of the table *)
 val add_player : Player.t -> t -> t
 
 (** [remove_player p game] returns a [game] with [p] removed from the game.
-   Requires: [p] is in the game's players list
-   Raises: Player_Not_Found if the player is not in the game *)
+    Requires: [p] is in the game's players list
+    Raises: Player_Not_Found if the player is not in the game *)
 val remove_player: Player.t -> t -> t
 
 (** [go_next_player t] returns a game state where the next player is first*)
@@ -56,20 +58,8 @@ val is_blackjack : Cards.card list-> bool
     and does so for the dealer if d is true*)
 val hit : t -> int -> bool -> t
 
-(** [card_value c] returns an int corresponding to the rank c
-    current has aces only 1*)
-val card_value : Cards.rank -> int
-
 (** [hand_value h] returns the int the hand evaluates to*)
 val hand_value : Cards.deck -> int
-
-(** [get_results t] returns a list containing lists of players who:
-    blackjacked against the dealer
-    won against the dealer
-    pushed against the dealer
-    lost against the dealer
-    should be changed to list of tuples of (hand, player), with results*)
-(** val get_results : t -> Player.t list list *)
 
 (** [did_bust hand] is true if the specific hand did bust *)  
 val did_bust : Cards.deck -> bool
@@ -100,8 +90,4 @@ val get_players : t -> Player.t list
 val dealer : t -> Player.t
 
 (** [deal_initial_cards game] returns a game with the initial cards delt *)
-val deal_initial_cards : t -> t 
-(** val get_command : 'a -> Command.command *)
-
-
-
+val deal_initial_cards : t -> t

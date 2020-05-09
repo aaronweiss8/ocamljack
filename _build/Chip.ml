@@ -35,7 +35,7 @@ let single_step_simplify = function
     then (((White (w)),(Red (r-2)),(Blue (blu+1)),(Green g),(Black bla)),true)
     else if r = 1 && blu >= 2
     then (((White (w)),(Red (r-1)),(Blue (blu-2)),(Green (g+1)),
-          (Black bla)),true)
+           (Black bla)),true)
     else if g >= 4
     then (((White (w)),(Red r),(Blue blu),(Green (g-4)),(Black (bla+1))),true)
     else (t,false)
@@ -50,7 +50,7 @@ let single_step_break = function
     then (((White w),(Red r),(Blue blu),(Green (g+4)),(Black (bla-1))),true)
     else if g >= 1
     then (((White w),(Red (r+1)),(Blue (blu+2)),(Green (g-1)),
-          (Black bla)),true)
+           (Black bla)),true)
     else if blu >= 1
     then (((White w),(Red (r+2)),(Blue (blu-1)),(Green g),(Black bla)),true)
     else if r >= 1
@@ -79,7 +79,7 @@ let add t1 t2 =
   |(((White w1),(Red r1),(Blue blu1),(Green g1),(Black bla1)),
     ((White w2),(Red r2),(Blue blu2),(Green g2),(Black bla2))) ->
     ((White (w1+w2)),(Red (r1+r2)),(Blue (blu1+blu2)),(Green (g1+g2)),
-    (Black (bla1+bla2)))
+     (Black (bla1+bla2)))
   | _ -> raise RI_Broken
 
 let bet t1 t2 = 
@@ -98,28 +98,28 @@ let bet t1 t2 =
   | _ -> raise RI_Broken
 
 let create_chips w r b g bl = (White w), (Red r), (Blue b), (Green g),
-  (Black bl)
+                              (Black bl)
 
 let is_within c1 c2 =
   match (c1,c2) with
-    |(((White w1),(Red r1),(Blue blu1),(Green g1),(Black bla1)),
-      ((White w2),(Red r2),(Blue blu2),(Green g2),(Black bla2))) ->
-        if (w1 >= w2) && (r1 >= r2) && (blu1 >= blu2) && (g1 >= g2) &&
-            (bla1 >= bla2) then
-        true else false
-    | _ -> failwith "RI Broken"
+  |(((White w1),(Red r1),(Blue blu1),(Green g1),(Black bla1)),
+    ((White w2),(Red r2),(Blue blu2),(Green g2),(Black bla2))) ->
+    if (w1 >= w2) && (r1 >= r2) && (blu1 >= blu2) && (g1 >= g2) &&
+       (bla1 >= bla2) then
+      true else false
+  | _ -> failwith "RI Broken"
 
 let to_string c =
   match c with
   | (White w,Red r,Blue b,Green g, Black bl) ->
-  "[Whites: " ^ string_of_int w ^ ", Reds: " ^ string_of_int r ^ ", Blues: " ^
-  string_of_int b ^ ", Greens: " ^ string_of_int g ^ ", Blacks: " ^ 
-  string_of_int bl ^ "]"
+    "[Whites: " ^ string_of_int w ^ ", Reds: " ^ string_of_int r ^ ", Blues: " ^
+    string_of_int b ^ ", Greens: " ^ string_of_int g ^ ", Blacks: " ^ 
+    string_of_int bl ^ "]"
   | _ -> failwith "out of order"
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+

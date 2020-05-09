@@ -16,7 +16,7 @@ type card = {rep: (suit * color * rank)}
 type deck = card list
 
 (**[compare_card_shuffle t1 t2] retuns 1 if t1 is greater, 0 if they are equal,
-  and -1 if t2 is greater  *)
+   and -1 if t2 is greater  *)
 let compare_card_shuffle t1 t2 = 
   match (t1,t2) with
   |((c1,r1),(c2,r2)) -> if r1 > r2 then 1 else if r1 = r2 then 0 else -1
@@ -104,6 +104,13 @@ let get_rank c =
   | (_,_,Num x) -> Num x
   | (_,_,y) -> y
 
+let is_ten card =
+  let c = get_rank card in
+  match c with
+  | Num n -> n = 10
+  | Ace -> false
+  | _ -> true
+
 let get_suit_string c =
   match c.rep with
   | (Heart,_,_) -> "Hearts"
@@ -139,74 +146,114 @@ let deck_value phand =
       | Ace -> (sumhand t acc (num_aces + 1))
       | _ -> (sumhand t (acc + 10) num_aces) in
   sumhand handlist 0 0
-  
-let rec_aux player_value dealer_value =
-  let dv = match dealer_value with 
-            | Num n -> n
-            | Jack -> 10
-            | Queen -> 10
-            | King -> 10
-            | Ace -> 11 in 
-  if player_value <= 8 then "hit"
-  else if (player_value = 9) then
-    if dv >= 3 && dv <= 6 then "double down"
-    else "hit"
-  else if (player_value = 10) then
-    if dv <= 9 then "double down"
-    else "hit"
-  else if (player_value = 11) then 
-    if dv <= 10 then "double down"
-        else "hit"
-  else if (player_value = )
-    
-let recommendation player_hand dealer_hand = 
 
+(**[double_or d c a] doubles the bet on a condition relative to the value of
+   the dealer's card [dv]*)
+let double_or condition action = 
+  if (condition) then "double down" else action
+
+(**[split_or d c a] splits the player's hand on a condition relative to the 
+   value of the dealer's card [dv], and otherwise returns another action
+   [action]*)
+let split_or d condition action =
+  if (not (d = 11))then
+    if (condition) then "split" else action
+  else 
+    "hit"
+
+(**[soft_recommendation pv d dv] gives a recommendation to a user with a
+   soft hand, conditional to the value of the dealer's card [dv]*)
+let soft_recommendation pv dv =
+  match pv with
+  | 13 
+  | 14 
+  | 15
+  | 16 -> double_or (dv > 3 && dv < 7) "hit"
+  | 17 -> double_or (dv < 7) "hit"
+  | 18 -> double_or (dv > 2 && dv < 7) "stand"
+  | 19 -> double_or (not (dv=6)) "stand"
+  | _ -> failwith "Should never happen"
+
+
+(**[split_recommendation pv d dv] recommends whether a user should split a pair,
+   conditional to the value of the dealer's card [dv]*)
+let split_recommendation card dv =
+  match card with
+  | 2 ->  split_or dv (dv > 2 && dv < 8) "hit"
+  | 3 -> split_or dv (dv >= 4 && dv <= 7) "hit"
+  | 4
+  | 5 -> "hit"
+  | 6 -> split_or dv (dv >= 3 && dv <= 6) "hit"
+  | 7 -> split_or dv (dv <= 7) "hit"
+  | 8 -> "split"
+  | 9 -> split_or dv ((dv <= 6) || (dv = 7) || (dv = 8)) "stand"
+  | 10 -> "stand"
+  | _ -> failwith "Should never happen"
+
+(** [hit d c a] hits on a condition relative to the value of
+    the dealer's card *)
+let hit_or condition action = 
+  if (condition) then "hit" else action
+
+let hard_recommendation pv dv =
+  if pv <= 7 then "hit" else
+    match pv with
+    | 8 -> double_or (dv < 7 && dv > 4) "hit" 
+    | 9 -> double_or (dv < 7) "hit" 
+    | 10 -> double_or (dv < 10) "hit"
+    | 11 -> "double down"
+    | 12 -> hit_or (dv < 7 && dv > 3) "stand"
+    | 17 -> "stand"
+    | _ -> hit_or (dv < 7) "stand"
+
+let check_if_soft hand =
+  let rec add_aces v num =
+    if num = 1 then v + 11 <= 21 else
+      add_aces (v + 1) (num - 1) in
+  let ranks = List.map (fun x -> get_rank x) hand in
+  let hand_without_aces = List.filter (fun x -> x <> Ace) ranks in
+  let num_aces = List.fold_left (fun a x -> if x = Ace then a+1 else a)
+      0 ranks in
+  print_string ("FUCKFUCKFUCKFUCK" ^ string_of_int num_aces);
+  let haval = deck_value (List.map (fun x -> {rep=(Heart, Red, x)})
+                            hand_without_aces)
+  in
+  if num_aces > 0 then add_aces haval num_aces else false
+
+let recommendation player_hand dealer_hand = 
   let dealer_value = (List.nth dealer_hand 1) in
+  let player_value = deck_value player_hand in
 
   match (player_hand, dealer_value) with
   | ((a::b::[]), d) -> 
-    match (get_rank a, get_rank b) with
-    | (Ace, Ace) -> "stand"
-    | (Num n1, Num n2) ->
-      if n1 = n2 then
-        match n1 with
-        | 2
-        | 3 -> (if d <> Ace then
-                match d with
-                | Num dv -> if (dv >= 4  && dv <= 7) then "split" else "hit"
-                | _ -> failwith "should never happen"
-              else 
-              "hit")
-        | 4
-        | 5 -> "hit"
-        | 6 -> (if d <> Ace then
-                match d with
-                | Num dv -> if (dv >= 3  && dv <= 6) then "split" else "hit"
-                | _ -> failwith "should never happen"
-              else 
-              "hit")
-        | 7 -> (if d <> Ace then
-                match d with
-                | Num dv -> if (dv <= 7) then "split" else "hit"
-                | _ -> failwith "should never happen"
-              else 
-              "hit")
-        | 8 -> "split"
-        | 9 -> (if d <> Ace then
-                match d with
-                | Num dv -> if (dv <= 6) || (dv = 7) || (dv = 8) then "split"
-                   else "stand"
-                | _ -> failwith "should never happen"
-              else 
-              "hit")
-        | 10 -> "stand"
-        | _ -> failwith "Should never happen"
-      else 
-        let hand_val = deck_value player_hand in
-    | (Ace, Num n)
-    | (Num n, Ace)
-      else
-        let hand_val = deck_value player_hand in
+    (match (get_rank a, get_rank b) with
+     | (Ace, Ace) -> "split"
+     | (Num n1, Num n2) when n1 = n2 -> split_recommendation n1 dealer_value
+     | (Num n1, Num n2) -> hard_recommendation (n1+n2) dealer_value
+     | _ -> hard_recommendation 20 dealer_value)
+  | ((h::t) as player_hand, d) -> 
+    if check_if_soft player_hand then
+      soft_recommendation player_value dealer_value
+    else hard_recommendation player_value dealer_value
+  | _-> failwith "Not possible"
 
-  | ((h::t), d) ->
-    
+(*
+else 
+  let hand_val = deck_value player_hand in
+  | (Ace, Num n)
+  | (Num n, Ace) in
+
+
+
+let rec_aux player_value dealer_top=
+  let dv = match dealer_top with 
+    | Num n -> n
+    | Jack -> 10
+    | Queen -> 10
+    | King -> 10
+    | Ace -> 11 in 
+
+
+
+
+| ((h::t), d) ->*)
