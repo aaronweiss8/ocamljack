@@ -239,7 +239,7 @@ and split game ind on_dealer =
 (** [insurance g i o] is a mutually recursive function that performs the
     insurance action, and subseuently plays and rotates the game state. *)
 and insurance game ind on_dealer =
-  if Cards.get_rank (List.nth (List.nth (Player.get_hand (Blackjack.dealer game)) 1) 1)
+  if Cards.get_rank (List.nth (List.nth (game|>Blackjack.dealer|>Player.get_hand) 1) 1)
     = Cards.Ace then
   try (
     let side_bets = get_pre_round_bet (Blackjack.get_players game) 0 [] in

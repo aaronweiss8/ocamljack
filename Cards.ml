@@ -237,8 +237,8 @@ let recommendation player_hand dealer_hand =
      | (Ace, Ace) -> "split"
      | (Num n1, Num n2) when n1 = n2 -> split_recommendation n1 dealer_value
      | _ , _-> (if check_if_soft player_hand then
-      soft_recommendation player_value dealer_value
-    else hard_recommendation player_value dealer_value))
+                  soft_recommendation player_value dealer_value
+                else hard_recommendation player_value dealer_value))
   | ((h::t), d) ->
     if check_if_soft player_hand then
       soft_recommendation player_value dealer_value
@@ -246,8 +246,8 @@ let recommendation player_hand dealer_hand =
   | _, _-> failwith "Not possible"
 
 let rec to_string hand acc =
-match hand with
-| [] -> acc
-| h::[] -> to_string t (get_rank_string h ^ " of " ^ get_suit_string h ^ acc)
-| h::t -> to_string t 
-(get_rank_string h ^ " of " ^ get_suit_string h ^ acc ^ ", ")
+  match hand with
+  | [] -> acc
+  | h::[] -> to_string [] (get_rank_string h ^ " of " ^ get_suit_string h ^ acc)
+  | h::t -> to_string t 
+              ( ", " ^ get_rank_string h ^ " of " ^ get_suit_string h ^ acc)

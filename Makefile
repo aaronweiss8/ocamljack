@@ -13,6 +13,9 @@ default: build
 build:
 	$(OCAMLBUILD) $(OBJECTS)
 
+main:
+	$(OCAMLBUILD) -tag 'debug' $(MAIN) && ./$(MAIN) -runner sequential
+
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
@@ -26,28 +29,6 @@ docs: docs-public docs-private
 
 play:
 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
-
-docs-public: build
-	mkdir -p doc.public
-	ocamlfind ocamldoc -I _build -package $(PKGS) \
-		-html -stars -d doc.public $(MLIS)
-
-docs-private: build
-	mkdir -p doc.private
-	ocamlfind ocamldoc -I _build -package $(PKGS) \
-		-html -stars -d doc.private \
-		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
-
-docs-public: build
-	mkdir -p doc.public
-	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
-		-html -stars -d doc.public -hide-warnings $(MLIS)
-
-docs-private: build
-	mkdir -p doc.private
-	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
-		-html -stars -d doc.private \
-		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
 
 clean:
 	ocamlbuild -clean

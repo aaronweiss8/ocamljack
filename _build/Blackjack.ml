@@ -105,9 +105,9 @@ let hit game ind d =
 
 let rec get_hand p acc =
   (match p with
-  | h::t -> get_hand t acc ^ "[" ^ Cards.to_string h "" ^ "]"
-  | [] -> acc)
-  
+   | h::t -> get_hand t acc ^ "[" ^ Cards.to_string h "" ^ "]"
+   | [] -> acc)
+
 let rec get_hands d p =
   if d then
     match (Player.get_hand p) with
@@ -123,8 +123,11 @@ let rec get_hands d p =
                 ^ ", " ^ z) "]" b)
         | [] -> "[Empty]"
   else
-    get_hand (Player.get_hand p) ""
-  
+    match (Player.get_hand p) with
+    | [] -> "[Empty]"
+    | h::t -> if h = Cards.empty then "[Empty]" else
+        get_hand (Player.get_hand p) ""
+
 let get_chips p = p |> Player.chips |> Chip.to_string
 
 let rec get_bets bets acc =
@@ -237,11 +240,11 @@ let double_down t idx =
     |[] -> failwith "Cannot Double Down on no player" in 
   if (cp = t.leftMostPlayer) then 
     let ng = {round = t.round;
-     min_bet = t.min_bet;
-     players = new_player_list new_p;
-     leftMostPlayer = new_p;
-     deck = t.deck;
-     dealer = t.dealer;} in
+              min_bet = t.min_bet;
+              players = new_player_list new_p;
+              leftMostPlayer = new_p;
+              deck = t.deck;
+              dealer = t.dealer;} in
     hit ng idx false
   else
     let ng = 
