@@ -72,7 +72,7 @@ val get_rank_string : card -> string
 
 (** [recommendation p d] returns a recommendation of the best move a player
     should take based on the current user hand and dealer hand. *)
-val recommendation : deck -> int list -> string
+val recommendation : deck -> deck -> string
 
 (** [check_if_soft cl] checks if a hand [cl] is a soft blackjack hand *)
 val check_if_soft : card list -> bool

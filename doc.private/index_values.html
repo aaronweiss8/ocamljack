@@ -1,0 +1,564 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Cards" rel="Chapter" href="Cards.html">
+<link title="Chip" rel="Chapter" href="Chip.html">
+<link title="Blackjack" rel="Chapter" href="Blackjack.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html"><title>Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><div>A</div></td></tr>
+<tr><td><a href="Chip.html#VALadd">add</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">add t1 t2</code> is the combined quantities in t2 to t1.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALadd_bet">add_bet</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">add_bet t</code> returns a player with an additional bet</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALadd_chips">add_chips</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">add_chips c t</code> adds c to the current player t's chips</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALadd_hand">add_hand</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">add_hand t</code> returns player with an additional hand</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALadd_player">add_player</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">add_player p game</code> returns a <code class="code">game</code> with <code class="code">p</code> added to the game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALadd_to_deck">add_to_deck</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">add_to_deck c deck</code> returns <code class="code">deck</code> including <code class="code">c</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALadd_to_hand">add_to_hand</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">add_to_hand c ind t</code> returns a player with <code class="code">c</code> added to the deck at ind</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>B</div></td></tr>
+<tr><td><a href="Player.html#VALbet">bet</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">bet t</code> is a list of the chips that player <code class="code">t</code> current is bet</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALbet">bet</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">bet t1 t2</code> removed t2 from t1
+    Returns: t1 with t2's quantities removed
+    Requires: t2 be a subset of t1
+    Raises: Not_Within if t2 is not contained within t1, or RI_Broken if the
+    representation invariant is broken</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALbet_chips">bet_chips</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">bet_chips bet idx t</code> moves chips from a users chip stash 
+   to their bet at idx</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALbet_value">bet_value</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">bet_value t idx</code> returns the integer value of the bet at the index</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALbreak">break</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">break t steps</code> breaks larger denominations using he single_step_break
+    function <code class="code">steps</code> times or until it can no longer be broken.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALbreak_chips">break_chips</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">break_chips steps t</code> returns a player 
+   with their chips broken <code class="code">steps</code> times</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>C</div></td></tr>
+<tr><td><a href="Blackjack.html#VALcheck_hands">check_hands</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">check_hands t</code> returns game state with collected bets on hands</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALcheck_if_soft">check_if_soft</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">check_if_soft cl</code> checks if a hand <code class="code">cl</code> is a soft blackjack hand</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALchips">chips</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">chips t</code> is a list of the chips that player <code class="code">t</code> currently has.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALchips_value">chips_value</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">chips_value t</code> is the integer value of the chips</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALcollect_bets">collect_bets</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">collect_bets t</code> represents a player <code class="code">t</code> that collects their bet chips</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALcombine_decks">combine_decks</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p>Combines decks into one for the game if game is played with several decks</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALcompare">compare</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">compare c1 c2</code> returns 1 if the numeric value of c1 is greater than c2,
+    0 if they are equal, and -1 if c2 is greater</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALcompare_card_shuffle">compare_card_shuffle</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">compare_card_shuffle t1 t2</code> retuns 1 if t1 is greater, 0 if they are equal,
+   and -1 if t2 is greater</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALcreate_chips">create_chips</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">create_chips w r b g bl</code> returns the chip type with the specified number
+    of chips for each color.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALcreate_game">create_game</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">create_game p b d r</code> creates a game with players p, minimum bet b
+    number of standard decks d starting at round r</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALcurrent_player">current_player</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">current_player t</code> returns the current player of game t</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>D</div></td></tr>
+<tr><td><a href="Blackjack.html#VALdeal_initial_cards">deal_initial_cards</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">deal_initial_cards game</code> returns a game with the initial cards delt</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALdeal_one">deal_one</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p>Removes the top card from the deck and returns it</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALdealer">dealer</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">dealer t</code> is the dealer of the game</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALdeck_value">deck_value</a> [<a href="Cards.html">Cards</a>]</td>
+<td></td></tr>
+<tr><td><a href="Blackjack.html#VALdid_bust">did_bust</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">did_bust hand</code> is true if the specific hand did bust</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALdouble_down">double_down</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">double_down t i</code> doubles down on current players hand i,
+    and returns game state</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALdouble_or">double_or</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">double_or d c a</code> doubles the bet on a condition relative to the value of
+   the dealer's card <code class="code">dv</code></p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="Chip.html#VALempty">empty</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p>empty chip representation</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALempty">empty</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">empty</code> returns an empty deck</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>G</div></td></tr>
+<tr><td><a href="Blackjack.html#VALget_bets">get_bets</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td></td></tr>
+<tr><td><a href="Blackjack.html#VALget_chips">get_chips</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td></td></tr>
+<tr><td><a href="Blackjack.html#VALget_deck">get_deck</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">get_deck t</code> returns the game deck for t</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALget_hand">get_hand</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">get_hand t</code> is the hand of player <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALget_hands">get_hands</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p>Change to pattern matching from fold</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALget_info">get_info</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p>Change to printf for alignment</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALget_players">get_players</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">get_players t</code> returns the players of blackjack game <code class="code">t</code>)</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALget_rank">get_rank</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">get_rank c</code> returns the rank of card c</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALget_rank_string">get_rank_string</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">get_rank_string c</code> returns the rank of card <code class="code">c</code> as a string.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALget_standard_deck">get_standard_deck</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p>Returns one standard 52 card deck</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALget_suit_string">get_suit_string</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">get_suit_string c</code> returns the suit of card <code class="code">c</code> as a string.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALget_value">get_value</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">get_value t</code> is the integer representation of the value of the chips</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALgo_next_player">go_next_player</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">go_next_player t</code> returns a game state where the next player is first</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>H</div></td></tr>
+<tr><td><a href="Blackjack.html#VALhand_value">hand_value</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">hand_value h</code> returns the int the hand evaluates to</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALhard_recommendation">hard_recommendation</a> [<a href="Cards.html">Cards</a>]</td>
+<td></td></tr>
+<tr><td><a href="Blackjack.html#VALhit">hit</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">hit t i d</code> returns a game state where current player has hit on hand i
+    and does so for the dealer if d is true</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALhit_or">hit_or</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">hit d c a</code> hits on a condition relative to the value of
+    the dealer's card</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>I</div></td></tr>
+<tr><td><a href="Blackjack.html#VALinsurance">insurance</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">insurance t c</code> returns state given placed insurances</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALis_blackjack">is_blackjack</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">is_blackjack player</code> returns true if the current player
+    has a blackjack, and false if the current player
+    has not 
+    currently checks if either of a split hand are blackjack</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALis_ten">is_ten</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">is_ten c</code> returns whether the value of card is 10</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALis_user">is_user</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">is_player p</code> returns returns true if p is a user and false if p is a bot</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALis_within">is_within</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">is_within c1 c2</code> is true if c2 is a subset of c1 by specific color chip</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>L</div></td></tr>
+<tr><td><a href="Blackjack.html#VALleftMostPlayer">leftMostPlayer</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">leftMostPlayer t</code> returns the leftmost player of the <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALlose_bet">lose_bet</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">lose_bet idx t</code> represents a player <code class="code">t</code> that looses their bet at idx</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>M</div></td></tr>
+<tr><td><a href="Cards.html#VALmake_card">make_card</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">make_card suit color rank</code> returns a new card.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALmake_player_with_hand">make_player_with_hand</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Blackjack.html#VALmin_bet">min_bet</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">min_bet t</code> returns t's minimum bet for the table</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>N</div></td></tr>
+<tr><td><a href="Player.html#VALname">name</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">name t</code> gets the name of player <code class="code">t</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALnew_player">new_player</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">new_player name chips hand bet bot</code> creates a new player with a designated
+   name, amount of chips, and empty hand, an empty bet, and data for whether
+    or whether the player is a bot</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALnext_round">next_round</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">next_round t</code> returns game state on the next round</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>O</div></td></tr>
+<tr><td><a href="Cards.html#VALorder_hand">order_hand</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">order_hand d</code> is a sorted deck</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>P</div></td></tr>
+<tr><td><a href="Command.html#VALparse">parse</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">parse s i</code> returns an action corresponding to hand i</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALplace_initial_bets">place_initial_bets</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">place_initial_bets t c</code> returns state with placed player bets on hands</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>R</div></td></tr>
+<tr><td><a href="Cards.html#VALrecommendation">recommendation</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">recommendation p d</code> returns a recommendation of the best move a player
+    should take based on the current user hand and dealer hand.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALremove_from_hand">remove_from_hand</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">remove_from_hand c i t</code> removes card c from hand i in player t</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALremove_player">remove_player</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">remove_player p game</code> returns a <code class="code">game</code> with <code class="code">p</code> removed from the game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALremove_single_instance">remove_single_instance</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">remove_single_instance c d</code> returns 
+    <code class="code">d</code> with one instance of <code class="code">c</code> removed</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALrepo_ok">repo_ok</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p>RI: type t must in the form White, Red, Blue, Green, Black</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>S</div></td></tr>
+<tr><td><a href="Cards.html#VALshuffle">shuffle</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p>Randomizes the order of the cards in the game deck</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALsimplify">simplify</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">simplify t steps</code> simplifies the chips by the single_step_simplify function
+    <code class="code">steps</code> times or until it can no longer be simplified.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALsimplify_chips">simplify_chips</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">simplify_chips steps t</code> returns a player 
+   with their chips simplified <code class="code">steps</code> times</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALsingle_step_break">single_step_break</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">single_step_break t</code> takes the highest demoninaitons availabble and breaks
+   into smaller ones if possible.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Chip.html#VALsingle_step_simplify">single_step_simplify</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">single_step t</code> takes the lowest denominations available and converts them
+   into the next denomination if possible.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALsoft_recommendation">soft_recommendation</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">soft_recommendation pv d dv</code> gives a recommendation to a user with a
+   soft hand, conditional to the value of the dealer's card <code class="code">dv</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALsplit">split</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">split t i</code> splits current players hand i, and returns game state</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALsplit_or">split_or</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">split_or d c a</code> splits the player's hand on a condition relative to the 
+   value of the dealer's card <code class="code">dv</code>, and otherwise returns another action
+   <code class="code">action</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALsplit_recommendation">split_recommendation</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">split_recommendation pv d dv</code> recommends whether a user should split a pair,
+   conditional to the value of the dealer's card <code class="code">dv</code></p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>T</div></td></tr>
+<tr><td><a href="Chip.html#VALto_string">to_string</a> [<a href="Chip.html">Chip</a>]</td>
+<td><div class="info">
+<p><code class="code">to_string t</code> returns a string of the inputted chips</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Cards.html#VALtransfer_card">transfer_card</a> [<a href="Cards.html">Cards</a>]</td>
+<td><div class="info">
+<p><code class="code">transfer_card d1 d2 card</code> moves <code class="code">card</code> from <code class="code">d1</code> to <code class="code">d2</code>
+    Requires the card to be in the first deck
+    Raises exception Card_not_in_deck</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>U</div></td></tr>
+<tr><td><a href="Player.html#VALupdate_hand">update_hand</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">update_hand new_hand t</code> retuns a player with an updated hand</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Blackjack.html#VALupdate_playerlst">update_playerlst</a> [<a href="Blackjack.html">Blackjack</a>]</td>
+<td><div class="info">
+<p><code class="code">update_playerlst t plst</code> returns a game with an updated player list</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>W</div></td></tr>
+<tr><td><a href="Player.html#VALwin_bet">win_bet</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">win_bet i t</code> wins the bet for player t on hand i</p>
+
+</div>
+</td></tr>
+</table>
+</body>
+</html>

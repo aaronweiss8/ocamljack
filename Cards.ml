@@ -179,10 +179,10 @@ let soft_recommendation pv dv =
    conditional to the value of the dealer's card [dv]*)
 let split_recommendation card dv =
   match card with
-  | 2 ->  split_or dv (dv > 2 && dv < 8) "hit"
+  | 2 -> split_or dv (dv > 2 && dv < 8) "hit"
   | 3 -> split_or dv (dv >= 4 && dv <= 7) "hit"
   | 4
-  | 5 -> "hit"
+  | 5 -> double_or (dv <10) "hit"
   | 6 -> split_or dv (dv >= 3 && dv <= 6) "hit"
   | 7 -> split_or dv (dv <= 7) "hit"
   | 8 -> "split"
@@ -214,14 +214,14 @@ let check_if_soft hand =
   let hand_without_aces = List.filter (fun x -> x <> Ace) ranks in
   let num_aces = List.fold_left (fun a x -> if x = Ace then a+1 else a)
       0 ranks in
-  print_string ("FUCKFUCKFUCKFUCK" ^ string_of_int num_aces);
+  (*print_string ("FUCKFUCKFUCKFUCK" ^ string_of_int num_aces);*)
   let haval = deck_value (List.map (fun x -> {rep=(Heart, Red, x)})
                             hand_without_aces)
   in
   if num_aces > 0 then add_aces haval num_aces else false
 
 let recommendation player_hand dealer_hand = 
-  let dealer_value = (List.nth dealer_hand 1) in
+  let dealer_value = [(List.nth dealer_hand 1)] |> deck_value in
   let player_value = deck_value player_hand in
 
   match (player_hand, dealer_value) with
