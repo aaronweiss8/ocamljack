@@ -86,8 +86,8 @@ let combine_decks (dl: deck list) = List.flatten dl
 
 let deal_one deck =
   let rec starting_deck num accum= 
-      if num = 0 then accum |> combine_decks |> shuffle 
-      else starting_deck (num -1) (get_standard_deck::accum) in
+    if num = 0 then accum |> combine_decks |> shuffle 
+    else starting_deck (num -1) (get_standard_deck::accum) in
   match deck with
   | [] -> failwith "Need to reset deck"
   | h::[] -> ((starting_deck 6 []), h)
