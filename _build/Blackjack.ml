@@ -25,7 +25,7 @@ type t = {round:int;
           deck:deck;
           dealer:player}
 
-let current_player t : player = t.players |> List.hd
+let current_player t : player =  t.players |> List.hd
 
 let get_deck t = t.deck
 
@@ -37,14 +37,24 @@ let leftMostPlayer t = t.leftMostPlayer
 
 let min_bet t = t.min_bet
 
-let update_playerlst t plst = 
-  {round = t.round;
-   min_bet = t.min_bet;
-   players = plst;
-   leftMostPlayer = (List.hd plst);
-   deck = t.deck;
-   dealer = t.dealer;
-  }
+let update_playerlst t plst =
+  match plst with
+  | h::_ ->
+      {round = t.round;
+      min_bet = t.min_bet;
+      players = plst;
+      leftMostPlayer = h;
+      deck = t.deck;
+      dealer = t.dealer;
+      }
+  | _ ->
+    {round = t.round;
+      min_bet = t.min_bet;
+      players = plst;
+      leftMostPlayer = t.leftMostPlayer;
+      deck = t.deck;
+      dealer = t.dealer;
+      }
 
 let add_player p game = 
   {round = game.round;
@@ -63,7 +73,7 @@ let remove_player p game =
      leftMostPlayer = game.leftMostPlayer;
      deck = game.deck;
      dealer = game.dealer;}
-  else if (List.mem p game.players) && (List.length game.players > 1) then
+  else if (List.mem p game.players) && (List.length game.players > 2) then
     let new_plst = (List.filter (fun x -> x = p) game.players) in
     {round = game.round;
      min_bet = game.min_bet;
@@ -71,6 +81,13 @@ let remove_player p game =
      leftMostPlayer = (List.hd new_plst);
      deck = game.deck;
      dealer = game.dealer;}
+  else if (List.mem p game.players) && (List.length game.players = 1) then
+      {round = game.round;
+      min_bet = game.min_bet;
+      players = [];
+      leftMostPlayer = game.leftMostPlayer;
+      deck = game.deck;
+      dealer = game.dealer;}
   else raise Player_Not_Found
 
 let hit game ind d =
@@ -115,12 +132,8 @@ let rec get_hands d p =
     | h::t -> if h = Cards.empty then "[Empty]" else
         match h with
         | a::b -> 
-          "<HIDDEN>" ^ "[" ^ 
-          (List.fold_left 
-             (fun z g -> 
-                (Cards.get_rank_string g) ^ " of " ^ 
-                (Cards.get_suit_string g)
-                ^ ", " ^ z) "]" b)
+          "<HIDDEN>" ^ "[" ^ (Cards.get_rank_string a) ^ " of " ^ 
+                (Cards.get_suit_string a) ^ ", ]"
         | [] -> "[Empty]"
   else
     match (Player.get_hand p) with
@@ -141,6 +154,9 @@ let get_info t hide_dealer =
   ANSITerminal.(print_string [blue] ("\nRules:"));
   ANSITerminal.(print_string [default]
                   (" https://bicyclecards.com/how-to-play/blackjack/\n"));
+  ANSITerminal.(print_string [green]
+          ("https://wizardofodds.com/games/blackjack/strategy/calculator/\n"));
+  
   ANSITerminal.(print_string [blue]  ("Round: "));
   ANSITerminal.(print_string [default] (string_of_int t.round));
   ANSITerminal.(print_string [default] "\nValues:");
@@ -149,7 +165,7 @@ let get_info t hide_dealer =
   ANSITerminal.(print_string [blue] " Blue = 10;");
   ANSITerminal.(print_string [green] " Green = 25;");
   ANSITerminal.(print_string [black;Bold] " Black = 100 " );  
-  ANSITerminal.(print_string [blue]   ("Minimum Bet: " ^
+  ANSITerminal.(print_string [blue]   ("\nMinimum Bet: " ^
                                        string_of_int t.min_bet ^ ", "));
   ANSITerminal.(print_string [default]
                   ("\nSimplify your chips means converting "^
@@ -175,13 +191,13 @@ let get_info t hide_dealer =
 let hand_value phand = 
   let handlist = List.map Cards.get_rank phand in
   let rec sumaces acc num =
-    if num = 0 then acc else
+    if num <= 0 then acc else
     if num = 1 && acc + 11 <= 21 then acc + 11 else
     if 11 + (num-1) + acc <= 21 then acc + 11 + num - 1 else
       acc + num in
   let rec sumhand (hand:Cards.rank list) acc num_aces =
     match hand with
-    | [] -> if num_aces = 0 then acc else (sumaces acc num_aces)
+    | [] -> if num_aces <= 0 then acc else (sumaces acc num_aces)
     | h::t -> match h with
       | Num x -> (sumhand t (acc + x) num_aces)
       | Ace -> (sumhand t acc (num_aces + 1))

@@ -82,9 +82,15 @@ let remove_single_instance c d =
     |[] -> List.rev accum in
   rsi_aux c d false []
 
+let combine_decks (dl: deck list) = List.flatten dl
+
 let deal_one deck =
+  let rec starting_deck num accum= 
+      if num = 0 then accum |> combine_decks |> shuffle 
+      else starting_deck (num -1) (get_standard_deck::accum) in
   match deck with
   | [] -> failwith "Need to reset deck"
+  | h::[] -> ((starting_deck 6 []), h)
   | h::t -> (t,h)
 
 let transfer_card d1 d2 (card: card) =
@@ -93,8 +99,6 @@ let transfer_card d1 d2 (card: card) =
     let (new_d2: deck) = card::d2 in 
     (new_d1,new_d2)
   else raise Card_not_in_Deck
-
-let combine_decks (dl: deck list) = List.flatten dl
 
 let order_hand (d: deck) = 
   List.sort compare d
@@ -213,6 +217,13 @@ let hard_recommendation pv dv =
     | 16 -> hit_or (dv >= 7) "stand"
     | _ -> "stand"
 
+let rec to_string hand acc =
+  match hand with
+  | [] -> acc
+  | h::[] -> to_string [] (get_rank_string h ^ " of " ^ get_suit_string h ^ acc)
+  | h::t -> to_string t 
+              ( ", " ^ get_rank_string h ^ " of " ^ get_suit_string h ^ acc)
+
 let check_if_soft hand =
   let rec add_aces v num =
     if num = 1 then v + 11 <= 21 else
@@ -221,14 +232,13 @@ let check_if_soft hand =
   let hand_without_aces = List.filter (fun x -> x <> Ace) ranks in
   let num_aces = List.fold_left (fun a x -> if x = Ace then a+1 else a)
       0 ranks in
-  (*print_string ("FUCKFUCKFUCKFUCK" ^ string_of_int num_aces);*)
   let haval = deck_value (List.map (fun x -> {rep=(Heart, Red, x)})
                             hand_without_aces)
   in
   if num_aces > 0 then add_aces haval num_aces else false
 
 let recommendation player_hand dealer_hand = 
-  let dealer_value = [(List.nth dealer_hand 1)] |> deck_value in
+  let dealer_value = [(List.nth dealer_hand 0)] |> deck_value in
   let player_value = deck_value player_hand in
 
   match (player_hand, dealer_value) with
@@ -244,10 +254,3 @@ let recommendation player_hand dealer_hand =
       soft_recommendation player_value dealer_value
     else hard_recommendation player_value dealer_value
   | _, _-> failwith "Not possible"
-
-let rec to_string hand acc =
-  match hand with
-  | [] -> acc
-  | h::[] -> to_string [] (get_rank_string h ^ " of " ^ get_suit_string h ^ acc)
-  | h::t -> to_string t 
-              ( ", " ^ get_rank_string h ^ " of " ^ get_suit_string h ^ acc)

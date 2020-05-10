@@ -226,6 +226,16 @@ let player_tests = "Player tests" >::: [
 
   ]
 
+
+let hard12 = Cards.empty
+    |> add_to_deck (Cards.make_card Spade Black (Num 7))
+    |> add_to_deck (Cards.make_card Diamond Red (Num 2))
+    |> add_to_deck (Cards.make_card Club Black (Num 3)) 
+
+    let hard1 = Cards.empty
+    |> add_to_deck (Cards.make_card Spade Black (Queen))
+    |> add_to_deck (Cards.make_card Heart Red (Num 2)) 
+
 let blackjack_tests = "Blackjack tests" >::: [
     "test current player in game" >:: (fun _ -> 
         assert_equal player1 (Blackjack.current_player game1));
@@ -277,9 +287,9 @@ let blackjack_tests = "Blackjack tests" >::: [
           (place_initial_bets newgame3_lowbet b_lst3 |> get_players |>
            List.map (fun x -> Player.bet x)) );
 
-    "test insurance" >:: (fun _-> 
+    (* "test insurance" >:: (fun _-> 
         assert_raises Cannot_Perform_Insurance 
-          (fun () -> b_lst |> insurance game1));
+          (fun () -> b_lst |> insurance game1)); *)
     (*
         "test insurance" >:: (fun _->
             assert_equal (playerlist_insurance) ((insurance game1 b_lst3) |> get_players)) ;*)
@@ -308,7 +318,11 @@ let blackjack_tests = "Blackjack tests" >::: [
 
     "test check_if_soft, soft" >:: (fun _-> assert_equal true (Cards.check_if_soft soft));
 
-    "test check_if_soft, soft_2" >:: (fun _-> assert_equal true (Cards.check_if_soft soft_2))
+    "test check_if_soft, soft_2" >:: (fun _-> assert_equal true (Cards.check_if_soft soft_2));
+
+    "hard 12" >:: (fun _-> assert_equal false (Cards.check_if_soft hard12));
+
+    "hard  12" >:: (fun _-> assert_equal false (Cards.check_if_soft hard1));
 
   ]
 
