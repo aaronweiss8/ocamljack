@@ -55,6 +55,8 @@ val create_chips : int -> int -> int -> int -> int -> t
 (** [to_string t] returns a string of the inputted chips *)
 val to_string : t -> string
 
+(** [create_bot_bet i p] creates a bet valid for min_bet i and player p*)
 val create_bot_bet : int -> t -> t
 
+(** [create_bot_chips i p] creates a chip for bot that is valid with min_bet i*)
 val create_bot_chips : int -> t -> t

@@ -109,7 +109,7 @@ let rec dealer_turn game =
 (** [perform_insurance g] is returns a game . *)
 let perform_insurance game =
   if Cards.get_rank
-      (List.nth (List.hd (game |> Blackjack.dealer |> Player.get_hand)) 1)
+      (List.nth (List.hd (game |> Blackjack.dealer |> Player.get_hand)) 0)
      = Cards.Ace then
     (try (
        ANSITerminal.(print_string [blue;Underlined] "\nPerform insurance \n");

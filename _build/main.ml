@@ -109,7 +109,7 @@ let rec dealer_turn game =
 (** [perform_insurance g] is returns a game . *)
 let perform_insurance game =
   if Cards.get_rank
-      (List.nth (List.hd (game |> Blackjack.dealer |> Player.get_hand)) 1)
+      (List.nth (List.hd (game |> Blackjack.dealer |> Player.get_hand)) 0)
      = Cards.Ace then
     (try (
        ANSITerminal.(print_string [blue;Underlined] "\nPerform insurance \n");
@@ -163,6 +163,7 @@ let rec play_and_rotate game ind on_dealer =
                      Cards.recommendation player_hand dealer_hand ^ "\n"));
     prompt_action game ind on_dealer player_hand dealer_hand
 
+(** [prompt_action g i o p d] prompts the user for the action and does it*)
 and prompt_action game ind on_dealer player_hand dealer_hand =
   let cp = Blackjack.current_player game in
   ANSITerminal.(print_string [magenta;Bold]
