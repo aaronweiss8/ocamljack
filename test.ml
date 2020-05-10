@@ -60,6 +60,7 @@ open Player
      main:
    - Play loops including proper updating of the terminal on the main 
      user actions and user input for the creation of a player and game
+   - Stress testing the amount of bots that the program can handle
 
      We kept path coverage in mind, although for integration testing we
      relied primarily on direct testing to test all possible paths.

@@ -210,7 +210,7 @@ let hard_recommendation pv dv =
     | 9 -> double_or (dv < 8) "hit" 
     | 10 -> double_or (dv < 10) "hit"
     | 11 -> "double down"
-    | 12 -> hit_or (dv < 7 && dv > 3) "stand"
+    | 12 -> hit_or (dv > 6 || dv < 4) "stand"
     | 13 -> hit_or (dv >= 7) "stand"
     | 14 -> hit_or (dv >= 7) "stand"
     | 15 -> hit_or (dv >= 7) "stand"
