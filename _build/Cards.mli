@@ -1,4 +1,3 @@
-
 (** Represents the color of a card*)
 type color = | Red | Black
 

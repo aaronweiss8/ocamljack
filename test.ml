@@ -3,38 +3,71 @@ open Chip
 open Blackjack
 open Cards
 open Player
+(**TEST PLAN
 
-(**An example of how to create a blackjack game. *)
+   Our approach to testing was to first unit test methods, via a black-box
+   and glass-box approach, in the 
+   foundational modules individually (Chip, Player, Command, Cards), 
+   then to test whether these methods worked properly in tandem when 
+   called in the core Blackjack methods (integration testing).
 
-(** [cmp_set_like_lists lst1 lst2] compares two lists to see whether
-    they are equivalent set-like lists.  That means checking two things.
-    First, they must both be {i set-like}, meaning that they do not
-    contain any duplicates.  Second, they must contain the same elements,
-    though not necessarily in the same order. *)
-let cmp_set_like_lists lst1 lst2 =
-  let uniq1 = List.sort_uniq compare lst1 in
-  let uniq2 = List.sort_uniq compare lst2 in
-  List.length lst1 = List.length uniq1
-  &&
-  List.length lst2 = List.length uniq2
-  &&
-  uniq1 = uniq2
+   Our unit tests consisted of several representative examples that tested
+   boundary cases and normal usage.
 
-(** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt]
-    to pretty-print each element of [lst]. *)
-let pp_list pp_elt lst =
-  let pp_elts lst =
-    let rec loop n acc = function
-      | [] -> acc
-      | [h] -> acc ^ pp_elt h
-      | h1::(h2::t as t') ->
-        if n=100 then acc ^ "..."  (* stop printing long list *)
-        else loop (n+1) (acc ^ (pp_elt h1) ^ "; ") t'
-    in loop 0 "" lst
-  in "[" ^ pp_elts lst ^ "]"
+   Aside from written tests in test.ml, we directly played through our game
+   and tested through several key situations when they occured. Because
+   our game outputs the hands of every player, as well as the top card of the
+    dealer, we were able to check the correctness of taking certain player 
+    actions, as well as the correctness of move recommendations. Directly 
+    testing the program by playing it also enabled us to easily
+   check whether malformed inputs were handled correctly.  Thus,
+    a majority of the functionality in main and Blackjack was tested directly
+    as opposed to through unit testing.
 
-(* let newgame = StandardBlackjack.new_game "player" Chip.empty 0 1 *)
+    Some examples of direct testing are as follows:
+   - Testing splitting when dealt a pair
+   - Testing whether a player correctly wins, busts
+   - Testing if a player's hand aligned with the correct recommendation
+        suggested by our program. 
+   - Testing whether insurance was correctly presented as an option - 
+        if the dealer's top card is an Ace.
+   - Testing bot generation from user input
+   - Testing correctness of the play loops (prompting and response)
+     based on user input.
 
+   An outline of the key functionality we tested is as follows, organized
+   by module:
+    Cards:
+   - Comparing card values, deck operations (shuffling, ordering
+        dealing, recommended moves based on card values)
+     Chip:
+   - Chip list creation for players and bots, Chip simplification/breaking,
+        chip addition and subtraction (betting), and chip list comparison
+     Command:
+   - Parsing of user input to the correct "action" constructor, and handling
+     of malformed input
+     Player:
+   - Player creation, updating the player type to account for changes in bets,
+     chips, and hands, and several getter methods to access information in
+     the sealed player type.
+     Blackjack:
+   - Main user actions: hit, split, stand, insurance, and double down
+   - Getter functions for the sealed Blackjack type
+   - Adding/removing players
+   - Updating game states (placing initial bets,
+     moving to next hand, next round, next player,
+     )
+     main:
+   - Play loops including proper updating of the terminal on the main 
+     user actions and user input for the creation of a player and game
+   - Stress testing the amount of bots that the program can handle
+
+     We kept path coverage in mind, although for integration testing we
+     relied primarily on direct testing to test all possible paths.
+     Thus, we ensured the correctness of our program by testing all paths
+     of each function were correctly executed.
+
+*)
 (** Example chips *)
 let test_chip = Chip.create_chips 1 2 5 6 2
 let test_chip_2 = Chip.create_chips 5 6 10 2 4
@@ -228,13 +261,13 @@ let player_tests = "Player tests" >::: [
 
 
 let hard12 = Cards.empty
-    |> add_to_deck (Cards.make_card Spade Black (Num 7))
-    |> add_to_deck (Cards.make_card Diamond Red (Num 2))
-    |> add_to_deck (Cards.make_card Club Black (Num 3)) 
+             |> add_to_deck (Cards.make_card Spade Black (Num 7))
+             |> add_to_deck (Cards.make_card Diamond Red (Num 2))
+             |> add_to_deck (Cards.make_card Club Black (Num 3)) 
 
-    let hard1 = Cards.empty
-    |> add_to_deck (Cards.make_card Spade Black (Queen))
-    |> add_to_deck (Cards.make_card Heart Red (Num 2)) 
+let hard1 = Cards.empty
+            |> add_to_deck (Cards.make_card Spade Black (Queen))
+            |> add_to_deck (Cards.make_card Heart Red (Num 2)) 
 
 let blackjack_tests = "Blackjack tests" >::: [
     "test current player in game" >:: (fun _ -> 
