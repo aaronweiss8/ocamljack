@@ -21,7 +21,6 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;chip<br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Cannot_Split</span><br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Bet_Too_Low</span><br>
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Cannot_Perform_Insurance</span><br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Player_Not_Found</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_info&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_hands&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
@@ -41,7 +40,6 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;split&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Blackjack</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;double_down&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Blackjack</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;next_round&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Blackjack</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;insurance&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Chip</span>.t&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Blackjack</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;place_initial_bets&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Chip</span>.t&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Blackjack</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;check_hands&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Blackjack</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_players&nbsp;:&nbsp;<span class="constructor">Blackjack</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.t&nbsp;list<br>

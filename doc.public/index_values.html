@@ -139,7 +139,8 @@
 </td></tr>
 <tr><td><a href="Cards.html#VALcombine_decks">combine_decks</a> [<a href="Cards.html">Cards</a>]</td>
 <td><div class="info">
-<p>Combines decks into one for the game if game is played with several decks</p>
+<p><code class="code">combine_decks ds</code> Combines decks into one for the game if game is 
+    played with several decks</p>
 
 </div>
 </td></tr>
@@ -185,13 +186,14 @@
 <tr><td align="left"><div>D</div></td></tr>
 <tr><td><a href="Blackjack.html#VALdeal_initial_cards">deal_initial_cards</a> [<a href="Blackjack.html">Blackjack</a>]</td>
 <td><div class="info">
-<p><code class="code">deal_initial_cards game</code> returns a game with the initial cards delt</p>
+<p><code class="code">deal_initial_cards game</code> returns a game with the initial cards dealt</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Cards.html#VALdeal_one">deal_one</a> [<a href="Cards.html">Cards</a>]</td>
 <td><div class="info">
-<p>Removes the top card from the deck and returns it</p>
+<p><code class="code">deal_one d</code> Removes the top card from the deck and returns it with the rest
+    of the deck in a tuple</p>
 
 </div>
 </td></tr>
@@ -273,7 +275,7 @@
 </td></tr>
 <tr><td><a href="Cards.html#VALget_standard_deck">get_standard_deck</a> [<a href="Cards.html">Cards</a>]</td>
 <td><div class="info">
-<p>Returns one standard 52 card deck</p>
+<p><code class="code">get_standard_deck</code> Returns one standard 52 card deck</p>
 
 </div>
 </td></tr>
@@ -310,12 +312,6 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>I</div></td></tr>
-<tr><td><a href="Blackjack.html#VALinsurance">insurance</a> [<a href="Blackjack.html">Blackjack</a>]</td>
-<td><div class="info">
-<p><code class="code">insurance t c</code> returns state given placed insurances</p>
-
-</div>
-</td></tr>
 <tr><td><a href="Blackjack.html#VALis_blackjack">is_blackjack</a> [<a href="Blackjack.html">Blackjack</a>]</td>
 <td><div class="info">
 <p><code class="code">is_blackjack p</code> returns whether player p has achieved blackjack on any
@@ -444,7 +440,7 @@
 <tr><td align="left"><div>S</div></td></tr>
 <tr><td><a href="Cards.html#VALshuffle">shuffle</a> [<a href="Cards.html">Cards</a>]</td>
 <td><div class="info">
-<p>Randomizes the order of the cards in the game deck</p>
+<p><code class="code">shuffle d</code> Randomizes the order of the cards in the game deck</p>
 
 </div>
 </td></tr>
@@ -476,7 +472,12 @@
 </div>
 </td></tr>
 <tr><td><a href="Cards.html#VALto_string">to_string</a> [<a href="Cards.html">Cards</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">to_string d s</code> returns a string of the card list added to accumulator 
+    s</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Cards.html#VALtransfer_card">transfer_card</a> [<a href="Cards.html">Cards</a>]</td>
 <td><div class="info">
 <p><code class="code">transfer_card d1 d2 card</code> moves <code class="code">card</code> from <code class="code">d1</code> to <code class="code">d2</code>

@@ -19,11 +19,8 @@ main:
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
-check:
-	bash checkenv.sh && bash checktypes.sh
-
 zip:
-	zip search_src.zip *.ml* _tags Makefile  
+	zip ms2_release.zip *.ml* _tags Makefile  
 
 docs-public: build
 	mkdir -p doc.public

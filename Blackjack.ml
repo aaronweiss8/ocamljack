@@ -7,7 +7,6 @@ type chip = Chip.t
 type deck = Cards.deck
 exception Cannot_Split
 exception Bet_Too_Low
-exception Cannot_Perform_Insurance
 exception Player_Not_Found
 
 type result =
@@ -40,21 +39,21 @@ let min_bet t = t.min_bet
 let update_playerlst t plst =
   match plst with
   | h::_ ->
-      {round = t.round;
-      min_bet = t.min_bet;
-      players = plst;
-      leftMostPlayer = h;
-      deck = t.deck;
-      dealer = t.dealer;
-      }
+    {round = t.round;
+     min_bet = t.min_bet;
+     players = plst;
+     leftMostPlayer = h;
+     deck = t.deck;
+     dealer = t.dealer;
+    }
   | _ ->
     {round = t.round;
-      min_bet = t.min_bet;
-      players = plst;
-      leftMostPlayer = t.leftMostPlayer;
-      deck = t.deck;
-      dealer = t.dealer;
-      }
+     min_bet = t.min_bet;
+     players = plst;
+     leftMostPlayer = t.leftMostPlayer;
+     deck = t.deck;
+     dealer = t.dealer;
+    }
 
 let add_player p game = 
   {round = game.round;
@@ -82,12 +81,12 @@ let remove_player p game =
      deck = game.deck;
      dealer = game.dealer;}
   else if (List.mem p game.players) && (List.length game.players = 1) then
-      {round = game.round;
-      min_bet = game.min_bet;
-      players = [];
-      leftMostPlayer = game.leftMostPlayer;
-      deck = game.deck;
-      dealer = game.dealer;}
+    {round = game.round;
+     min_bet = game.min_bet;
+     players = [];
+     leftMostPlayer = game.leftMostPlayer;
+     deck = game.deck;
+     dealer = game.dealer;}
   else raise Player_Not_Found
 
 let hit game ind d =
@@ -133,7 +132,7 @@ let rec get_hands d p =
         match h with
         | a::b -> 
           "<HIDDEN>" ^ "[" ^ (Cards.get_rank_string a) ^ " of " ^ 
-                (Cards.get_suit_string a) ^ ", ]"
+          (Cards.get_suit_string a) ^ "]"
         | [] -> "[Empty]"
   else
     match (Player.get_hand p) with
@@ -154,9 +153,10 @@ let get_info t hide_dealer =
   ANSITerminal.(print_string [blue] ("\nRules:"));
   ANSITerminal.(print_string [default]
                   (" https://bicyclecards.com/how-to-play/blackjack/\n"));
-  ANSITerminal.(print_string [green]
-          ("https://wizardofodds.com/games/blackjack/strategy/calculator/\n"));
-  
+  ANSITerminal.(
+    print_string [green]
+      ("https://wizardofodds.com/games/blackjack/strategy/calculator/\n"));
+
   ANSITerminal.(print_string [blue]  ("Round: "));
   ANSITerminal.(print_string [default] (string_of_int t.round));
   ANSITerminal.(print_string [default] "\nValues:");
@@ -179,7 +179,7 @@ let get_info t hide_dealer =
                   ("Leftmost Player: " ^ (Player.name t.leftMostPlayer) ^ "\n" ^  
                    "Current Player: "));
   ANSITerminal.(print_string [green] (current_player t |> Player.name)); 
-  ANSITerminal.(print_string [default] "\nPlayer: Hand, Chips, Bet: \n");
+  ANSITerminal.(print_string [yellow] "\nPlayer: Hand, Chips, Bet, \n");
   ANSITerminal.(print_string [default]
                   ((List.fold_left
                       (fun y x -> "\n" ^ Player.name x ^ ": " ^
@@ -386,69 +386,6 @@ let check_hands game =
    leftMostPlayer = (List.hd new_player_lst);
    deck = game.deck;
    dealer = new_dealer}
-
-(* [insurance game player_lst] performs a classic insurance operation with
-   the players who want insurance on [game]. [player_lst] is a chip list of the 
-   players on the table who want insurance and how much they want.
-   Raises: Cannot_Perform_Insurance if a bet is higher than allowed for a 
-   side bet or if the dealer is not showing an Ace. *)
-
-let insurance game bets =
-  print_string "top and bottom cards";
-  let dealer_top_card = List.nth (List.nth (Player.get_hand game.dealer) 0) 0 in
-  let dealer_bottom_card =
-    List.nth (List.nth (Player.get_hand game.dealer) 0) 1 in
-  let ace_ex = Cards.make_card (Cards.Heart) (Cards.Red) (Cards.Ace) in
-
-  let rec make_side_bets players bet_lst accum = 
-    print_string "make side bets";
-    match (players,bet_lst) with 
-    |((p::r),(h::t)) -> let bet_value = Player.bet_value p 0 in
-      let side_bet_val = Chip.get_value h in
-      if (side_bet_val * 2) <= bet_value then 
-        let np = (p |> Player.add_bet |> Player.bet_chips h 1) in
-        make_side_bets r t (np::accum)
-      else raise Cannot_Perform_Insurance
-    |([],[]) -> List.rev accum
-    |_ -> failwith "Not every player decided if they are going to bet" in
-
-  (* Only called if Dealer has BlackJack *)
-  let rec check_player_for_BJ players accum =
-    print_string "check for bj";
-    match players with
-    |h::t -> let h_sidebet = List.nth (Player.bet h) 1 in
-      if is_blackjack (List.nth (Player.get_hand h) 0) then
-        let np = (h |> Player.add_chips h_sidebet
-                  |> Player.add_chips h_sidebet |> Player.collect_bets) in
-        check_player_for_BJ t (np::accum) else
-        let np = (h |> Player.add_chips h_sidebet |>
-                  Player.add_chips h_sidebet |> Player.lose_bet 1) in 
-        check_player_for_BJ t (np::accum)
-    |[] -> List.rev accum in
-
-  (* Only called if Dealer does not have BlackJack*)
-  let rec remove_side_bets players accum =
-    print_string "remove side bets";
-    match players with
-    |h::t ->
-      let np = (h |> Player.lose_bet 1) in 
-      check_player_for_BJ t (np::accum)
-    |[] -> List.rev accum in
-
-  let make_new_players player_w_sb = 
-    if Cards.is_ten dealer_bottom_card then check_player_for_BJ player_w_sb []
-    else remove_side_bets player_w_sb [] in
-
-  if (Cards.compare dealer_top_card ace_ex) = 0 then
-    let new_players1 = make_side_bets game.players bets [] in
-    {round = game.round;
-     min_bet = game.min_bet;
-     players = make_new_players new_players1;
-     leftMostPlayer = game.leftMostPlayer;
-     deck = game.deck;
-     dealer = game.dealer}
-
-  else raise Cannot_Perform_Insurance
 
 (*[create_game pl num_decks r] creates a game state starting at round [r] with 
   players in [pl]*)

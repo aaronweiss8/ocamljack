@@ -25,7 +25,8 @@
 
 <pre><span id="MODULECards"><span class="keyword">module</span> Cards</span>: <code class="code">sig</code> <a href="Cards.html">..</a> <code class="code">end</code></pre><div class="info module top">
 <div class="info-desc">
-<p>Represents the color of a card</p>
+<p>The module <code class="code">Cards</code> includes a representation for cards and decks,
+    and methods for updating these representations.</p>
 </div>
 </div>
 <hr width="100%">
@@ -46,6 +47,11 @@
 
 </tr></table>
 
+<div class="info ">
+<div class="info-desc">
+<p>Represents the color of a card</p>
+</div>
+</div>
 
 
 <pre><code><span id="TYPEsuit"><span class="keyword">type</span> <code class="type"></code>suit</span> = </code></pre><table class="typetable">
@@ -156,13 +162,13 @@
 
 <pre><span id="VALget_standard_deck"><span class="keyword">val</span> get_standard_deck</span> : <code class="type"><a href="Cards.html#TYPEdeck">deck</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Returns one standard 52 card deck</p>
+<p><code class="code">get_standard_deck</code> Returns one standard 52 card deck</p>
 </div>
 </div>
 
 <pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type"><a href="Cards.html#TYPEdeck">deck</a> -> <a href="Cards.html#TYPEdeck">deck</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Randomizes the order of the cards in the game deck</p>
+<p><code class="code">shuffle d</code> Randomizes the order of the cards in the game deck</p>
 </div>
 </div>
 
@@ -187,7 +193,8 @@
 
 <pre><span id="VALdeal_one"><span class="keyword">val</span> deal_one</span> : <code class="type"><a href="Cards.html#TYPEdeck">deck</a> -> <a href="Cards.html#TYPEdeck">deck</a> * <a href="Cards.html#TYPEcard">card</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Removes the top card from the deck and returns it</p>
+<p><code class="code">deal_one d</code> Removes the top card from the deck and returns it with the rest
+    of the deck in a tuple</p>
 </div>
 </div>
 
@@ -201,7 +208,8 @@
 
 <pre><span id="VALcombine_decks"><span class="keyword">val</span> combine_decks</span> : <code class="type"><a href="Cards.html#TYPEdeck">deck</a> list -> <a href="Cards.html#TYPEdeck">deck</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Combines decks into one for the game if game is played with several decks</p>
+<p><code class="code">combine_decks ds</code> Combines decks into one for the game if game is 
+    played with several decks</p>
 </div>
 </div>
 
@@ -225,7 +233,7 @@
 
 <pre><span id="VALmake_card"><span class="keyword">val</span> make_card</span> : <code class="type"><a href="Cards.html#TYPEsuit">suit</a> -> <a href="Cards.html#TYPEcolor">color</a> -> <a href="Cards.html#TYPErank">rank</a> -> <a href="Cards.html#TYPEcard">card</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">make_card suit color rank</code> returns a new card. FOR TESTING ONLY</p>
+<p><code class="code">make_card suit color rank</code> returns a new card.</p>
 </div>
 </div>
 
@@ -254,4 +262,10 @@
 </div>
 </div>
 
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Cards.html#TYPEdeck">deck</a> -> string -> string</code></pre></body></html>
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Cards.html#TYPEdeck">deck</a> -> string -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">to_string d s</code> returns a string of the card list added to accumulator 
+    s</p>
+</div>
+</div>
+</body></html>

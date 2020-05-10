@@ -1,3 +1,7 @@
+(* The module [Blackjack] handles the main functions corresponding to
+   user action in a blackjack game, as well as various methods for updating
+   the game state.*)
+
 open Cards
 open Player
 open Command
@@ -8,7 +12,6 @@ type deck
 type chip
 exception Cannot_Split
 exception Bet_Too_Low
-exception Cannot_Perform_Insurance
 exception Player_Not_Found
 
 
@@ -74,9 +77,6 @@ val double_down : t -> int -> t
 (** [next_round t] returns game state on the next round*)
 val next_round : t -> t
 
-(** [insurance t c] returns state given placed insurances*)
-val insurance : t -> Chip.t list -> t
-
 (** [place_initial_bets t c] returns state with placed player bets on hands*)
 val place_initial_bets : t -> Chip.t list -> t
 
@@ -89,5 +89,5 @@ val get_players : t -> Player.t list
 (**[dealer t] is the dealer of the game *)
 val dealer : t -> Player.t
 
-(** [deal_initial_cards game] returns a game with the initial cards delt *)
+(** [deal_initial_cards game] returns a game with the initial cards dealt *)
 val deal_initial_cards : t -> t

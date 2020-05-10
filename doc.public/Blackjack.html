@@ -43,8 +43,6 @@
 
 <pre><span id="EXCEPTIONBet_Too_Low"><span class="keyword">exception</span> Bet_Too_Low</span></pre>
 
-<pre><span id="EXCEPTIONCannot_Perform_Insurance"><span class="keyword">exception</span> Cannot_Perform_Insurance</span></pre>
-
 <pre><span id="EXCEPTIONPlayer_Not_Found"><span class="keyword">exception</span> Player_Not_Found</span></pre>
 
 <pre><span id="VALget_info"><span class="keyword">val</span> get_info</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> bool -> unit</code></pre><div class="info ">
@@ -163,12 +161,6 @@
 </div>
 </div>
 
-<pre><span id="VALinsurance"><span class="keyword">val</span> insurance</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Chip.html#TYPEt">Chip.t</a> list -> <a href="Blackjack.html#TYPEt">t</a></code></pre><div class="info ">
-<div class="info-desc">
-<p><code class="code">insurance t c</code> returns state given placed insurances</p>
-</div>
-</div>
-
 <pre><span id="VALplace_initial_bets"><span class="keyword">val</span> place_initial_bets</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Chip.html#TYPEt">Chip.t</a> list -> <a href="Blackjack.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">place_initial_bets t c</code> returns state with placed player bets on hands</p>
@@ -195,7 +187,7 @@
 
 <pre><span id="VALdeal_initial_cards"><span class="keyword">val</span> deal_initial_cards</span> : <code class="type"><a href="Blackjack.html#TYPEt">t</a> -> <a href="Blackjack.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">deal_initial_cards game</code> returns a game with the initial cards delt</p>
+<p><code class="code">deal_initial_cards game</code> returns a game with the initial cards dealt</p>
 </div>
 </div>
 </body></html>

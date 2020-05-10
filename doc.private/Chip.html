@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Cards.html">
+<link rel="next" href="Blackjack.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Cards" rel="Chapter" href="Cards.html">
+<link title="Chip" rel="Chapter" href="Chip.html">
+<link title="Blackjack" rel="Chapter" href="Blackjack.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html"><title>Chip</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Cards.html" title="Cards">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Blackjack.html" title="Blackjack">Next</a>
+</div>
+<h1>Module <a href="type_Chip.html">Chip</a></h1>
+
+<pre><span id="MODULEChip"><span class="keyword">module</span> Chip</span>: <code class="code">sig</code> <a href="Chip.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p><code class="code">Chip</code> contains the representation of chips and all related functions as 
+    well as creating bot chips and bets</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><code><span id="TYPEcolor"><span class="keyword">type</span> <code class="type"></code>color</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcolor.White"><span class="constructor">White</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcolor.Red"><span class="constructor">Red</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcolor.Blue"><span class="constructor">Blue</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcolor.Green"><span class="constructor">Green</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcolor.Black"><span class="constructor">Black</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+
+</tr></table>
+
+<div class="info ">
+<div class="info-desc">
+<p>options for color type, white is always worth 1, Red worth 5, Blue worth 10,
+    Green worth 25, and Black worth 100, the int value is the quanity of chip</p>
+</div>
+</div>
+
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>abstract type representing a chip</p>
+</div>
+</div>
+
+
+<pre><span id="EXCEPTIONRI_Broken"><span class="keyword">exception</span> RI_Broken</span></pre>
+
+<pre><span id="EXCEPTIONNot_Within"><span class="keyword">exception</span> Not_Within</span></pre>
+
+<pre><span id="VALrepo_ok"><span class="keyword">val</span> repo_ok</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>RI: type t must in the form White, Red, Blue, Green, Black</p>
+
+<p>RI: type t must in the form White, Red, Blue, Green, Black. Returns type t
+   if RI is okay and a failure mesage otherwise.</p>
+</div>
+</div>
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>empty chip representation</p>
+</div>
+</div>
+
+<pre><span id="VALget_value"><span class="keyword">val</span> get_value</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_value t</code> is the integer representation of the value of the chips</p>
+</div>
+</div>
+
+<pre><span id="VALsingle_step_simplify"><span class="keyword">val</span> single_step_simplify</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       (<a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a>) * bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">single_step t</code> takes the lowest denominations available and converts them
+   into the next denomination if possible.
+   Returns: type (t, bool), where the bool indicates if t changed</p>
+</div>
+</div>
+
+<pre><span id="VALsingle_step_break"><span class="keyword">val</span> single_step_break</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       (<a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a>) * bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">single_step_break t</code> takes the highest demoninaitons availabble and breaks
+   into smaller ones if possible.
+   Returns: type (t, bool), where the bool indicates if t changed</p>
+</div>
+</div>
+
+<pre><span id="VALsimplify"><span class="keyword">val</span> simplify</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       int -> <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">simplify t steps</code> simplifies the chips by the single_step_simplify function
+    <code class="code">steps</code> times or until it can no longer be simplified.</p>
+</div>
+</div>
+
+<pre><span id="VALbreak"><span class="keyword">val</span> break</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       int -> <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">break t steps</code> breaks larger denominations using he single_step_break
+    function <code class="code">steps</code> times or until it can no longer be broken.</p>
+</div>
+</div>
+
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add t1 t2</code> is the combined quantities in t2 to t1. 
+   Raises: RI_Broken if the Representation invariant is broken</p>
+</div>
+</div>
+
+<pre><span id="VALbet"><span class="keyword">val</span> bet</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">bet t1 t2</code> removed t2 from t1
+    Returns: t1 with t2's quantities removed
+    Requires: t2 be a subset of t1
+    Raises: Not_Within if t2 is not contained within t1, or RI_Broken if the
+    representation invariant is broken</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_chips"><span class="keyword">val</span> create_chips</span> : <code class="type">int -><br>       int -><br>       int -><br>       int -> int -> <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_chips w r b g bl</code> returns the chip type with the specified number
+    of chips for each color.</p>
+</div>
+</div>
+
+<pre><span id="VALis_within"><span class="keyword">val</span> is_within</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_within c1 c2</code> is true if c2 is a subset of c1 by specific color chip</p>
+</div>
+</div>
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">to_string t</code> returns a string of the inputted chips</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_bot_bet"><span class="keyword">val</span> create_bot_bet</span> : <code class="type">int -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_bot_bet i p</code> creates a bet valid for min_bet i and player p</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_bot_chips"><span class="keyword">val</span> create_bot_chips</span> : <code class="type">int -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> -><br>       <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a> * <a href="Chip.html#TYPEcolor">color</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_bot_chips i p</code> creates a chip for bot that is valid with min_bet i</p>
+</div>
+</div>
+</body></html>

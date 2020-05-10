@@ -1,3 +1,6 @@
+(** [Player] contains all functions that relate to each player and their hands
+    and chips*)
+
 (** The type representing a player. *)
 type t
 

@@ -1,7 +1,10 @@
-(** Represents the color of a card*)
+(** The module [Cards] includes a representation for cards and decks,
+    and methods for updating these representations.*)
+
+(** Represents the color of a card *)
 type color = | Red | Black
 
-(** Represents the suit of the card*)
+(** Represents the suit of the card *)
 type suit = | Heart  | Spade | Diamond | Club
 
 exception Card_not_in_Deck
@@ -24,10 +27,10 @@ type deck = card list
     0 if they are equal, and -1 if c2 is greater *)
 val compare : card -> card -> int
 
-(** Returns one standard 52 card deck*)
+(** [get_standard_deck] Returns one standard 52 card deck*)
 val get_standard_deck: deck
 
-(** Randomizes the order of the cards in the game deck*)
+(** [shuffle d] Randomizes the order of the cards in the game deck*)
 val shuffle: deck -> deck
 
 (** [add_to_deck c deck] returns [deck] including [c] *)
@@ -40,7 +43,8 @@ val is_ten : card -> bool
     [d] with one instance of [c] removed *)
 val remove_single_instance : card -> deck -> deck
 
-(** Removes the top card from the deck and returns it*)
+(** [deal_one d] Removes the top card from the deck and returns it with the rest
+    of the deck in a tuple*)
 val deal_one: deck -> (deck * card)
 
 (** [transfer_card d1 d2 card] moves [card] from [d1] to [d2]
@@ -48,10 +52,11 @@ val deal_one: deck -> (deck * card)
     Raises exception Card_not_in_deck*)
 val transfer_card: deck -> deck -> card -> (deck*deck)
 
-(** Combines decks into one for the game if game is played with several decks*)
+(** [combine_decks ds] Combines decks into one for the game if game is 
+    played with several decks*)
 val combine_decks: deck list -> deck
 
-(**[order_hand d] is a sorted deck*)
+(** [order_hand d] is a sorted deck*)
 val order_hand: deck -> deck
 
 (** [get_rank c] returns the rank of card c *)
@@ -60,7 +65,7 @@ val get_rank: card -> rank
 (** [empty] returns an empty deck*)
 val empty : deck
 
-(** [make_card suit color rank] returns a new card. FOR TESTING ONLY*)
+(** [make_card suit color rank] returns a new card. *)
 val make_card : suit -> color -> rank -> card
 
 (** [get_suit_string c] returns the suit of card [c] as a string. *)
@@ -76,6 +81,6 @@ val recommendation : deck -> deck -> string
 (** [check_if_soft cl] checks if a hand [cl] is a soft blackjack hand *)
 val check_if_soft : card list -> bool
 
-(** [to_string d s| returns a string of the card list added to accumulator 
+(** [to_string d s] returns a string of the card list added to accumulator 
     s*)
 val to_string : deck -> string ->  string

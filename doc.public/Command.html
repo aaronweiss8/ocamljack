@@ -25,7 +25,8 @@
 
 <pre><span id="MODULECommand"><span class="keyword">module</span> Command</span>: <code class="code">sig</code> <a href="Command.html">..</a> <code class="code">end</code></pre><div class="info module top">
 <div class="info-desc">
-<p>The module type that defines the parsing rules for Blackjack.</p>
+<p>The module <code class="code">Command</code> contains the representation for a user
+    command as well as the method to convert user input into a command</p>
 </div>
 </div>
 <hr width="100%">
@@ -67,6 +68,11 @@
 
 </tr></table>
 
+<div class="info ">
+<div class="info-desc">
+<p>The module type that defines the parsing rules for Blackjack.</p>
+</div>
+</div>
 
 
 <pre><span id="VALparse"><span class="keyword">val</span> parse</span> : <code class="type">string -> int -> <a href="Command.html#TYPEaction">action</a></code></pre><div class="info ">

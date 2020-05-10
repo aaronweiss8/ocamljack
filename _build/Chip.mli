@@ -1,4 +1,5 @@
-(** Describes the chips in the casino and operations that you can do on them *)
+(** [Chip] contains the representation of chips and all related functions as 
+    well as creating bot chips and bets*)
 
 (**abstract type representing a chip*)
 type t

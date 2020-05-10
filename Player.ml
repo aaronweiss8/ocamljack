@@ -140,7 +140,6 @@ let break_chips steps t =
    bot = t.bot;
   }
 
-(* ALREADY DONE *)
 let make_player_with_hand tups =
   {name="dealer";
    chips=Chip.empty;
@@ -149,7 +148,6 @@ let make_player_with_hand tups =
    bet=[Chip.empty];
    bot=true}
 
-(* ALREADY DONE *)
 let win_bet ind t =
   let b = List.nth t.bet ind in
   let add_to_chips = (Chip.add b b) in
@@ -167,6 +165,3 @@ let win_bet ind t =
 
 let is_user t =
   not(t.bot)
-
-(* let split_hands t i =
-  let to_split =  *)
