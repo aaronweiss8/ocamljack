@@ -117,9 +117,28 @@ let to_string c =
     string_of_int bl ^ "]"
   | _ -> failwith "out of order"
 
+let create_bot_bet min_bet chips =
+  match chips with 
+  | (White w,Red r,Blue b,Green g,Black bl)-> begin
+      if min_bet <= w then (print_string "Bet whites!"; 
+                            create_chips w 0 0 0 0)
+      else
+      if min_bet <= (w + 5*r) then (print_string "Bet whites and reds!";
+                                    create_chips w r 0 0 0)
+      else
+      if min_bet <= (w + 5*r + 10*b) then (print_string "Bet w r b !";
+                                           create_chips w r b 0 0)
+      else
+      if min_bet <= (w + 5*r + 10*b + 25*g) then (print_string "Bet w r b g!";
+                                                  create_chips w r b g 0 )
+      else create_chips w r b g bl
+    end
+  | _ -> failwith "Should not happen"
 
-
-
-
-
-
+let rec create_bot_chips min_bet start =
+  match start with
+  | (White w),(Red r),(Blue blu),(Green g),(Black bla) ->
+    if get_value start >= min_bet then start else
+      create_bot_chips min_bet
+        (create_chips (w*2) (r*2) (blu*2) (g*2) (bla*2))
+  | _ -> failwith "Shouldnt happen"

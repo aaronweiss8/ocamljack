@@ -167,7 +167,7 @@ let get_info t hide_dealer =
   ANSITerminal.(print_string [default]
                   ((List.fold_left
                       (fun y x -> "\n" ^ Player.name x ^ ": " ^
-                                  get_hands false x ^" "^ get_chips x ^ ", [" ^
+                                  get_hands false x ^", "^ get_chips x ^ ", [" ^
                                   get_bets (Player.bet x) "" ^ y) 
                       " " t.players) ^ "\n"))
 
@@ -378,12 +378,14 @@ let check_hands game =
    side bet or if the dealer is not showing an Ace. *)
 
 let insurance game bets =
+  print_string "top and bottom cards";
   let dealer_top_card = List.nth (List.nth (Player.get_hand game.dealer) 0) 0 in
   let dealer_bottom_card =
     List.nth (List.nth (Player.get_hand game.dealer) 0) 1 in
   let ace_ex = Cards.make_card (Cards.Heart) (Cards.Red) (Cards.Ace) in
 
   let rec make_side_bets players bet_lst accum = 
+    print_string "make side bets";
     match (players,bet_lst) with 
     |((p::r),(h::t)) -> let bet_value = Player.bet_value p 0 in
       let side_bet_val = Chip.get_value h in
@@ -396,6 +398,7 @@ let insurance game bets =
 
   (* Only called if Dealer has BlackJack *)
   let rec check_player_for_BJ players accum =
+    print_string "check for bj";
     match players with
     |h::t -> let h_sidebet = List.nth (Player.bet h) 1 in
       if is_blackjack (List.nth (Player.get_hand h) 0) then
@@ -409,6 +412,7 @@ let insurance game bets =
 
   (* Only called if Dealer does not have BlackJack*)
   let rec remove_side_bets players accum =
+    print_string "remove side bets";
     match players with
     |h::t ->
       let np = (h |> Player.lose_bet 1) in 

@@ -2,7 +2,6 @@
 type action = Hit 
             | Split  
             | DD 
-            | Insurance 
             | Stand
             | Quit
 

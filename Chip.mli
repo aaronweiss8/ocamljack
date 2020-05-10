@@ -54,3 +54,7 @@ val create_chips : int -> int -> int -> int -> int -> t
 
 (** [to_string t] returns a string of the inputted chips *)
 val to_string : t -> string
+
+val create_bot_bet : int -> t -> t
+
+val create_bot_chips : int -> t -> t

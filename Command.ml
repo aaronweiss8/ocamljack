@@ -2,7 +2,6 @@ type action =
   | Hit
   | Split
   | DD
-  | Insurance
   | Stand
   | Quit
 
@@ -19,5 +18,4 @@ let parse s idx =
   | h::[] when h = "stand" -> (Stand)
   | h::[] when h = "quit" -> (Quit)
   | h::[] when h = "split" -> (Split)
-  | h::[] when h = "insurance" -> (Insurance)
   | _ -> raise Malformed
