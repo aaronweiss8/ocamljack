@@ -1,5 +1,10 @@
 
-# Blackjack!
+# OCamljack!
+
+Terminal blackjack game written in OCaml for CS 3110 final group project
+
+## To run:
+
 Install OCaml as in http://www.cs.cornell.edu/courses/cs3110/2020sp/install.html
 
 Run ```make build``` to compile the program.
